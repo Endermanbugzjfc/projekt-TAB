@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import Login from './Login';
 import Navbar from './Navbar';
-import {BrowserRouter, Routes, Route, Link} from "react-router-dom"
+import {BrowserRouter, Routes, Route} from "react-router-dom"
 
 ReactDOM.render(
     <BrowserRouter>
