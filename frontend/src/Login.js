@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./Navbar";
 import './Login.css'
+import { Link } from "react-router-dom";
 
 class Login extends React.Component
 {
@@ -39,6 +40,10 @@ function LoginForm()
                         </label>
                     </div>
                     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                    <p class="mt-3 text-center">Nie masz konta?</p>
+                    <Link to="/register">
+                        <p class="text-center">Załóż nowe konto</p>
+                    </Link>
                 </form>
             </div>
         </>

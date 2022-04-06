@@ -18,7 +18,7 @@ class Navbar extends React.Component
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <div class="col col-2"></div>
-                        <div class="col-5 col">
+                        <div class="col-6 col">
                             <form class="d-flex">
                                 <input class="form-control me-2" type="search" placeholder="Wyszukaj" aria-label="Search"/>
                                 <button class="btn btn-outline-success" type="submit">Szukaj</button>
