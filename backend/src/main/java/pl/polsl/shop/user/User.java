@@ -1,6 +1,9 @@
-package pl.polsl.shop.user.entity;
+package pl.polsl.shop.user;
+
+import pl.polsl.shop.cart.ShoppingCart;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity(name = "users")
@@ -47,10 +50,13 @@ public class User {
     private int pesel;
 
     @Column(name = "employment_date")
-    private Date employmentDate;
+    private LocalDate employmentDate;
+
+    @OneToOne(mappedBy = "user")
+    private ShoppingCart shoppingCart;
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -58,7 +64,7 @@ public class User {
     }
 
     public String getUserName() {
-        return userName;
+        return this.userName;
     }
 
     public void setUserName(String userName) {
@@ -66,7 +72,7 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -74,7 +80,7 @@ public class User {
     }
 
     public String getLegalName() {
-        return legalName;
+        return this.legalName;
     }
 
     public void setLegalName(String legalName) {
@@ -82,7 +88,7 @@ public class User {
     }
 
     public String getSurname() {
-        return surname;
+        return this.surname;
     }
 
     public void setSurname(String surname) {
@@ -90,7 +96,7 @@ public class User {
     }
 
     public String getAddress() {
-        return address;
+        return this.address;
     }
 
     public void setAddress(String address) {
@@ -98,7 +104,7 @@ public class User {
     }
 
     public int getPhoneNumber() {
-        return phoneNumber;
+        return this.phoneNumber;
     }
 
     public void setPhoneNumber(int phoneNumber) {
@@ -106,7 +112,7 @@ public class User {
     }
 
     public String getRole() {
-        return role;
+        return this.role;
     }
 
     public void setRole(String role) {
@@ -114,7 +120,7 @@ public class User {
     }
 
     public Date getBirthDate() {
-        return birthDate;
+        return this.birthDate;
     }
 
     public void setBirthDate(Date birthDate) {
@@ -122,18 +128,26 @@ public class User {
     }
 
     public int getPesel() {
-        return pesel;
+        return this.pesel;
     }
 
     public void setPesel(int pesel) {
         this.pesel = pesel;
     }
 
-    public Date getEmploymentDate() {
-        return employmentDate;
+    public LocalDate getEmploymentDate() {
+        return this.employmentDate;
     }
 
-    public void setEmploymentDate(Date employmentDate) {
+    public void setEmploymentDate(LocalDate employmentDate) {
         this.employmentDate = employmentDate;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return this.shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 }

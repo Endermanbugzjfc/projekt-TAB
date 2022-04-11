@@ -1,6 +1,6 @@
-package pl.polsl.shop.product.image.entity;
+package pl.polsl.shop.product.image;
 
-import pl.polsl.shop.product.entity.Product;
+import pl.polsl.shop.product.Product;
 
 import javax.persistence.*;
 

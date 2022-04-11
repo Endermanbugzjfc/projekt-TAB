@@ -1,9 +1,9 @@
-package pl.polsl.shop.order.entity;
+package pl.polsl.shop.order;
 
-import pl.polsl.shop.user.entity.User;
+import pl.polsl.shop.user.User;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity(name = "orders")
 public class Order {
@@ -26,10 +26,20 @@ public class Order {
     private User user;
 
     @Column(name = "order_date", nullable = false)
-    private Date orderDate;
+    private LocalDate orderDate;
 
     @Column(name = "payment_method", nullable = false)
-    private String paymentMethod; //i think this should be an enum constant
+    private PaymentMethod paymentMethod;
+
+    public Order(){
+
+    }
+
+    public Order(User user, PaymentMethod paymentMethod) {
+        this.user = user;
+        this.paymentMethod = paymentMethod;
+        this.orderDate = LocalDate.now();
+    }
 
     public Long getId() {
         return id;
@@ -47,19 +57,19 @@ public class Order {
         this.user = user;
     }
 
-    public Date getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public PaymentMethod getPaymentMethod() {
+        return this.paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 }
