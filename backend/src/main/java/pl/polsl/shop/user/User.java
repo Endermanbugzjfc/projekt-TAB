@@ -35,13 +35,13 @@ public class User {
     private String surname;
 
     @Column(name = "address", nullable = false)
-    private String address; //maybe extra class?
+    private Address address;
 
     @Column(name = "phone_number", nullable = false)
     private int phoneNumber;
 
     @Column(name = "role", nullable = false)
-    private String role; //also enum
+    private Role role;
 
     @Column(name = "birth_date")
     private Date birthDate;
@@ -95,11 +95,11 @@ public class User {
         this.surname = surname;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return this.address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -111,11 +111,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return this.role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
