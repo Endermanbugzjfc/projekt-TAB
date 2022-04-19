@@ -14,7 +14,7 @@ ReactDOM.render(
             <Route path="login" element={<Login/>}/>
 
             <Route path="*" element={
-                <><Navbar/><p><h1>404</h1> Site not found</p></>
+                <><Navbar/><p><h1>404</h1> Site not found</p><p><a href='/'>Go back to the main page</a></p></>
             }>
             </Route>
             
