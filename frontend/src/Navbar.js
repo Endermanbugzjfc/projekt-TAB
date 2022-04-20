@@ -11,6 +11,7 @@ class Navbar extends React.Component
 
     componentDidMount(){
         this.getUserData();
+        this.getBasket();
     }
 
     render()
@@ -42,12 +43,9 @@ class Navbar extends React.Component
                                     <li class="nav-item">
                                         {this.userIconAndLogin()}
                                     </li>
-                                    <li class="nav-item position-relative"> 
-                                        <Link to="/basket" class="nav-link active bi bi-basket">    Koszyk
-                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                                0 {/*ITEMS IN BASKET TODO */}
-                                                <span class="visually-hidden">items in basket</span>
-                                            </span>
+                                    <li class="nav-item"> 
+                                        
+                                        <Link to="/basket" class="nav-link active bi bi-basket position-relative">    Koszyk
                                         </Link>
                                     </li>
                                 </ul>
@@ -95,6 +93,9 @@ class Navbar extends React.Component
     }
 
     categoriesOffcanvas() {
+
+        var categories = ['Materiały budowlane', 'Urządzanie wnętrz', 'Artykuły ogrodnicze', 'Instalacje', 'Wykończenie', 'Narzędzia'];
+
         return(
             <>
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasCategories" aria-labelledby="offcanvasCategoriesLabel">
@@ -104,29 +105,18 @@ class Navbar extends React.Component
                 </div>
                 <div class="offcanvas-body">
                     {/*Button grid*/}
-                    <div class="row">
-                        <div class="col btn category-button">
-                            Materiały budowlane
-                        </div>
-                        <div class="col btn category-button">
-                            Urządzanie wnętrz
-                        </div>
-                        <div class="col btn category-button">
-                            Artykuły ogrodnicze
-                        </div>
-                    </div>
-                
-                    <div class="row">
-                        <div class="col btn category-button">
-                            Instalacje
-                        </div>
-                        <div class="col btn category-button">
-                            Wykończenie
-                        </div>
-                        <div class="col btn category-button">
-                            Narzędzia
-                        </div>
-                    </div>
+                    {/*I just started learning React, please don't kill me for this mess ;-; */}   
+                    {
+                        [0,1].map((i) => {
+                            return <div class="row" key={i}>{
+                                [0,1,2].map((j) => {
+                                    return <div class="col btn category-button" key={(i+1)*3+j}>
+                                        {categories[i*3+j]}
+                                    </div>})
+                            }
+                            </div>
+                        })
+                    }
                 </div>
             </div>
         </>
