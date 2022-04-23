@@ -20,7 +20,7 @@ class Navbar extends React.Component
             <>
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
-                        <Link to="/" class="navbar-brand">
+                        <Link to="/" className="navbar-brand">
                             {/*LOGO HERE*/}
                             <img src="https://images.vexels.com/media/users/3/244009/isolated/preview/81033627bb6d646896521d32c8dadc1c-wood-screw-cut-out.png" alt="Sklep budowlany" width="40px"/>
                         </Link>
@@ -45,7 +45,7 @@ class Navbar extends React.Component
                                     </li>
                                     <li class="nav-item"> 
                                         
-                                        <Link to="/basket" class="nav-link active bi bi-basket position-relative">    Koszyk
+                                        <Link to="/basket" className="nav-link active bi bi-basket position-relative">    Koszyk
                                         </Link>
                                     </li>
                                 </ul>
@@ -60,7 +60,9 @@ class Navbar extends React.Component
     }
 
     async getUserData() {
-        const response = await fetch('userData');
+        const response = await fetch('https://localhost:3000/weatherforecast');
+        console.log(response);
+        console.log(response.json());
         const userData = await response.json();
         this.state.userInfo = userData;
     }
@@ -75,7 +77,7 @@ class Navbar extends React.Component
         if(this.state.loggedIn){
             return(
                 <>
-                    <Link to="/user" class="nav-link active bi bi-person">
+                    <Link to="/user" className="nav-link active bi bi-person">
                         {
                             this.state.userInfo.map(user => user.username)
                         }
@@ -86,7 +88,7 @@ class Navbar extends React.Component
         else{
             return(
                 <>
-                    <Link to="/login" class="nav-link active bi bi-person"> Zaloguj</Link>
+                    <Link to="/login" className="nav-link active bi bi-person"> Zaloguj</Link>
                 </>
             )
         }
