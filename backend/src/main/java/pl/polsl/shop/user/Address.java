@@ -1,19 +1,59 @@
 package pl.polsl.shop.user;
 
+import javax.persistence.*;
+
+@Entity(name = "addresses")
 public class Address {
 
+    @Id
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "address_sequence"
+    )
+    @SequenceGenerator(
+            name = "address_sequence",
+            sequenceName = "address_sequence",
+            allocationSize = 1
+    )
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "street_name", nullable = false)
     private String streetName;
+
+    @Column(name = "street_number", nullable = false)
     private String streetNumber;
+
+    @Column(name = "zip_code", nullable = false)
     private String zipCode;
+
+    @Column(name = "location", nullable = false)
     private String location;
+
+    @Column(name = "country", nullable = false)
     private String country;
 
-    public Address(String streetName, String streetNumber, String zipCode, String location, String country){
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Address(){}
+
+    public Address(String streetName, String streetNumber, String zipCode, String location, String country, User user){
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.zipCode = zipCode;
         this.location = location;
         this.country = country;
+        this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStreetName() {
@@ -54,5 +94,12 @@ public class Address {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 }
