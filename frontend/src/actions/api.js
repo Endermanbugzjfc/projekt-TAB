@@ -1,10 +1,9 @@
 import axios from "axios";
-import { dProduct } from "../reducers/dProduct";
 
-const baseURL = "localhost:8080/" //TODO: discuss api with Michał
+const baseURL = "localhost:8080/"
 
 export default {
-    dUser(url = baseURL + ''){ //Also here
+    dUser(url = baseURL + ''){
         return {
             fetchAll : () => axios.get(url), 
             fetchById : id => axios.get(url+id),
@@ -14,7 +13,7 @@ export default {
         }
     },
 
-    dProduct(url = baseURL + ''){ //Aslo here
+    dProduct(url = baseURL + ''){
         return {
             fetchAll : () => axios.get(url), 
             fetchById : id => axios.get(url+id),
