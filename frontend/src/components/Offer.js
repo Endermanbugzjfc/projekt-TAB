@@ -23,7 +23,7 @@ const Offer = (props) =>{
 							<input placeholder="Ilość" value={1}/>
 						</div>
 						<div class="col">
-							<input type="button"  value="Dodaj" onClick={console.log("clicked the button")}/>
+							<input type="button"  value="Dodaj do koszyka" onClick={console.log("clicked the button")}/>
 						</div>
                     </div>
                 </div>
