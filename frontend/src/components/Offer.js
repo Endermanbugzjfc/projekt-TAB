@@ -6,7 +6,7 @@ const Offer = (props) =>{
         <>
             <div class="row my-5">
                 <div class="col-2">
-                    <img/>
+                    <img alt="Product"/>
                 </div>
                 <div class="col">
                     <div class="row"> {props.product.title} </div>

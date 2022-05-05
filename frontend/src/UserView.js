@@ -210,18 +210,125 @@ class UserView extends React.Component{
         )
     }
 
-    History(props){
+    HistoryEntry(props2)
+    {
         return(
             <>
-
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id={"panelsStayOpen-heading"+props2.id}>
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={"#panelsStayOpen-collapse"+props2.id} aria-expanded="true" aria-controls={"panelsStayOpen-collapse"+props2.id}>
+                        {props2.Date}
+                    </button>
+                    </h2>
+                    <div id={"panelsStayOpen-collapse"+props2.id} class="accordion-collapse collapse" aria-labelledby={"panelsStayOpen-heading"+props2.id}>
+                        <div class="accordion-body">
+                            <ul class="list-group">
+                                {props2.Products?.map(item => {
+                                    console.log("here", item)
+                                    if(item !== undefined)
+                                        return(
+                                            <li class="list-group-item" key={item.id}>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            Nazwa produktu
+                                                        </div>
+                                                        <div class="row">
+                                                            {item.Name} 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            Zamówiona ilość
+                                                        </div>
+                                                        <div class="row">
+                                                        {item.Amount}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            Cena jednostkowa
+                                                        </div>
+                                                        <div class="row">
+                                                            {item.PricePerPiece} zł
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        )
+                                })}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </>
         )
+    }
+
+    History(props){
+        var orderHistory = [ //JUST FOR TESTS TODO: Delete this
+            {
+                id: 1,
+                Date: "1.1.2022",
+                Products: [
+                    {
+                    Name: "Cement",
+                    Amount: 5,
+                    PricePerPiece: 10,
+                },
+                {
+                    Name: "Rura",
+                    Amount: 1,
+                    PricePerPiece: 11,
+                }
+                ]
+            },
+            {
+                id: 2,
+                Date: "2.1.2022",
+                Products: [
+                    {
+                        Name: "Dachówka",
+                        Amount: 100,
+                        PricePerPiece: 8
+                    },
+                    {
+                        Name: "Rura",
+                        Amount: 18,
+                        PricePerPiece: 11,
+                    }
+                ]
+            }
+        ]
+
+        if(orderHistory.length > 0)
+        {
+            return(
+                <>
+                    {orderHistory.map(i => {
+                        return(
+                            <div class="accordion" id="accordionPanelsStayOpen">
+                                {this.HistoryEntry(i)}
+                            </div>
+                        )
+                })}
+                </>
+            )
+        }
+        else
+        {
+            return(
+                <>
+                    <h4>Nie masz żadnej historii zamówień</h4>
+                </>
+            )
+        }
     }
     
     Delete(props){
         return(
             <>
-            <h3>Czy aby na pewno chcesz usunąć twoje konto?</h3>
+                <h3>Czy aby na pewno chcesz usunąć twoje konto?</h3>
             </>
         )
     }
