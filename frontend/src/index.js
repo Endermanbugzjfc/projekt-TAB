@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 import {store} from "./actions/store"
 import Products from './Products';
 import AdminView from './AdminView';
+import EmployeeView from './EmployeeView';
 
 ReactDOM.render(
     <Provider store={store}>
@@ -24,6 +25,8 @@ ReactDOM.render(
                 <Route path="products/*" element={<Products/>}/>
 
                 <Route path="admin/*" element={<AdminView/>}/>
+
+                <Route path="employee/*" element={<EmployeeView/>}/>
 
                 <Route path="*" element={
                     <><Navbar/><p><h1>404</h1> Site not found</p><p><a href='/'>Go back to the main page</a></p></>
