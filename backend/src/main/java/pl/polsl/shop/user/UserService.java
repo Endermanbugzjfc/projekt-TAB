@@ -28,7 +28,11 @@ public class UserService {
     }
 
     public User newUser(String userName, String password, String legalName, String surname, String phoneNumber, Type type, Date birthDate,
-                        String pesel, LocalDate employmentDate, Address address){
+                        String pesel, LocalDate employmentDate, Address address) throws SuchUsernameExistsException {
+        Optional<User> usr = this.userRepository.findUserByUserName(userName);
+        if(!usr.isPresent()){
+            throw new SuchUsernameExistsException("Username: " + usr.get().getUserName() + " already exists! Choose different one!");
+        }
         User user = new User(userName, password, legalName, surname, phoneNumber, type, birthDate, pesel, employmentDate, address);
         user.setShoppingCart(shoppingCartService.getCartFor(user));
         return this.userRepository.save(user);
