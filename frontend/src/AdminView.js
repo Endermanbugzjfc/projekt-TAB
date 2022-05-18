@@ -167,6 +167,16 @@ class AdminView extends React.Component{
                                                 }   
                                             }))}/>
                                         </div>
+                                    <div class="col">
+                                        Data zatrudnienia<br/>
+                                        <input type="date"  value={this.state.newInfo.EmploymentDate}
+                                            onChange={e => this.setState(prevState => ({
+                                                newInfo: {
+                                                    ...prevState.newInfo,
+                                                    EmploymentDate: e.target.value
+                                                }   
+                                            }))}/>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col">
@@ -181,7 +191,7 @@ class AdminView extends React.Component{
                                         </div>
                                         <div class="col">
                                             Numer domu<br/>
-                                            <input type="text"  value={this.state.newInfo.HouseNumber} maxLength="4"
+                                            <input type="text"  value={this.state.newInfo.HouseNumber} placeholder="Numer domu" maxLength="7"
                                              onChange={e => this.setState(prevState => ({
                                                 newInfo: {
                                                     ...prevState.newInfo,
@@ -420,6 +430,27 @@ class AdminView extends React.Component{
         )
     }
 
+    // TODO: implement displaying employees
+    ChoosePersonToDelete(props, employees){
+        employees.map(id => {  
+            return (
+                <>
+                <row>
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-action list-group-item-light" onClick={this.Delete(id)}>Here should be name, surname, id and date of employment of employee</div>
+                    </div>
+                </row>
+                </> 
+            )}
+        )
+    }
+
+    // TODO: meybe better way to display information about deleting the user?
+    Delete(props, id){
+            alert('Użytkownik z id:' + id + ' został usunięty.')
+    }
+
+    // TODO: add addresses to 'href'
     DeleteEmployee(props){
         return(
             <>
@@ -443,6 +474,22 @@ class AdminView extends React.Component{
         )
     }
 
+    // TODO: implement displaying employees
+    ChoosePersonToModifyData(props, employees){
+        employees.map(id => {  
+            return (
+                <>
+                <row>
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-action list-group-item-light" onClick={this.Modify(id)}>Here should be name, surname, id and date of employment of employee</div>
+                    </div>
+                </row>
+                </> 
+            )}
+        )
+    }
+
+    // TODO: add addresses to 'href'
     ModifyEmployeeData(props){
         return(
             <>
@@ -466,6 +513,7 @@ class AdminView extends React.Component{
         )
     }
 
+    // TODO: add addresses to 'href'
     DeleteCustomerAccount(props){
         return(
             <>
@@ -486,6 +534,21 @@ class AdminView extends React.Component{
                     </div>
                 </div>
             </>
+        )
+    }
+
+    // TODO: implement displaying customers
+    ChooseCustomerToDelete(props, customers){
+        customers.map(id => {  
+            return (
+                <>
+                <row>
+                    <div class="list-group">
+                        <div class="list-group-item list-group-item-action list-group-item-light" onClick={this.DeleteCustomerAccount(id)}>Here should be name, surname and id of customer</div>
+                    </div>
+                </row>
+                </> 
+            )}
         )
     }
 

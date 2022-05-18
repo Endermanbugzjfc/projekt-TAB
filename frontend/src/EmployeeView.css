@@ -5,3 +5,13 @@
     margin-top: 10%;
     height: 700px;
 }
+
+.report{
+    background-color: rgb(230, 230, 230);   
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 15%;
+    height: 400px;
+    border-radius: 5%;
+    border: solid black 2%;
+}

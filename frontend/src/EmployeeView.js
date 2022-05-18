@@ -23,6 +23,7 @@ class EmployeeView extends React.Component{
                 EmploymentDate: ''
             }
         }
+        this.ShowReport = this.ShowReport.bind(this);
     }
 
     componentDidMount(){
@@ -50,7 +51,7 @@ class EmployeeView extends React.Component{
                 <div class="back row">
                     <div class="col-3">
                         <div class="list-group" id="list-tab" role="tablist">
-                            <a class="list-group-item list-group-item-action active" id="employee_data_list" data-bs-toggle="list" href="#admin_data" role="tab" aria-controls="admin_data">Twoje dane</a>
+                            <a class="list-group-item list-group-item-action active" id="employee_data_list" data-bs-toggle="list" href="#employee_data" role="tab" aria-controls="employee_data">Twoje dane</a>
                             <a class="list-group-item list-group-item-action" id="generate_report_list"  data-bs-toggle="list" href="#generate_report" role="tab" aria-controls="generate_report">Wygeneruj raport</a>
                             <a class="list-group-item list-group-item-action" id="stock_list"  data-bs-toggle="list" href="#show_stock" role="tab" aria-controls="show_stock">Magazyn</a>
                         </div>
@@ -164,7 +165,7 @@ class EmployeeView extends React.Component{
                                         </div>
                                         <div class="col">
                                             Numer domu<br/>
-                                            <input type="text"  value={this.state.newInfo.HouseNumber} maxLength="4"
+                                            <input type="text"  value={this.state.newInfo.HouseNumber} placeholder="Numer domu" maxLength="7"
                                              onChange={e => this.setState(prevState => ({
                                                 newInfo: {
                                                     ...prevState.newInfo,
@@ -208,23 +209,59 @@ class EmployeeView extends React.Component{
         )
     }
 
+    // TODO: date_from and date_to should have the same size (I don't know why they are different)
     GenerateReport(props){
         return(
             <>
             <h2>Wygeneruj raport</h2>
+            <row>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="date_from">Od:</span>
                     <input type="date" class="form-control" aria-label="date_from_input" aria-describedby="inputGroup-sizing-default"/>
                 </div>
+            </row>
+            <row>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="date_to">Do:</span>
                     <input type="date" iclass="form-control" aria-label="date_to_input" aria-describedby="inputGroup-sizing-default"/>
                 </div>
+            </row>
+            <row>
+                <div>
+                    <button type="button" class="btn btn-success" onClick={this.ShowReport}>Generuj</button>
+                </div>
+            </row>
             </>
         )
     }
-    
 
+    // TODO: Display it after clicking on "Generuj" button by the user
+    ShowReport(props){
+           return(
+               <>
+               <div class="report">
+                    <h3>Raport pieniężny za okres <b>-</b></h3>
+                    <div class="row me-5">
+                        <div class="my-3">
+                            Wydatki:  <b>-</b>
+                        </div>
+                    </div>
+                    <div class="row me-5">
+                        <div class="my-1">
+                            Przychód:  <b>-</b>
+                        </div>
+                    </div>
+                    <div class="row me-5">
+                        <div class="my-1">
+                            Dochód:  <b>-</b>
+                        </div>
+                    </div>
+                </div>
+               </>
+           )
+    }
+
+    // TODO: implement displaying stock
     ShowStock(props){
         return(
             <>
