@@ -34,26 +34,45 @@ public class User {
     @Column(name = "surname", nullable = false)
     private String surname;
 
-    @Column(name = "address", nullable = false)
-    private String address; //maybe extra class?
-
     @Column(name = "phone_number", nullable = false)
-    private int phoneNumber;
+    private String phoneNumber;
 
-    @Column(name = "role", nullable = false)
-    private String role; //also enum
+    @Column(name = "type", nullable = false)
+    private Type type;
 
     @Column(name = "birth_date")
     private Date birthDate;
 
     @Column(name = "pesel")
-    private int pesel;
+    private String pesel;
 
     @Column(name = "employment_date")
     private LocalDate employmentDate;
 
     @OneToOne(mappedBy = "user")
+    private Address address;
+
+    @OneToOne(mappedBy = "user")
     private ShoppingCart shoppingCart;
+
+    @Transient
+    private boolean loggedIn;
+
+    public User() { }
+
+    public User(String userName, String password, String legalName, String surname, String phoneNumber, Type type, Date birthDate, String pesel, LocalDate employmentDate, Address address) {
+        this.userName = userName;
+        this.password = password;
+        this.legalName = legalName;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.type = type;
+        this.birthDate = birthDate;
+        this.pesel = pesel;
+        this.employmentDate = employmentDate;
+        this.address = address;
+        this.loggedIn = false;
+    }
 
     public Long getId() {
         return this.id;
@@ -95,28 +114,28 @@ public class User {
         this.surname = surname;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return this.address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return this.phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRole() {
-        return this.role;
+    public Type getType() {
+        return this.type;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public Date getBirthDate() {
@@ -127,11 +146,11 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public int getPesel() {
+    public String getPesel() {
         return this.pesel;
     }
 
-    public void setPesel(int pesel) {
+    public void setPesel(String pesel) {
         this.pesel = pesel;
     }
 
@@ -149,5 +168,29 @@ public class User {
 
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
+    }
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
+    public boolean clearUserData(){
+        setPassword("");
+        setLegalName("");
+        setSurname("");
+        setPhoneNumber("");
+        setPesel("");
+        setAddress(null);
+        if(getType().equals(Type.CUSTOMER)){
+            setType(Type.DELETED);
+        }
+        else{
+            setType(Type.FIRED);
+        }
+        return true;
     }
 }
