@@ -1,6 +1,6 @@
-package pl.polsl.shop.order.entity;
+package pl.polsl.shop.order;
 
-import pl.polsl.shop.product.entity.Product;
+import pl.polsl.shop.product.Product;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package pl.polsl.shop.product.entity;
+package pl.polsl.shop.product;
 
 import javax.persistence.*;
 

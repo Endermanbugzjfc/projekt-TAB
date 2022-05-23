@@ -1,6 +1,6 @@
-package pl.polsl.shop.cart.entity;
+package pl.polsl.shop.cart;
 
-import pl.polsl.shop.product.entity.Product;
+import pl.polsl.shop.product.Product;
 
 import javax.persistence.*;
 
@@ -29,6 +29,14 @@ public class SelectedProduct {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    public SelectedProduct(Product product) {
+        this.product = product;
+    }
+
+    public SelectedProduct() {
+
+    }
+
     public Long getId() {
         return this.id;
     }
@@ -41,15 +49,16 @@ public class SelectedProduct {
         return this.shoppingCart;
     }
 
-    public void setShoppingCart(ShoppingCart  shoppingCart) {
+    public void setCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
 
-    public Product getProductId() {
+    public Product getProduct() {
         return this.product;
     }
 
-    public void setProductId(Product product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
+
 }
