@@ -11,8 +11,8 @@ export default {
             update: (id, updatedRecord) => axios.put(url+id, updatedRecord),
 
             //Login stuff -> It's wrong? TODO
-            getLogin: (id) => axios.get(url + "login/" + id),
-            logout: (id, stuff) => axios.post(url + "logout/" + id),
+            login: (username, pass) => axios.get(url + "login", {username: username, password: pass}),
+            logout: (username) => axios.post(url + "logout/", {username: username}),
 
             //Order raports
             getOrders: (userId) => axios.get(url+userId + "/report"),
@@ -33,7 +33,8 @@ export default {
 
             //Management
             createProduct: (newProduct) => axios.post(url, newProduct),
-            changePrice: (newPrice) => axios.put(url+"price", newPrice),
+            orderNew: (productId, amount) => axios.post(url + "order", {id: productId, addedAmount: amount}),
+            changePrice: (productId, newPrice) => axios.put(url+"price", {id: productId, price: newPrice}),
 
             //Buissness reports
             getProductReport: (priductId) => axios.get(url + "report/" + priductId),

@@ -1,6 +1,6 @@
 import React from "react";
 import Offer from "./components/Offer";
-import Navbar from "./Navbar";
+import Navbar from "./components/Navbar.js";
 
 class Products extends React.Component{
 

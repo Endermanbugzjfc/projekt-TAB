@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import Login from './Login';
-import Navbar from './Navbar';
+import Navbar from './components/Navbar.js';
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 import UserView from './UserView';
 import { Provider } from 'react-redux';
@@ -11,6 +11,7 @@ import {store} from "./actions/store"
 import Products from './Products';
 import AdminView from './AdminView';
 import EmployeeView from './EmployeeView';
+import Register from './Register';
 
 ReactDOM.render(
     <Provider store={store}>
@@ -19,6 +20,8 @@ ReactDOM.render(
                 <Route path='/' element={<App/>}/>
                 
                 <Route path="login" element={<Login/>}/>
+
+                <Route path="register" element={<Register/>}/>
 
                 <Route path="user/*" element={<UserView/>}/>
 

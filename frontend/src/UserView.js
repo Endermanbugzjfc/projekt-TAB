@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "./Navbar";
+import Navbar from "./components/Navbar.js";
 import "./UserView.css"
 
 class UserView extends React.Component{
