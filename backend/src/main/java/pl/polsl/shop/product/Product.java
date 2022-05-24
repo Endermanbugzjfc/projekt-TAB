@@ -28,7 +28,7 @@ public class Product {
     private String description;
 
     @Column(name = "category", nullable = false)
-    private String category;
+    private ProductCategory category;
 
     @Column(name = "number_of_items_in_stock", nullable = false)
     private int availableInStock;
@@ -71,11 +71,11 @@ public class Product {
         this.description = description;
     }
 
-    public String getCategory() {
+    public ProductCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ProductCategory category) {
         this.category = category;
     }
 

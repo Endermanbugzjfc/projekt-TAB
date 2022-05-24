@@ -12,4 +12,6 @@ interface OrderedProductRepository extends JpaRepository<OrderedProduct, Long> {
     Optional<OrderedProduct> findByOrder_IdAndProduct_Id(Order order, Product product);
 
     List<OrderedProduct> findOrderedProductsByOrder_Id(Order order);
+
+    List<OrderedProduct> findAllByProduct_Id(Product product);
 }
