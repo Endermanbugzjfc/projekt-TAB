@@ -6,7 +6,7 @@ export default {
     User(url = baseURL + 'user/'){
         return {
             getUserById: (id) => axios.get(url + id),
-            create: newUser => axios.post(url, newUser),
+            register: newUser => axios.post(url, newUser),
             delete: id => axios.delete(url + id),
             update: (id, updatedRecord) => axios.put(url+id, updatedRecord),
 
