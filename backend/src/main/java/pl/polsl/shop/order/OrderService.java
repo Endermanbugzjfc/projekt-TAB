@@ -10,6 +10,7 @@ import pl.polsl.shop.user.UserService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("orderService")
 public class OrderService {
@@ -32,6 +33,12 @@ public class OrderService {
     private Order newOrder(Long userId, PaymentMethod paymentMethod) {
         User user = this.userService.getUser(userId);
         return new Order(user, paymentMethod);
+    }
+
+    public Order getOrder(Long orderId) {
+        return this.orderRepository.findById(orderId).orElseThrow(
+                () -> new NoSuchOrderException("Order with id: " + orderId + " does not exist")
+        );
     }
 
     private Order addProducts(Order order, Collection<SelectedProduct> selectedProducts) {
@@ -61,14 +68,11 @@ public class OrderService {
                 .map(order -> this.orderedProductRepository.findOrderedProductsByOrder_Id(order))
                 .map(orderedProducts -> {
                             Order order = orderedProducts.get(0).getOrder();
-                            return new OrderReportDto(user, order, orderedProducts);
+                            double sum = orderedProducts.stream()
+                                    .mapToDouble(OrderedProduct::getPrice)
+                                    .sum();
+                            return new OrderReportDto(order, orderedProducts, sum);
                         }
                 ).toList();
-    }
-
-    public Order getOrder(Long orderId) {
-        return this.orderRepository.findById(orderId).orElseThrow(
-                () -> new NoSuchOrderException("Order with id: " + orderId + " does not exist")
-        );
     }
 }
