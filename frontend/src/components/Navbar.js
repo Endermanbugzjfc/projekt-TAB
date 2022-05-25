@@ -96,7 +96,7 @@ class Navbar extends React.Component
 
     categoriesOffcanvas() {
 
-        var categories = ['Materiały budowlane', 'Urządzanie wnętrz', 'Artykuły ogrodnicze', 'Instalacje', 'Wykończenie', 'Narzędzia'];
+        var categories = ['Kategoria 1', 'Kategoria 2', 'Kategoria 3', 'Kategoria 4', 'Kategoria 5', 'Kategoria 6'];
 
         return(
             <>

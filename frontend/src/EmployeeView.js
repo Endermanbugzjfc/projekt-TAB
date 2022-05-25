@@ -8,7 +8,7 @@ class EmployeeView extends React.Component{
         super(props);
 
         this.state = {
-            Name: "Alberto",
+            Name: "",
             newInfo : {
                 Name: '',
                 Surname: '',
@@ -118,83 +118,21 @@ class EmployeeView extends React.Component{
                             </div>
                             <div class="modal-body">
                                 <form>
-                                    <div class="row">
-                                        <div class="col">
-                                            Imie<br/>
-                                            <input type="text" value={this.state.newInfo.Name} placeholder="Imię" maxLength="50"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Name: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Nazwisko<br/>
-                                            <input type="text" value={this.state.newInfo.Surname} placeholder="Nazwisko" maxLength="50"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Surname: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                <div class="row">
+                                        {this.modalBodyElement("Imię", "text", this.state.newInfo.Name, "Name")}
+                                        {this.modalBodyElement("Nazwisko", "text", this.state.newInfo.Surname, "Surname")}
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            Telefon<br/>
-                                            <input type="text"  value={this.state.newInfo.Phone} placeholder="Numer telefonu" maxLength="19"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Phone: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalBodyElement("Telefon", "tel", this.state.newInfo.Phone, "Phone")}
+                                        {this.modalBodyElement("Data zatrudnienia", "date", this.state.newInfo.EmploymentDate, "EmploymentDate")}
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            Ulica<br/>
-                                            <input type="text"  value={this.state.newInfo.Street} placeholder="Ulica"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Street: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Numer domu<br/>
-                                            <input type="text"  value={this.state.newInfo.HouseNumber} placeholder="Numer domu" maxLength="7"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    HouseNumber: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalBodyElement("Ulica", "text", this.state.newInfo.Street, "Street")}
+                                        {this.modalBodyElement("Numer domu", "text", this.state.newInfo.HouseNumber, "HouseNumber")}
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            Miasto<br/>
-                                            <input type="text"  value={this.state.newInfo.City} placeholder="Miasto" maxLength="30"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    City: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Kod pocztowy<br/>
-                                            <input type="text"  value={this.state.newInfo.PostCode} placeholder="Kod pocztowy" maxLength="6"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    PostCode: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalBodyElement("Miasto", "text", this.state.newInfo.City, "City")}
+                                        {this.modalBodyElement("Kod pocztowy", "text", this.state.newInfo.PostCode, "PostCode")}
                                     </div>
                                 </form>
                             </div>
@@ -207,6 +145,25 @@ class EmployeeView extends React.Component{
                 </div> 
             </>
         )
+    }
+
+    modalBodyElement(text, type, value, stateName)
+    {
+        return(
+            <>
+                <div class="col">
+                    {text} <br/>
+                    <input type={type} value={value} placeholder={text}
+                        onChange={e => this.setState(prevState => ({
+                            newInfo: {
+                                ...prevState.newInfo,
+                                [stateName]: e.target.value
+                            }
+                        }))} />
+                </div>
+            </>
+        )
+        
     }
 
     // TODO: date_from and date_to should have the same size (I don't know why they are different)

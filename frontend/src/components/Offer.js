@@ -14,16 +14,17 @@ const Offer = (props) =>{
                     <div class="row">Opis: {props.product.description != null ? props.product.description : "Brak" } </div>
                 </div>
                 <div class="col">
-                    <div class="row">{props.product.price} zł </div>
+                    <div class="row">{props.product.price} zł / szt </div>
                     <div class="row">
                         W magazynie zostało { props.product.left > 0 ? props.product.left : 0 } sztuk
                     </div>
                     <div class="row">
-						<div class="col">
-							<input placeholder="Ilość" value={1}/>
+						<div class="col form-floating">
+							<input className="form-control" type="text" placeholder="Ilość" id="amount" value={1}/>
+                            <label for="amount">Ilość</label>
 						</div>
 						<div class="col">
-							<input type="button"  value="Dodaj do koszyka" onClick={console.log("clicked the button")}/>
+							<input className="btn btn-info" type="button" value="Dodaj do koszyka" onClick={console.log("clicked the button")}/>
 						</div>
                     </div>
                 </div>

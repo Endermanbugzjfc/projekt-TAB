@@ -2,14 +2,14 @@ import React from "react";
 import Navbar from "./components/Navbar.js";
 import "./AdminView.css"
 
-class AdminView extends React.Component{
+class AdminView extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
-            Name: "Alberto",
-            newInfo : {
+            Name: "",
+            newInfo: {
                 Name: '',
                 Surname: '',
                 BirthDay: '',
@@ -30,7 +30,7 @@ class AdminView extends React.Component{
         this.handleOnSaveClick = this.handleOnSaveClick.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.setState(() => ({
             newInfo: {
                 Name: this.state.Name,
@@ -44,23 +44,23 @@ class AdminView extends React.Component{
                 Street: '',
                 Salary: null,
                 EmploymentDate: ''
-            } 
+            }
         }))
-    }   
+    }
 
-    render(){
-        return(
+    render() {
+        return (
             <>
-                 <Navbar/>
+                <Navbar />
                 <div class="back row">
                     <div class="col-3">
                         <div class="list-group" id="list-tab" role="tablist">
                             <a class="list-group-item list-group-item-action active" id="admin_data_list" data-bs-toggle="list" href="#admin_data" role="tab" aria-controls="admin_data">Twoje dane</a>
-                            <a class="list-group-item list-group-item-action" id="add_admin_list"  data-bs-toggle="list" href="#add_admin" role="tab" aria-controls="add_admin">Załóż nowe konto administratora</a>
-                            <a class="list-group-item list-group-item-action" id="add_employee_list"  data-bs-toggle="list" href="#add_employee" role="tab" aria-controls="add_employee">Dodaj nowego pracownika do bazy</a>
-                            <a class="list-group-item list-group-item-action" id="delete_employee_list"  data-bs-toggle="list" href="#delete_employee" role="tab" aria-controls="delete_employee" style={{color: "red"}}>Usuń konto pracownika z bazy</a>
-                            <a class="list-group-item list-group-item-action" id="modify_employee_data_list"  data-bs-toggle="list" href="#modify_employee_data" role="tab" aria-controls="modify_employee_data">Zmodyfikuj dane pracownika</a>
-                            <a class="list-group-item list-group-item-action" id="delete_customer_list"  data-bs-toggle="list" href="#delete_customer" role="tab" aria-controls="delete_customer" style={{color: "red"}}>Usuń konto klienta z bazy</a>
+                            <a class="list-group-item list-group-item-action" id="add_admin_list" data-bs-toggle="list" href="#add_admin" role="tab" aria-controls="add_admin">Załóż nowe konto administratora</a>
+                            <a class="list-group-item list-group-item-action" id="add_employee_list" data-bs-toggle="list" href="#add_employee" role="tab" aria-controls="add_employee">Dodaj nowego pracownika do bazy</a>
+                            <a class="list-group-item list-group-item-action" id="delete_employee_list" data-bs-toggle="list" href="#delete_employee" role="tab" aria-controls="delete_employee" style={{ color: "red" }}>Usuń konto pracownika z bazy</a>
+                            <a class="list-group-item list-group-item-action" id="modify_employee_data_list" data-bs-toggle="list" href="#modify_employee_data" role="tab" aria-controls="modify_employee_data">Zmodyfikuj dane pracownika</a>
+                            <a class="list-group-item list-group-item-action" id="delete_customer_list" data-bs-toggle="list" href="#delete_customer" role="tab" aria-controls="delete_customer" style={{ color: "red" }}>Usuń konto klienta z bazy</a>
                         </div>
                     </div>
                     <div class="col">
@@ -69,19 +69,19 @@ class AdminView extends React.Component{
                                 {this.AdminData()}
                             </div>
                             <div class="tab-pane fade" id="add_admin" role="tabpanel" aria-labelledby="add_admin_list">
-                                {this.AddAdmin()}
+                                {this.AddNewWorkerForm("admin")}
                             </div>
                             <div class="tab-pane fade" id="add_employee" role="tabpanel" aria-labelledby="add_employee_list">
-                                {this.AddEmployee()}
+                                {this.AddNewWorkerForm("employee")}
                             </div>
                             <div class="tab-pane fade" id="delete_employee" role="tabpanel" aria-labelledby="delete_employee_list">
-                                {this.DeleteEmployee()}
+                                {this.ManageWorkers("Znajdź zwalnianego pracownika poprzez:", "find_delete_employee")}
                             </div>
                             <div class="tab-pane fade" id="modify_employee_data" role="tabpanel" aria-labelledby="modify_employee_data_list">
-                                {this.ModifyEmployeeData()}
+                                {this.ManageWorkers("Znajdź mdyfikowanego pracownika poprzez:", "find_modify_employee")}
                             </div>
                             <div class="tab-pane fade" id="delete_customer" role="tabpanel" aria-labelledby="delete_customer_list">
-                                {this.DeleteCustomerAccount()}
+                                {this.ManageWorkers("Znajdź konto usuwanego klienta poprzez:", "find_delete_customer" )}
                             </div>
                         </div>
                     </div>
@@ -89,9 +89,9 @@ class AdminView extends React.Component{
             </>
         )
     }
-    
-    AdminData(props){
-        return(
+
+    AdminData(props) {
+        return (
             <>
                 <div class="row me-5">
                     <div class="my-3">
@@ -135,92 +135,20 @@ class AdminView extends React.Component{
                             <div class="modal-body">
                                 <form>
                                     <div class="row">
-                                        <div class="col">
-                                            Imie<br/>
-                                            <input type="text" value={this.state.newInfo.Name} placeholder="Imię" maxLength="50"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Name: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Nazwisko<br/>
-                                            <input type="text" value={this.state.newInfo.Surname} placeholder="Nazwisko" maxLength="50"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Surname: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalBodyElement("Imię", "text", this.state.newInfo.Name, "Name")}
+                                        {this.modalBodyElement("Nazwisko", "text", this.state.newInfo.Surname, "Surname")}
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            Telefon<br/>
-                                            <input type="text"  value={this.state.newInfo.Phone} placeholder="Numer telefonu" maxLength="19"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Phone: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                    <div class="col">
-                                        Data zatrudnienia<br/>
-                                        <input type="date"  value={this.state.newInfo.EmploymentDate}
-                                            onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    EmploymentDate: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalBodyElement("Telefon", "tel", this.state.newInfo.Phone, "Phone")}
+                                        {this.modalBodyElement("Data zatrudnienia", "date", this.state.newInfo.EmploymentDate, "EmploymentDate")}
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            Ulica<br/>
-                                            <input type="text"  value={this.state.newInfo.Street} placeholder="Ulica"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Street: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Numer domu<br/>
-                                            <input type="text"  value={this.state.newInfo.HouseNumber} placeholder="Numer domu" maxLength="7"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    HouseNumber: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalBodyElement("Ulica", "text", this.state.newInfo.Street, "Street")}
+                                        {this.modalBodyElement("Numer domu", "text", this.state.newInfo.HouseNumber, "HouseNumber")}
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            Miasto<br/>
-                                            <input type="text"  value={this.state.newInfo.City} placeholder="Miasto" maxLength="30"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    City: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Kod pocztowy<br/>
-                                            <input type="text"  value={this.state.newInfo.PostCode} placeholder="Kod pocztowy" maxLength="6"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    PostCode: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalBodyElement("Miasto", "text", this.state.newInfo.City, "City")}
+                                        {this.modalBodyElement("Kod pocztowy", "text", this.state.newInfo.PostCode, "PostCode")}
                                     </div>
                                 </form>
                             </div>
@@ -232,240 +160,122 @@ class AdminView extends React.Component{
                     </div>
                 </div>
 
-                
+
             </>
         )
     }
 
-    AddAdmin(props){
+    modalBodyElement(text, type, value, stateName)
+    {
         return(
             <>
-            <div class= "row">
                 <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="name">Imię</span>
-                        <input type="text" class="form-control" aria-label="name_input" aria-describedby="inputGroup-sizing-default"/>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="surname">Nazwisko</span>
-                        <input type="text" class="form-control" aria-label="surname_input" aria-describedby="inputGroup-sizing-default"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="street_name">Ulica</span>
-                            <input type="text" class="form-control" aria-label="street_input" aria-describedby="inputGroup-sizing-default"/>
-                        </div>
-                    </div>
-                    <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="street_number">Numer domu/mieszkania</span>
-                        <input type="text" class="form-control" aria-label="street_nr_input" aria-describedby="inputGroup-sizing-default"/>
-                    </div>
-                </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="zip_code">Kod pocztowy</span>
-                            <input type="text" class="form-control " aria-label="zip_code_input" aria-describedby="inputGroup-sizing-small"/>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                             <span class="input-group-text" id="location">Miejscowość</span>
-                            <input type="text" class="form-control" aria-label="location_input" aria-describedby="inputGroup-sizing-default"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="country">Kraj</span>
-                    <input type="text" class="form-control" aria-label="country_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="phone_number">Numer telefonu</span>
-                    <input type="text" class="form-control" aria-label="phone_number_input" aria-describedby="inputGroup-sizing-default" value={this.state.Phone} onChange={this.handlePhoneNumberChange}/>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="birth_date">Data urodzenia</span>
-                            <input type="date" class="form-control" aria-label="birth_date_input" aria-describedby="inputGroup-sizing-default"/>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="pesel">Pesel</span>
-                            <input type="text" inputmode="numeric" class="form-control" aria-label="pesel_input" aria-describedby="inputGroup-sizing-default" value={this.state.Pesel} onChange={this.handlePeselChange}/>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="employment_date">Data zatrudnienia</span>
-                    <input type="date" class="form-control" aria-label="employee_date_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="login">Login</span>
-                    <input type="text" class="form-control" aria-label="login_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="password">Hasło</span>
-                    <input type="password" class="form-control" aria-label="password_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="confirm_password">Powtórz hasło</span>
-                    <input type="password" class="form-control" aria-label="confirm_password_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-
-                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group me-2" role="group" aria-label="First button">
-                        <button type="button" class="btn btn-danger" onClick={this.handleOnCancelClick}>Odrzuć zmiany</button>
-                    </div>
-                    <div class="btn-group me-2" role="group" aria-label="Second button">
-                        <button type="button" class="btn btn-success" onClick={this.handleOnSaveClick}>Zapisz</button>
-                    </div>
+                    {text} <br/>
+                    <input type={type} value={value} placeholder={text}
+                        onChange={e => this.setState(prevState => ({
+                            newInfo: {
+                                ...prevState.newInfo,
+                                [stateName]: e.target.value
+                            }
+                        }))} />
                 </div>
             </>
         )
+        
     }
-    
 
-    AddEmployee(props){
-        return(
-            <>
-                <div class= "row">
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="name">Imię</span>
-                        <input type="text" class="form-control" aria-label="name_input" aria-describedby="inputGroup-sizing-default"/>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="surname">Nazwisko</span>
-                        <input type="text" class="form-control" aria-label="surname_input" aria-describedby="inputGroup-sizing-default"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="street_name">Ulica</span>
-                            <input type="text" class="form-control" aria-label="street_input" aria-describedby="inputGroup-sizing-default"/>
-                        </div>
-                    </div>
-                    <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="street_number">Numer domu/mieszkania</span>
-                        <input type="text" class="form-control" aria-label="street_nr_input" aria-describedby="inputGroup-sizing-default"/>
-                    </div>
-                </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="zip_code">Kod pocztowy</span>
-                            <input type="text" class="form-control " aria-label="zip_code_input" aria-describedby="inputGroup-sizing-small"/>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                             <span class="input-group-text" id="location">Miejscowość</span>
-                            <input type="text" class="form-control" aria-label="location_input" aria-describedby="inputGroup-sizing-default"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="country">Kraj</span>
-                    <input type="text" class="form-control" aria-label="country_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="phone_number">Numer telefonu</span>
-                    <input type="text" class="form-control" aria-label="phone_number_input" aria-describedby="inputGroup-sizing-default" value={this.state.Phone} onChange={this.handlePhoneNumberChange}/>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="birth_date">Data urodzenia</span>
-                            <input type="date" class="form-control" aria-label="birth_date_input" aria-describedby="inputGroup-sizing-default"/>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="pesel">Pesel</span>
-                            <input type="text" inputmode="numeric" class="form-control" aria-label="pesel_input" aria-describedby="inputGroup-sizing-default" value={this.state.Pesel} onChange={this.handlePeselChange}/>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="employment_date">Data zatrudnienia</span>
-                    <input type="date" class="form-control" aria-label="employee_date_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="login">Login</span>
-                    <input type="text" class="form-control" aria-label="login_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="password">Hasło</span>
-                    <input type="password" class="form-control" aria-label="password_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="confirm_password">Powtórz hasło</span>
-                    <input type="password" class="form-control" aria-label="confirm_password_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
+    AddNewWorkerForm(role) {
+        return(<>
+        <div class="mt-3">
+            <div class="row">
+                {this.FormElement("name", "Imię", "text", "name_input")}
+                {this.FormElement("surname", "Nazwisko", "text", "surname_input")}
+            </div>
+            <div class="row">
+                {this.FormElement("street_name", "Ulica", "text", "street_input")}
+                {this.FormElement("street_number", "Numer domu/mieszkania", "text", "street_nr_input")}
+            </div>
+            <div class="row">
+                {this.FormElement("zip_code", "Kod pocztowy", "text", "zip_code_input")}
+                {this.FormElement("location", "Miejscowość", "text", "location_input")}
+            </div>
+            <div class="row">
+                {this.FormElement("country_code", "Kraj", "text", "country_input")}
+                {this.FormElement("phone_number", "Numer telefonu", "tel", "phone_number_input")}
+            </div>
+            <div class="row">
+                {this.FormElement("birth_date", "Data urodzenia", "date", "birth_date_input")}
+                {this.FormElement("pesel", "Pesel", "text", "pesel_input")}
+            </div>
+            {this.FormElement("employment_date", "Data zatrudnienia", "date", "employment_date_input")}
+            {this.FormElement("login", "Login(E-Mail)", "text", "login_input")}
+            {this.FormElement("password", "Hasło", "text", "password_input")}
+            {this.FormElement("password2", "Powtórz sasło", "text", "password2_input")}
 
-                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group me-2" role="group" aria-label="First button">
-                        <button type="button" class="btn btn-danger" onClick={this.handleOnCancelClick}>Odrzuć zmiany</button>
-                    </div>
-                    <div class="btn-group me-2" role="group" aria-label="Second button">
-                        <button type="button" class="btn btn-success" onClick={this.handleOnSaveClick}>Zapisz</button>
-                    </div>
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group me-2" role="group" aria-label="First button">
+                    <button type="button" class="btn btn-danger" onClick={this.handleOnCancelClick}>Odrzuć zmiany</button>
                 </div>
-            </>
+                <div class="btn-group me-2" role="group" aria-label="Second button">
+                    <button type="button" class="btn btn-success" onClick={this.handleOnSaveClick}>Zapisz</button>
+                </div>
+            </div>
+        </div>
+        </>
         )
     }
+
+    FormElement(id, span, type, label)
+    {
+        return(<>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id={id}>{span}</span>
+                    <input type={type} class="form-control" aria-label={label} aria-describedby="inputGroup-sizing-default" />
+                </div>
+            </div>
+        </>)
+    }
+
 
     // TODO: implement displaying employees
-    ChoosePersonToDelete(props, employees){
-        employees.map(id => {  
+    ChoosePersonToDelete(props, employees) {
+        employees.map(id => {
             return (
                 <>
-                <row>
-                    <div class="list-group">
-                        <div class="list-group-item list-group-item-action list-group-item-light" onClick={this.Delete(id)}>Here should be name, surname, id and date of employment of employee</div>
-                    </div>
-                </row>
-                </> 
-            )}
+                    <row>
+                        <div class="list-group">
+                            <div class="list-group-item list-group-item-action list-group-item-light" onClick={this.Delete(id)}>Here should be name, surname, id and date of employment of employee</div>
+                        </div>
+                    </row>
+                </>
+            )
+        }
         )
     }
 
     // TODO: meybe better way to display information about deleting the user?
-    Delete(props, id){
-            alert('Użytkownik z id:' + id + ' został usunięty.')
+    Delete(props, id) {
+        alert('Użytkownik z id:' + id + ' został usunięty.')
     }
 
-    // TODO: add addresses to 'href'
-    DeleteEmployee(props){
-        return(
+    //TODO: href
+    ManageWorkers(text, label)
+    {
+        return (
             <>
-                <div class="col-30 col">
+                <div class="mt-3 col">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Znajdź zwalnianego pracownika poprzez:
+                        <button type="button" class="btn btn-success dropdown-toggle me-2" data-bs-toggle="dropdown" aria-expanded="false">
+                            {text}
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">ID</a></li>
-                            <li><a class="dropdown-item" href="#">imię i nazwisko</a></li>
-                            <li><a class="dropdown-item" href="#">numer PESEL</a></li>
+                            <li><a class="dropdown-item" href="#">Imię i nazwisko</a></li>
+                            <li><a class="dropdown-item" href="#">Numer PESEL</a></li>
                         </ul>
                         <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Wyszukaj" aria-label="find_delete_employee"/>
+                            <input class="form-control me-2" type="search" placeholder="Wyszukaj" aria-label={label} />
                             <button class="btn btn-outline-success" type="submit">Szukaj</button>
                         </form>
                     </div>
@@ -473,104 +283,57 @@ class AdminView extends React.Component{
             </>
         )
     }
-
     // TODO: implement displaying employees
-    ChoosePersonToModifyData(props, employees){
-        employees.map(id => {  
+    ChoosePersonToModifyData(props, employees) {
+        employees.map(id => {
             return (
                 <>
-                <row>
-                    <div class="list-group">
-                        <div class="list-group-item list-group-item-action list-group-item-light" onClick={this.Modify(id)}>Here should be name, surname, id and date of employment of employee</div>
-                    </div>
-                </row>
-                </> 
-            )}
-        )
-    }
-
-    // TODO: add addresses to 'href'
-    ModifyEmployeeData(props){
-        return(
-            <>
-                <div class="col-30 col">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Znajdź pracownika, którego dane mają być zmodyfikowane, poprzez:
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">ID</a></li>
-                            <li><a class="dropdown-item" href="#">imię i nazwisko</a></li>
-                            <li><a class="dropdown-item" href="#">numer PESEL</a></li>
-                        </ul>
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Wyszukaj" aria-label="find_modify_employee"/>
-                            <button class="btn btn-outline-success" type="submit">Szukaj</button>
-                        </form>
-                    </div>
-                </div>
-            </>
-        )
-    }
-
-    // TODO: add addresses to 'href'
-    DeleteCustomerAccount(props){
-        return(
-            <>
-                <div class="col-30 col">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Znajdź konto klienta, które chcesz usunąć, poprzez:
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">ID</a></li>
-                            <li><a class="dropdown-item" href="#">imię i nazwisko</a></li>
-                            <li><a class="dropdown-item" href="#">numer PESEL</a></li>
-                        </ul>
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Wyszukaj" aria-label="find_delete_customer"/>
-                            <button class="btn btn-outline-success" type="submit">Szukaj</button>
-                        </form>
-                    </div>
-                </div>
-            </>
+                    <row>
+                        <div class="list-group">
+                            <div class="list-group-item list-group-item-action list-group-item-light" onClick={this.Modify(id)}>Here should be name, surname, id and date of employment of employee</div>
+                        </div>
+                    </row>
+                </>
+            )
+        }
         )
     }
 
     // TODO: implement displaying customers
-    ChooseCustomerToDelete(props, customers){
-        customers.map(id => {  
+    ChooseCustomerToDelete(props, customers) {
+        customers.map(id => {
             return (
                 <>
-                <row>
-                    <div class="list-group">
-                        <div class="list-group-item list-group-item-action list-group-item-light" onClick={this.DeleteCustomerAccount(id)}>Here should be name, surname and id of customer</div>
-                    </div>
-                </row>
-                </> 
-            )}
+                    <row>
+                        <div class="list-group">
+                            <div class="list-group-item list-group-item-action list-group-item-light" onClick={this.DeleteCustomerAccount(id)}>Here should be name, surname and id of customer</div>
+                        </div>
+                    </row>
+                </>
+            )
+        }
         )
     }
 
-    
-    handleTelephoneNumberChange(e){
-        if(e.target.value.match(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/) != null){
-         this.setState({Phone: e.target.value});
+
+    handleTelephoneNumberChange(e) {
+        if (e.target.value.match(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/) != null) {
+            this.setState({ Phone: e.target.value });
         }
     }
 
-    handlePeselChange(e){
-        if(e.target.value.match(/[0-9]{11}$/) != null){
-        this.setState({Pesel: e.target.value});
+    handlePeselChange(e) {
+        if (e.target.value.match(/[0-9]{11}$/) != null) {
+            this.setState({ Pesel: e.target.value });
         }
     }
 
     // TODO -> Implement all functions below
-    handleOnCancelClick(e){
+    handleOnCancelClick(e) {
         alert('Hello! handleOnCancelClick() here! Implement me!');
     }
 
-    handleOnSaveClick(e){
+    handleOnSaveClick(e) {
         alert('Hello! handleOnSaveClick() here! Implement me!');
     }
 }
