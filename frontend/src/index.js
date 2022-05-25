@@ -12,6 +12,7 @@ import Products from './Products';
 import AdminView from './AdminView';
 import EmployeeView from './EmployeeView';
 import Register from './Register';
+import Basket from './Basket';
 
 ReactDOM.render(
     <Provider store={store}>
@@ -24,6 +25,8 @@ ReactDOM.render(
                 <Route path="register" element={<Register/>}/>
 
                 <Route path="user/*" element={<UserView/>}/>
+
+                <Route path='basket/*' element={<Basket/>} />
 
                 <Route path="products/*" element={<Products/>}/>
 

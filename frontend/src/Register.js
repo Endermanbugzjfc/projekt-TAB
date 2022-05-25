@@ -28,7 +28,7 @@ class Register extends React.Component
         return(
             <>
                 <Navbar/>
-                <div class="form-signin top-space">
+                <div class="form-signup top-space">
                 <form>
                     <h1 class="h3 mb-3 fw-normal text-center">Rejestracja</h1> 
 

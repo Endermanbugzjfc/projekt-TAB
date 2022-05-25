@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { store } from "../actions/store";
 import "./Navbar.css"
 
 class Navbar extends React.Component
@@ -10,8 +11,8 @@ class Navbar extends React.Component
     }
 
     componentDidMount(){
-        this.getUserData();
-        this.getBasket();
+        //this.getUserData();
+        //this.getBasket();
     }
 
     render()
@@ -59,19 +60,18 @@ class Navbar extends React.Component
         );
     }
 
-    async getUserData() {
-        const response = await fetch('https://localhost:3000/api');
-        console.log(response);
-        console.log(response.json());
-        const userData = await response.json();
-        this.state.userInfo = userData;
-    }
+    // async getUserData() {
+    //     const response = store.getState().dUser;
+    //     console.log(response);
+    //     const userData = await response.json();
+    //     this.state.userInfo = userData;
+    // }
 
-    async getBasket(){
-        const response = await fetch('basket');
-        const basketContent = await response.json();
-        this.state.basket = basketContent;
-    }
+    // async getBasket(){
+    //     const response = await fetch('basket');
+    //     const basketContent = await response.json();
+    //     this.state.basket = basketContent;
+    // }
 
     userIconAndLogin(){
         if(this.state.loggedIn){
