@@ -22,7 +22,7 @@ function LoginForm()
     return(
         <>
             <div class="form-signin top-space">
-                <form>
+                <form className="needs-validation">
                     <h1 class="h3 mb-3 fw-normal text-center">Logowanie</h1> 
 
                     <div class="form-floating">
@@ -32,6 +32,7 @@ function LoginForm()
                     <div class="form-floating form-myBox">
                         <input type="password" class="form-control" id="floatingPassword" placeholder="Password"/>
                         <label for="floatingPassword">Hasło</label>
+                        <div className="invalid-feedback">Nieprawidłowy e-mail</div>
                     </div>
 
                     <div class="checkbox mb-4 mt-3">
@@ -39,7 +40,7 @@ function LoginForm()
                             <input type="checkbox" value="remember-me"/> Zapamiętaj mnie
                         </label>
                     </div>
-                    <button class="w-100 btn btn-lg btn-primary" type="submit">Zaloguj się</button>
+                    <input class="w-100 btn btn-lg btn-primary" type="button" value="Zaloguj się" onClick={CheckLoginForm}/>
                     <p class="mt-3 text-center">Nie masz konta?</p>
                     <Link to="/register">
                         <p class="text-center">Załóż nowe konto</p>
@@ -48,6 +49,11 @@ function LoginForm()
             </div>
         </>
     )
+}
+
+function CheckLoginForm()
+{
+    
 }
 
 export default Login
