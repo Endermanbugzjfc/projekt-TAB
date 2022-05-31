@@ -81,91 +81,102 @@ class Register extends React.Component
 
     handleChange(e, val)
     {
+        this.setState({[val]: e.target.value});
+    }
 
-        //Dont check things while writing, but at the end!
-        // var EmailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/
-
-        // if(val == "Login" && e.target.value.match(EmailRegex) != null)
-        //     this.setState({[val]: e.target.value});
-        // else if(val === "ZIPCode")
-        //     {console.log("Hello?");
-        //     if(e.target.value.match(/^\d{2}-\d{3}$/) != null) // <--- Don't check now, but at the end!
-        //         this.setState({[val]: e.target.value});}
-        // else
-            this.setState({[val]: e.target.value});
+    addInvalid(element)
+    {
+        element.classList.add("is-invalid");
+    }
+    removeInvalid(element)
+    {
+        element.classList.remove("is-invalid");
     }
 
     checkRegisterForm()
     {
         var allGood = true;
         var EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+
+        var Email =  document.getElementById("floatingEmail");
+        var ZIPCode =  document.getElementById("floatingPost");
+        var Street = document.getElementById("floatingStreet");
+        var Phone = document.getElementById("floatingPhone");
+        var Pass = document.getElementById("floatingPass");
+        var Pass2 = document.getElementById("floatingPass")
+        var Name = document.getElementById("floatingName");
+        var Surname = document.getElementById("floatingSurname");
+        var City = document.getElementById("floatingCity");
+        var State = document.getElementById("floatingState");
+
         if(this.state.Login.match(EmailRegex) == null)
         {
             allGood = false;
-            document.getElementById("floatingEmail").classList.add("is-invalid");
+            this.addInvalid(Email);
         }
-        else document.getElementById("floatingEmail").classList.remove("is-invalid");
+        else this.removeInvalid(Email);
 
         if(this.state.ZIPCode.match(/^\d{2}-\d{3}$/) == null)
         {
             allGood = false;
-            document.getElementById("floatingPost").classList.add("is-invalid");
+            this.addInvalid(ZIPCode);
         }
-        else document.getElementById("floatingPost").classList.remove("is-invalid");
+        else this.removeInvalid(ZIPCode);
 
         if(this.state.Street.match(/^[a-zA-Z]+ \d+((\/){1}[0-9]+)?$/) == null)
         {
             allGood = false;
-            document.getElementById("floatingStreet").classList.add("is-invalid");
+            this.addInvalid(Street);
         }
-        else document.getElementById("floatingStreet").classList.remove("is-invalid");
+        else this.removeInvalid(Street);
 
         if(this.state.Phone_number.match(/^(\+\d{2})?( )?\d{1,9}$/) == null)
         {
             allGood = false;
-            document.getElementById("floatingPhone").classList.add("is-invalid");
+            this.addInvalid(Phone);
         }
-        else document.getElementById("floatingPhone").classList.remove("is-invalid");
+        else this.removeInvalid(Phone);
 
         if(this.state.Password !== this.state.Password2 || this.state.Password.length < 1)
         {
             allGood = false;
-            document.getElementById("floatingPass").classList.add("is-invalid");
-            document.getElementById("floatingPass2").classList.add("is-invalid");
+            this.addInvalid(Pass);
+            this.addInvalid(Pass2);
         }
         else 
         {
-            document.getElementById("floatingPass").classList.remove("is-invalid");
-            document.getElementById("floatingPass2").classList.remove("is-invalid");
+            this.removeInvalid(Pass);
+            this.removeInvalid(Pass2);
         }
 
         if(this.state.Name.match(/^[a-zA-Z]+$/) == null)
         {
             allGood = false;
-            document.getElementById("floatingName").classList.add("is-invalid");
+            this.addInvalid(Name);
         }
-        else document.getElementById("floatingName").classList.remove("is-invalid");
+        else this.removeInvalid(Name);
 
         if(this.state.Surname.match(/^[a-zA-Z]+$/) == null)
         {
             allGood = false;
-            document.getElementById("floatingSurname").classList.add("is-invalid");
+            this.addInvalid(Surname);
         }
-        else document.getElementById("floatingSurname").classList.remove("is-invalid");
+        else this.removeInvalid(Surname);
 
         if(this.state.City.match(/^[a-zA-Z]+$/) == null)
         {
             allGood = false;
-            document.getElementById("floatingCity").classList.add("is-invalid");
+            this.addInvalid(City);
         }
-        else document.getElementById("floatingCity").classList.remove("is-invalid");
+        else this.removeInvalid(City);
 
         if(this.state.State.match(/^[a-zA-Z]+$/) == null)
         {
             allGood = false;
-            document.getElementById("floatingState").classList.add("is-invalid");
+            this.addInvalid(State);
         }
-        else document.getElementById("floatingState").classList.remove("is-invalid");
+        else this.removeInvalid(State);
         
 
         if(allGood)
