@@ -1,10 +1,12 @@
-import {createStore, applyMiddleware, compose } from "redux"
-import thunk from "redux-thunk"
-import { reducers } from "../reducers/reducersIndex"
+import {configureStore} from "@reduxjs/toolkit"
+import UserReducer from "../reducers/dUser"
 
-export const store = createStore(
-    reducers,
-    compose(
-        applyMiddleware(thunk)
-    )
+
+
+export const store = configureStore(
+    {
+        reducer: {
+            user: UserReducer
+        }
+    }
 )

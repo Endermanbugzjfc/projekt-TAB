@@ -16,12 +16,20 @@ class Basket extends React.Component
 
     componentDidMount()
     {
-        //if(store.LoggedIn)
-        api.Cart().getNotLogCart()
-        .then( response => this.setState({products: response}))
-        .catch(err => console.log(err));
-        //else
-        //api.Cart().getUserCart(store.getUserId)
+        var loginStatus = store.getState().user.loggedIn;
+
+        if(loginStatus == false)
+        {
+            api.Cart().getNotLogCart()
+            .then( response => this.setState({products: response}))
+            .catch(err => console.log(err));
+        }
+        else
+        {
+            api.Cart().getUserCart(store.getUserId)
+            .then( response => this.setState({products: response}))
+            .catch(err => console.log(err));
+        }
     }
 
 
@@ -31,7 +39,7 @@ class Basket extends React.Component
             <>
                 <Navbar/>
                 <div class="container">
-                    <h1 class="h1 text-center"> Basket </h1>
+                    <h1 class="h1 text-center"> Koszyk </h1>
                     {this.listOFProducts()}
                 </div>
             </>

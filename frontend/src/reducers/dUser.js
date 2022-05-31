@@ -1,18 +1,32 @@
-import {ACTION_TYPES} from "../actions/dUser"
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    list:[]
-}
-
-export const dUser = (state = initialState, action) =>{
-    switch (action.type) {
-        case ACTION_TYPES.FETCH_ALL:
-            return {
-                ...state,
-                list: [...action.payload]
+const UserSlice = createSlice(
+    {
+        name: 'user',
+        initialState: {
+            loggedIn: false,
+            id: "",
+            login: "",
+            name: ""
+        },
+        reducers: {
+            login: (state, user) => {
+                state.id = user.id;
+                state.login = user.login;
+                state.name = user.name;
+                state.loggedIn = true;
+            },
+            isLoggedIn : (state) =>{ console.log("YAY"); return state.loggedIn },
+            logout: (state) =>{
+                
+                state.loggedIn = false;
+                state.id = "";
+                state.login = "";
+                state.name = "";
             }
-    
-        default:
-            return state;
+        }
     }
-}
+)
+
+export const {login, isLoggedIn, logout} = UserSlice.actions
+export default UserSlice.reducer

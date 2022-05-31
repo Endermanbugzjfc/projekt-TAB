@@ -11,8 +11,8 @@ export default {
             update: (id, updatedRecord) => axios.put(url+id, updatedRecord),
 
             //Login stuff -> It's wrong? TODO
-            login: (username, pass) => axios.get(url + "login", {username: username, password: pass}),
-            logout: (username) => axios.post(url + "logout/", {username: username}),
+            login: (userInfo) => axios.post(url + "login", userInfo),
+            logout: (username) => axios.post(url + "logout/", {Login: username}),
 
             //Order raports
             getOrders: (userId) => axios.get(url+userId + "/report"),
