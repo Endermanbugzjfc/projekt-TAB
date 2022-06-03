@@ -16,63 +16,61 @@ public class UserService {
     private ShoppingCartService shoppingCartService;
 
     @Autowired
-    public UserService(UserRepository userRepository, ShoppingCartService shoppingCartService){
+    public UserService(UserRepository userRepository, ShoppingCartService shoppingCartService) {
         this.userRepository = userRepository;
         this.shoppingCartService = shoppingCartService;
     }
 
-    public User getUser(Long userId){
+    public User getUser(Long userId) {
         return this.userRepository.findById(userId).orElseThrow(
-                ()-> new NoSuchUserException("User with ID: " + userId + " does not exist")
+                () -> new NoSuchUserException("User with ID: " + userId + " does not exist")
         );
     }
 
     public User newUser(String userName, String password, String legalName, String surname, String phoneNumber, Type type, Date birthDate,
                         String pesel, LocalDate employmentDate, Address address) throws SuchUsernameExistsException {
         Optional<User> usr = this.userRepository.findUserByUserName(userName);
-        if(!usr.isPresent()){
-            throw new SuchUsernameExistsException("Username: " + usr.get().getUserName() + " already exists! Choose different one!");
+        if (usr.isEmpty()) {
+            throw new SuchUsernameExistsException("Username: " + userName + " already exists! Choose different one!");
         }
         User user = new User(userName, password, legalName, surname, phoneNumber, type, birthDate, pesel, employmentDate, address);
         user.setShoppingCart(shoppingCartService.getCartFor(user));
         return this.userRepository.save(user);
     }
 
-    public boolean logIn(String username, String password){
+    public boolean logIn(String username, String password) {
         Optional<User> usr = this.userRepository.findUserByUserName(username);
-        if(usr.isPresent()){
+        if (usr.isPresent()) {
             User user = usr.get();
-            if(user.getType().equals(Type.DELETED)){
+            if (user.getType().equals(Type.DELETED)) {
                 throw new InactiveAccountException("Your account has been deleted");
-            }
-            else if(user.getType().equals(Type.FIRED)){
+            } else if (user.getType().equals(Type.FIRED)) {
                 throw new InactiveAccountException("You have been fired");
             }
-            if(user.getPassword().equals(password)){
+            if (user.getPassword().equals(password)) {
                 user.setLoggedIn(true);
                 return true;
             }
-        }
-        else{
+        } else {
             throw new NoSuchUserException("User with username: " + username + " does not exist");
         }
         return false;
     }
 
-    public boolean logOut(Long userId){
+    public boolean logOut(Long userId) {
         User user = this.getUser(userId);
         user.setLoggedIn(false);
         return true;
     }
 
-    public boolean clearUserData(Long userId){
+    public boolean clearUserData(Long userId) {
         User user = this.getUser(userId);
         return user.clearUserData();
     }
 
-    public User findUserByShoppingCart_Id(ShoppingCart shoppingCart){
+    public User findUserByShoppingCart_Id(ShoppingCart shoppingCart) {
         return this.userRepository.findUserByShoppingCart_Id(shoppingCart).orElseThrow(
-                ()-> new NoSuchUserException("User with shopping cart ID: " + shoppingCart.getId() + " does not exist")
+                () -> new NoSuchUserException("User with shopping cart ID: " + shoppingCart.getId() + " does not exist")
         );
     }
 }

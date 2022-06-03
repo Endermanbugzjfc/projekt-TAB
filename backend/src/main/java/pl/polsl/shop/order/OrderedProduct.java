@@ -35,6 +35,16 @@ public class OrderedProduct {
     @Column(name = "price", nullable = false)
     private double price;
 
+    public OrderedProduct(Order order, Product product) {
+        this.order = order;
+        this.product = product;
+        this.price = product.getRetailPrice();
+        this.quantity = 0;
+    }
+
+    public OrderedProduct() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -73,8 +83,5 @@ public class OrderedProduct {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public OrderedProduct() {
     }
 }
