@@ -1,6 +1,8 @@
 import React from "react";
 import Navbar from "./components/Navbar.js";
 import "./AdminView.css"
+import api from "./actions/api.js";
+import { store } from "./actions/store.js";
 
 class AdminView extends React.Component {
 
@@ -8,8 +10,19 @@ class AdminView extends React.Component {
         super(props);
 
         this.state = {
-            Name: "",
-            newInfo: {
+            Id: '',
+            Name: '',
+            Surname: '',
+            BirthDay: '',
+            Pesel: '',
+            Phone: '',
+            PostCode: '',
+            City: '',
+            HouseNumber: '',
+            Street: '',
+            Salary: 0,
+            EmploymentDate: '',
+            newInfo : {
                 Name: '',
                 Surname: '',
                 BirthDay: '',
@@ -17,9 +30,9 @@ class AdminView extends React.Component {
                 Phone: '',
                 PostCode: '',
                 City: '',
-                HouseNumber: null,
+                HouseNumber: '',
                 Street: '',
-                Salary: null,
+                Salary: 0,
                 EmploymentDate: ''
             }
         }
@@ -31,20 +44,41 @@ class AdminView extends React.Component {
     }
 
     componentDidMount() {
+        api.User().getUserById(store.getState().persistedReducer.id)
+        .then(response =>
+            {
+                var addr = response.data.Address.split(',');
+                //Street,HouseNr,ApNr,City,ZIP
+                this.setState({
+                Id: response.data.id,
+                Name: response.data.Name,
+                Surname: response.data.Surname,
+                Phone: response.data.Phone,
+                PostCode: addr[4],
+                City: addr[3],
+                HouseNumber: addr[1],
+                ApatrmentNumber: addr[2],
+                Street: addr[0],
+                EmploymentDate: response.data.EmploymentDate,
+                BirthDay: response.data.BirthDay,
+                })
+            })
+        .catch(err => console.log(err));
+
         this.setState(() => ({
             newInfo: {
                 Name: this.state.Name,
-                Surname: '',
-                BirthDay: '',
-                Pesel: '',
-                Phone: '',
-                PostCode: '',
-                City: '',
-                HouseNumber: null,
-                Street: '',
-                Salary: null,
-                EmploymentDate: ''
-            }
+                Surname: this.state.Surname,
+                BirthDay: this.state.BirthDay,
+                Pesel: this.state.Pesel,
+                Phone: this.state.Phone,
+                PostCode: this.state.PostCode,
+                City: this.state.City,
+                HouseNumber: this.state.HouseNumber,
+                Street: this.state.Street,
+                Salary: this.state.Salary,
+
+            } 
         }))
     }
 
@@ -78,7 +112,7 @@ class AdminView extends React.Component {
                                 {this.ManageWorkers("Znajdź zwalnianego pracownika poprzez:", "find_delete_employee")}
                             </div>
                             <div class="tab-pane fade" id="modify_employee_data" role="tabpanel" aria-labelledby="modify_employee_data_list">
-                                {this.ManageWorkers("Znajdź mdyfikowanego pracownika poprzez:", "find_modify_employee")}
+                                {this.ManageWorkers("Znajdź modyfikowanego pracownika poprzez:", "find_modify_employee")}
                             </div>
                             <div class="tab-pane fade" id="delete_customer" role="tabpanel" aria-labelledby="delete_customer_list">
                                 {this.ManageWorkers("Znajdź konto usuwanego klienta poprzez:", "find_delete_customer" )}
@@ -94,38 +128,38 @@ class AdminView extends React.Component {
         return (
             <>
                 <div class="row me-5">
-                    <div class="my-3">
-                        Imię:  <b>-</b>
+                    <div class="my-2">
+                        Imię:  <b>{this.state.Name}</b>
                     </div>
                 </div>
                 <div class="row me-5">
-                    <div class="my-1">
-                        Nazwisko:  <b>-</b>
+                    <div class="my-2">
+                        Nazwisko:  <b>{this.state.Surname}</b>
                     </div>
                 </div>
                 <div class="row me-5">
-                    <div class="my-1">
-                        Pesel:  <b>-</b>
+                    <div class="my-2">
+                        Pesel:  <b>{this.state.Pesel}</b>
                     </div>
                 </div>
                 <div class="row me-5">
-                    <div class="my-3">
-                        Numer telefonu: <b>-</b>
+                    <div class="my-2">
+                        Numer telefonu: <b>{this.state.Phone}</b>
                     </div>
                 </div>
                 <div class="row me-5">
-                    <div class="my-1">
-                        Adres:  <b>-</b>
+                    <div class="my-2">
+                        Adres:  <b>{this.getPrettyAddress()}</b>
                     </div>
                 </div>
                 <div class="row me-5">
-                    <div class="my-1">
-                        Data zatrudnienia:  <b>-</b>
+                    <div class="my-2">
+                        Data zatrudnienia:  <b>{this.state.EmploymentDate}</b>
                     </div>
                 </div>
                 <button class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#EditPersonalInfo" >Edytuj dane</button>
 
-                <div class="modal fade" id="EditPersonalInfo" data-bs-backdrop="static" tabindex="-1" aria-labelledby="EditPersonalInfoLabel" aria-hidden="true">
+                <div class="modal fade" id="EditPersonalInfo" data-bs-backdrop="static" tabIndex="-1" aria-labelledby="EditPersonalInfoLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -171,7 +205,7 @@ class AdminView extends React.Component {
             <>
                 <div class="col">
                     {text} <br/>
-                    <input type={type} value={value} placeholder={text}
+                    <input type={type} value={value}
                         onChange={e => this.setState(prevState => ({
                             newInfo: {
                                 ...prevState.newInfo,
@@ -181,7 +215,15 @@ class AdminView extends React.Component {
                 </div>
             </>
         )
-        
+    }
+
+    getPrettyAddress()
+    {
+        var Address = '';
+        Address += this.state.Street + ' ' + this.state.HouseNumber + ', ';
+        Address += this.state.PostCode + ' ' + this.state.City;
+                  
+        return Address;
     }
 
     AddNewWorkerForm(role) {
@@ -207,10 +249,10 @@ class AdminView extends React.Component {
                 {this.FormElement("birth_date", "Data urodzenia", "date", "birth_date_input")}
                 {this.FormElement("pesel", "Pesel", "text", "pesel_input")}
             </div>
-            {this.FormElement("employment_date", "Data zatrudnienia", "date", "employment_date_input")}
-            {this.FormElement("login", "Login(E-Mail)", "text", "login_input")}
-            {this.FormElement("password", "Hasło", "text", "password_input")}
-            {this.FormElement("password2", "Powtórz sasło", "text", "password2_input")}
+                {this.FormElement("employment_date", "Data zatrudnienia", "date", "employment_date_input")}
+                {this.FormElement("login", "Login(E-Mail)", "text", "login_input")}
+                {this.FormElement("password", "Hasło", "text", "password_input")}
+                {this.FormElement("password2", "Powtórz sasło", "text", "password2_input")}
 
             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group me-2" role="group" aria-label="First button">
@@ -260,7 +302,7 @@ class AdminView extends React.Component {
     }
 
     //TODO: href
-    ManageWorkers(text, label)
+    ManageWorkers2(text, label)
     {
         return (
             <>
@@ -283,6 +325,29 @@ class AdminView extends React.Component {
             </>
         )
     }
+
+    ManageWorkers(text, label)
+    {
+        return(
+            <div className="mt-3 col">
+                <div className="col">
+                    <label>{text}</label>
+                </div>
+                <div className="col">
+                    <select>
+                        <option>ID</option>
+                        <option>Imię i nazwisko</option>
+                        <option>Numer PESEL</option>
+                    </select>
+                    <form className="d-flex my-2">
+                        <input class="form-control me-2" type="search" placeholder="Wyszukaj" aria-label={label} />
+                        <input class="btn btn-outline-success" type="button" value="Szukaj" onClick={() =>{/*TODO*/}} />
+                    </form>
+                </div>
+            </div>
+        )
+    }
+
     // TODO: implement displaying employees
     ChoosePersonToModifyData(props, employees) {
         employees.map(id => {
