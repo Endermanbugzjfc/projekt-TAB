@@ -16,7 +16,6 @@ class UserView extends React.Component{
             PostCode: '',
             City: '',
             HouseNumber: '',
-            ApatrmentNumber: '',
             Street: '',
             newInfo : {
                 Name: '',
@@ -24,8 +23,7 @@ class UserView extends React.Component{
                 Phone: '',
                 PostCode: '',
                 City: '',
-                HouseNumber: null,
-                ApatrmentNumber: null,
+                HouseNumber: '',
                 Street: ''
             }
         }
@@ -154,7 +152,7 @@ class UserView extends React.Component{
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
-                                <button type="button" class="btn btn-primary">Zapisz</button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onClick={()=> this.saveNewData()}>Zapisz</button>
                             </div>
                         </div>
                     </div>
@@ -163,6 +161,11 @@ class UserView extends React.Component{
                 
             </>
         )
+    }
+
+    saveNewData()
+    {
+        api.User().update(this.state.Id, this.state.newInfo)
     }
 
     modalElement(NamePL, value, maxLength, valueName)
@@ -184,10 +187,8 @@ class UserView extends React.Component{
     getPrettyAddress()
     {
         var Address = '';
-        Address += this.state.Street + ' ';
-        Address += this.state.HouseNumber;
-        if(this.state.ApatrmentNumber.length > 0) Address += '/' + this.state.ApatrmentNumber
-        Address += ', ' + this.state.PostCode + ' ' + this.state.City;
+        Address += this.state.Street + ' ' + this.state.HouseNumber + ', ';
+        Address += this.state.PostCode + ' ' + this.state.City;
                   
         return Address;
     }
