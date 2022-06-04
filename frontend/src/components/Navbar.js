@@ -17,7 +17,7 @@ class Navbar extends React.Component
         if(this.state.loggedIn)
         {
             var newName = store.getState().user.name;
-            console.log("New name:", newName)
+            //console.log("New name:", newName)
             this.setState({username: newName})
         }
     }
@@ -33,8 +33,8 @@ class Navbar extends React.Component
         {
             this.setState({username: store.getState().persistedReducer.name})
         }
-        console.log(this.state.username)
-        console.log(logged)
+        //console.log(this.state.username)
+        //console.log(logged)
     }
 
     render()

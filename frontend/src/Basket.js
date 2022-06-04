@@ -16,7 +16,7 @@ class Basket extends React.Component
 
     componentDidMount()
     {
-        var loginStatus = store.getState().user.loggedIn;
+        var loginStatus = store.getState().persistedReducer.loggedIn;
 
         if(loginStatus === false)
         {
@@ -26,7 +26,7 @@ class Basket extends React.Component
         }
         else
         {
-            api.Cart().getUserCart(store.getUserId)
+            api.Cart().getUserCart(store.getState().persistedReducer.id)
             .then( response => this.setState({products: response}))
             .catch(err => console.log(err));
         }
@@ -40,13 +40,13 @@ class Basket extends React.Component
                 <Navbar/>
                 <div class="container">
                     <h1 class="h1 text-center"> Koszyk </h1>
-                    {this.listOFProducts()}
+                    {this.listOfProducts()}
                 </div>
             </>
         )
     }
 
-    listOFProducts()
+    listOfProducts()
     {
         var returns;
         if(this.state.products != null) 

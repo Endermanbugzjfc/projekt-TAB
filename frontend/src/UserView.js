@@ -1,4 +1,6 @@
 import React from "react";
+import api from "./actions/api.js";
+import { store } from "./actions/store.js";
 import Navbar from "./components/Navbar.js";
 import "./UserView.css"
 
@@ -8,7 +10,14 @@ class UserView extends React.Component{
         super(props);
 
         this.state = {
-            Name: "Alberto",
+            Name: '',
+            Surname: '',
+            Phone: '',
+            PostCode: '',
+            City: '',
+            HouseNumber: '',
+            ApatrmentNumber: '',
+            Street: '',
             newInfo : {
                 Name: '',
                 Surname: '',
@@ -23,17 +32,37 @@ class UserView extends React.Component{
     }
 
     componentDidMount(){
-        //Setting the current informations for the change form
+
+        api.User().getUserById(store.getState().persistedReducer.id)
+        .then(response =>
+            {
+                var addr = response.data.Address.split(',');
+                //Street,HouseNr,ApNr,City,ZIP
+                this.setState({
+                Name: response.data.Name,
+                Surname: response.data.Surname,
+                Phone: response.data.Phone,
+                PostCode: addr[4],
+                City: addr[3],
+                HouseNumber: addr[1],
+                ApatrmentNumber: addr[2],
+                Street: addr[0]
+                })
+            })
+        .catch(err => console.log(err));
+
+
+        //Setting the current informations for the change form modal
         this.setState(() => ({
             newInfo: {
                 Name: this.state.Name,
-                Surname: '',
-                Phone: '',
-                PostCode: '',
-                City: '',
-                HouseNumber: null,
-                ApatrmentNumber: null,
-                Street: ''
+                Surname: this.state.Surname,
+                Phone: this.state.Phone,
+                PostCode: this.state.PostCode,
+                City: this.state.City,
+                HouseNumber: this.state.HouseNumber,
+                ApatrmentNumber: this.state.ApatrmentNumber,
+                Street: this.state.Street
             } 
         }))
 
@@ -78,22 +107,22 @@ class UserView extends React.Component{
             <>
                 <div class="row me-5">
                     <div class="my-3">
-                        Imię:  <b>-</b>
+                        Imię:  <b> {this.state.Name} </b>
                     </div>
                 </div>
                 <div class="row me-5">
                     <div class="my-1">
-                        Nazwisko:  <b>-</b>
+                        Nazwisko:  <b> {this.state.Surname}</b>
                     </div>
                 </div>
                 <div class="row me-5">
                     <div class="my-3">
-                        Numer telefonu: <b>-</b>
+                        Numer telefonu: <b>{this.state.Phone}</b>
                     </div>
                 </div>
                 <div class="row me-5">
                     <div class="my-1">
-                        Adres:  <b>-</b>
+                        Adres:  <b>{() => this.getPrettyAddress()}</b>
                     </div>
                 </div>
                 <button class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#EditPersonalInfo" >Edytuj dane</button>
@@ -108,92 +137,18 @@ class UserView extends React.Component{
                             <div class="modal-body">
                                 <form>
                                     <div class="row">
-                                        <div class="col">
-                                            Imie<br/>
-                                            <input type="text" value={this.state.newInfo.Name} placeholder="Imię" maxLength="50"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Name: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Nazwisko<br/>
-                                            <input type="text" value={this.state.newInfo.Surname} placeholder="Nazwisko" maxLength="50"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Surname: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalElement("Imię", this.state.newInfo.Name, 50, "Name")}
+                                        {this.modalElement("Nazwisko", this.state.newInfo.Surname, 50, "Surname")}
+                                        {this.modalElement("Telefon", this.state.newInfo.Phone, 19, "Phone")}
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            Telefon<br/>
-                                            <input type="text"  value={this.state.newInfo.Phone} placeholder="Numer telefonu" maxLength="19"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Phone: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalElement("Ulica", this.state.newInfo.Street, 50, "Street")}
+                                        {this.modalElement("Numer domu", this.state.newInfo.HouseNumber, 4, "HouseNumber")}
+                                        {this.modalElement("Numer mieszkania", this.state.newInfo.ApatrmentNumber, 4, "ApatrmentNumber")}
                                     </div>
                                     <div class="row">
-                                        <div class="col">
-                                            Ulica<br/>
-                                            <input type="text"  value={this.state.newInfo.Street} placeholder="Ulica"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    Street: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Numer domu<br/>
-                                            <input type="text"  value={this.state.newInfo.HouseNumber} maxLength="4"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    HouseNumber: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Numer mieszkania<br/> 
-                                            <input type="text"  value={this.state.newInfo.ApatrmentNumber} maxLength="6"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    ApatrmentNumber: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            Miasto<br/>
-                                            <input type="text"  value={this.state.newInfo.City} placeholder="Miasto" maxLength="30"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    City: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
-                                        <div class="col">
-                                            Kod pocztowy<br/>
-                                            <input type="text"  value={this.state.newInfo.PostCode} placeholder="Kod pocztowy" maxLength="6"
-                                             onChange={e => this.setState(prevState => ({
-                                                newInfo: {
-                                                    ...prevState.newInfo,
-                                                    PostCode: e.target.value
-                                                }   
-                                            }))}/>
-                                        </div>
+                                        {this.modalElement("Miasto", this.state.newInfo.City, 30, "City")}
+                                        {this.modalElement("Kod Pocztowy", this.state.newInfo.PostCode, 6, "PostCode")}
                                     </div>
                                 </form>
                             </div>
@@ -208,6 +163,33 @@ class UserView extends React.Component{
                 
             </>
         )
+    }
+
+    modalElement(NamePL, value, maxLength, valueName)
+    {
+        return(
+            <div class="col my-2">
+                {NamePL}<br/>
+                <input type="text"  value={value} maxLength={maxLength}
+                    onChange={e => this.setState(prevState => ({
+                    newInfo: {
+                        ...prevState.newInfo,
+                        [valueName]: e.target.value
+                    }   
+                }))}/>
+            </div>
+        )
+    }
+
+    getPrettyAddress()
+    {
+        var Address = '';
+        Address += this.state.Street + ' ';
+        Address += this.state.HouseNumber;
+        if(this.state.ApatrmentNumber.length > 0) Address += '/' + this.state.ApatrmentNumber
+        Address += ', ' + this.state.PostCode + ' ' + this.state.City;
+                  
+        return Address;
     }
 
     HistoryEntry(props2)
@@ -328,7 +310,8 @@ class UserView extends React.Component{
     Delete(props){
         return(
             <>
-                <h3>Czy aby na pewno chcesz usunąć twoje konto?</h3>
+                <h3 class="my-4">Czy aby na pewno chcesz usunąć twoje konto?</h3>
+                <input type="button" className="btn btn-danger" value="Usuń konto" />
             </>
         )
     }
