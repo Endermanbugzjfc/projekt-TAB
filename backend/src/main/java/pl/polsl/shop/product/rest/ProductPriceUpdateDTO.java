@@ -1,4 +1,4 @@
-package pl.polsl.shop.product;
+package pl.polsl.shop.product.rest;
 
 public record ProductPriceUpdateDTO(Long productId, double newPrice) {
 }

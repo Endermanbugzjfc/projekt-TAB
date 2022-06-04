@@ -1,4 +1,7 @@
-package pl.polsl.shop.product;
+package pl.polsl.shop.product.rest;
+
+import pl.polsl.shop.product.Product;
+import pl.polsl.shop.product.ProductCategory;
 
 public record ProductDTO(
         Long productId, String name, String producer,

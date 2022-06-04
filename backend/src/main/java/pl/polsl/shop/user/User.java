@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Entity(name = "users")
+@Entity(name = "User")
 public class User {
 
     @Id

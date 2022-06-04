@@ -2,7 +2,7 @@ package pl.polsl.shop.user;
 
 import javax.persistence.*;
 
-@Entity(name = "addresses")
+@Entity(name = "Address")
 public class Address {
 
     @Id

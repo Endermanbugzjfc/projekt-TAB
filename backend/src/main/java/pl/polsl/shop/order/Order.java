@@ -5,7 +5,7 @@ import pl.polsl.shop.user.User;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity(name = "orders")
+@Entity(name = "Order")
 public class Order {
 
     @Id
