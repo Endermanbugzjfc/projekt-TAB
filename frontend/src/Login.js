@@ -3,6 +3,8 @@ import Navbar from "./components/Navbar.js";
 import './Login.css'
 import { Link } from "react-router-dom";
 import api from "./actions/api.js";
+import {store} from "./actions/store.js";
+import { login } from "./reducers/dUser.js";
 
 class Login extends React.Component
 {
@@ -80,7 +82,7 @@ class Login extends React.Component
             allGood = false;
             Email.classList.add("is-invalid")
         }
-        else Email.classList.add("is-invalid")
+        else Email.classList.remove("is-invalid")
 
         if(this.state.Password.length < 1)
         {
@@ -99,6 +101,9 @@ class Login extends React.Component
             }
 
             api.User().login(User);
+
+            var testUser = {id: "1", login: "A1", name:"Alvin"}
+            store.dispatch(login(testUser))
         }
     }
 

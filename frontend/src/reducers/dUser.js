@@ -11,12 +11,13 @@ const UserSlice = createSlice(
         },
         reducers: {
             login: (state, user) => {
-                state.id = user.id;
-                state.login = user.login;
-                state.name = user.name;
+                console.log(user.payload)
+                state.id = user.payload.id;
+                state.login = user.payload.login;
+                state.name = user.payload.name;
                 state.loggedIn = true;
             },
-            isLoggedIn : (state) =>{ console.log("YAY"); return state.loggedIn },
+            isLoggedIn : (state) =>{ return state.loggedIn },
             logout: (state) =>{
                 
                 state.loggedIn = false;

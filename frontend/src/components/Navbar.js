@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { store } from "../actions/store";
-import { isLoggedIn } from "../reducers/dUser";
+import {store} from "../actions/store";
 import "./Navbar.css"
 
 class Navbar extends React.Component
@@ -12,7 +11,8 @@ class Navbar extends React.Component
     }
 
     componentDidMount(){
-        this.setState({loggedIn: store.getState().user.loggedIn})
+        var status = store.getState().persistedReducer.isLoggedIn
+        this.setState({loggedIn: status})
 
         if(this.state.loggedIn)
         {
@@ -24,10 +24,17 @@ class Navbar extends React.Component
 
     componentDidUpdate()
     {
+        var logged =  store.getState().persistedReducer.loggedIn
+        if(this.state.loggedIn !== logged)
+        {
+            this.setState({loggedIn: logged})
+        } 
         if(this.state.loggedIn && this.state.username.length < 1)
         {
-            this.setState({username: store.getState().user.name})
+            this.setState({username: store.getState().persistedReducer.name})
         }
+        console.log(this.state.username)
+        console.log(logged)
     }
 
     render()

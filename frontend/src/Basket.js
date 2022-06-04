@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar"
 import "./Basket.css"
 import api from "./actions/api";
-import { store } from "./actions/store";
+import {store} from "./actions/store";
 
 class Basket extends React.Component
 {
@@ -18,7 +18,7 @@ class Basket extends React.Component
     {
         var loginStatus = store.getState().user.loggedIn;
 
-        if(loginStatus == false)
+        if(loginStatus === false)
         {
             api.Cart().getNotLogCart()
             .then( response => this.setState({products: response}))
