@@ -193,4 +193,22 @@ public class User {
         }
         return true;
     }
+
+    @Transient
+    public static User fromDto(UserDto userDto){
+        User user = new User();
+        user.setUserName(userDto.userName());
+        user.setPassword(userDto.password());
+        user.setLegalName(userDto.legalName());
+        user.setSurname(userDto.surname());
+        user.setPhoneNumber(userDto.phoneNumber());
+        user.setType(userDto.type());
+        user.setBirthDate(userDto.birthDate());
+        user.setPesel(userDto.pesel());
+        user.setEmploymentDate(userDto.employmentDate());
+        user.setAddress(userDto.address());
+        user.setShoppingCart(userDto.shoppingCart());
+        user.setLoggedIn(userDto.isLoggedIn());
+        return user;
+    }
 }

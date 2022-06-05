@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.polsl.shop.cart.ShoppingCart;
 import pl.polsl.shop.cart.ShoppingCartService;
 
-import java.time.LocalDate;
-import java.util.Date;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service("userService")
@@ -27,17 +26,18 @@ public class UserService {
         );
     }
 
-    public User newUser(String userName, String password, String legalName, String surname, String phoneNumber, Type type, Date birthDate,
-                        String pesel, LocalDate employmentDate, Address address) throws SuchUsernameExistsException {
-        Optional<User> usr = this.userRepository.findUserByUserName(userName);
+    @Transactional
+    public User newUser(UserDto userDto) throws SuchUsernameExistsException {
+        Optional<User> usr = this.userRepository.findUserByUserName(userDto.userName());
         if(!usr.isPresent()){
             throw new SuchUsernameExistsException("Username: " + usr.get().getUserName() + " already exists! Choose different one!");
         }
-        User user = new User(userName, password, legalName, surname, phoneNumber, type, birthDate, pesel, employmentDate, address);
+        User user = User.fromDto(userDto);
         user.setShoppingCart(shoppingCartService.getCartFor(user));
         return this.userRepository.save(user);
     }
 
+    @Transactional
     public boolean logIn(String username, String password){
         Optional<User> usr = this.userRepository.findUserByUserName(username);
         if(usr.isPresent()){
@@ -59,15 +59,39 @@ public class UserService {
         return false;
     }
 
+    @Transactional
     public boolean logOut(Long userId){
         User user = this.getUser(userId);
         user.setLoggedIn(false);
         return true;
     }
 
+    @Transactional
     public boolean clearUserData(Long userId){
         User user = this.getUser(userId);
         return user.clearUserData();
+    }
+
+    @Transactional
+    public UserDto updateUser(UserDto updatedUserDto, Long id){
+        User user = getUser(id);
+        if (user != null) {
+            user.setUserName(updatedUserDto.userName());
+            user.setPassword(updatedUserDto.password());
+            user.setLegalName(updatedUserDto.legalName());
+            user.setSurname(updatedUserDto.surname());
+            user.setPhoneNumber(updatedUserDto.phoneNumber());
+            user.setType(updatedUserDto.type());
+            user.setBirthDate(updatedUserDto.birthDate());
+            user.setPesel(updatedUserDto.pesel());
+            user.setEmploymentDate(updatedUserDto.employmentDate());
+            user.setLoggedIn(updatedUserDto.isLoggedIn());
+            user.setShoppingCart(updatedUserDto.shoppingCart());
+            user.setAddress(updatedUserDto.address());
+            this.userRepository.save(user);
+            return UserDto.fromUser(user);
+        }
+        return null;
     }
 
     public User findUserByShoppingCart_Id(ShoppingCart shoppingCart){
