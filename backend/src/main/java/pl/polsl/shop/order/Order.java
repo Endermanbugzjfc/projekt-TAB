@@ -1,5 +1,6 @@
 package pl.polsl.shop.order;
 
+import pl.polsl.shop.order.rest.OrderDto;
 import pl.polsl.shop.user.User;
 
 import javax.persistence.*;
@@ -71,5 +72,14 @@ public class Order {
 
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    @Transient
+    public static Order fromDTO(OrderDto orderDto) {
+        Order order = new Order();
+        order.setUser(orderDto.userDto());
+        order.setOrderDate(orderDto.orderDate());
+        order.setPaymentMethod(orderDto.paymentMethod());
+        return order;
     }
 }
