@@ -10,6 +10,7 @@ class UserView extends React.Component{
         super(props);
 
         this.state = {
+            Id: '',
             Name: '',
             Surname: '',
             Phone: '',
@@ -35,15 +36,15 @@ class UserView extends React.Component{
         .then(response =>
             {
                 var addr = response.data.Address.split(',');
-                //Street,HouseNr,ApNr,City,ZIP
+                //Street,HouseNr,City,ZIP
                 this.setState({
+                Id: response.data.Id,
                 Name: response.data.Name,
                 Surname: response.data.Surname,
                 Phone: response.data.Phone,
-                PostCode: addr[4],
-                City: addr[3],
+                PostCode: addr[3],
+                City: addr[2],
                 HouseNumber: addr[1],
-                ApatrmentNumber: addr[2],
                 Street: addr[0]
                 })
             })
@@ -59,7 +60,6 @@ class UserView extends React.Component{
                 PostCode: this.state.PostCode,
                 City: this.state.City,
                 HouseNumber: this.state.HouseNumber,
-                ApatrmentNumber: this.state.ApatrmentNumber,
                 Street: this.state.Street
             } 
         }))
@@ -70,24 +70,23 @@ class UserView extends React.Component{
         return(
             <>
                 <Navbar/>
-                <div class="back row">
-                    <div class="col-3">
-                        <div class="list-group" id="list-tab" role="tablist">
-                            <a class="list-group-item list-group-item-action active" id="list-info-list" data-bs-toggle="list" href="#list-info" role="tab" aria-controls="info">Informacje osobiste</a>
-                            <a class="list-group-item list-group-item-action" id="list-history-list" data-bs-toggle="list" href="#list-history" role="tab" aria-controls="history">Historia zamówień</a>
-                            <a class="list-group-item list-group-item-action" id="list-delete-list" data-bs-toggle="list" href="#list-delete" role="tab" aria-controls="delete" style={{color: "red"}}>Usuń konto</a>
+                <div className="back row">
+                    <div className="col-3">
+                        <div className="list-group" id="list-tab" role="tablist">
+                            <a className="list-group-item list-group-item-action active" id="list-info-list" data-bs-toggle="list" href="#list-info" role="tab" aria-controls="info">Informacje osobiste</a>
+                            <a className="list-group-item list-group-item-action" id="list-history-list" data-bs-toggle="list" href="#list-history" role="tab" aria-controls="history">Historia zamówień</a>
+                            <a className="list-group-item list-group-item-action" id="list-delete-list" data-bs-toggle="list" href="#list-delete" role="tab" aria-controls="delete" style={{color: "red"}}>Usuń konto</a>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="list-info" role="tabpanel" aria-labelledby="list-info-list">
+                    <div className="col">
+                        <div className="tab-content" id="nav-tabContent">
+                            <div className="tab-pane fade show active" id="list-info" role="tabpanel" aria-labelledby="list-info-list">
                                 {this.Info()}
                             </div>
-                            <div class="tab-pane fade" id="list-history" role="tabpanel" aria-labelledby="list-history-list">
-                                Historia jest jeszcze niedostępna
+                            <div className="tab-pane fade" id="list-history" role="tabpanel" aria-labelledby="list-history-list">
                                 {this.History()}
                             </div>
-                            <div class="tab-pane fade" id="list-delete" role="tabpanel" aria-labelledby="list-delete-list">
+                            <div className="tab-pane fade" id="list-delete" role="tabpanel" aria-labelledby="list-delete-list">
                                 {this.Delete()}
                             </div>
                             
@@ -103,56 +102,55 @@ class UserView extends React.Component{
     Info(props){
         return(
             <>
-                <div class="row me-5">
-                    <div class="my-3">
+                <div className="row me-5">
+                    <div className="my-3">
                         Imię:  <b> {this.state.Name} </b>
                     </div>
                 </div>
-                <div class="row me-5">
-                    <div class="my-1">
+                <div className="row me-5">
+                    <div className="my-1">
                         Nazwisko:  <b> {this.state.Surname}</b>
                     </div>
                 </div>
-                <div class="row me-5">
-                    <div class="my-3">
+                <div className="row me-5">
+                    <div className="my-3">
                         Numer telefonu: <b>{this.state.Phone}</b>
                     </div>
                 </div>
-                <div class="row me-5">
-                    <div class="my-1">
-                        Adres:  <b>{() => this.getPrettyAddress()}</b>
+                <div className="row me-5">
+                    <div className="my-1">
+                        Adres:  <b>{this.getPrettyAddress()}</b>
                     </div>
                 </div>
-                <button class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#EditPersonalInfo" >Edytuj dane</button>
+                <button className="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#EditPersonalInfo" >Edytuj dane</button>
 
-                <div class="modal fade" id="EditPersonalInfo" data-bs-backdrop="static" tabindex="-1" aria-labelledby="EditPersonalInfoLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="EditPersonalInfoLabel">Edycja informacji</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div className="modal fade" id="EditPersonalInfo" data-bs-backdrop="static" tabIndex="-1" aria-labelledby="EditPersonalInfoLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-lg">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="EditPersonalInfoLabel">Edycja informacji</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="row">
+                            <div className="modal-body">
+                                <form className="needs-validation">
+                                    <div className="row">
                                         {this.modalElement("Imię", this.state.newInfo.Name, 50, "Name")}
                                         {this.modalElement("Nazwisko", this.state.newInfo.Surname, 50, "Surname")}
                                         {this.modalElement("Telefon", this.state.newInfo.Phone, 19, "Phone")}
                                     </div>
-                                    <div class="row">
+                                    <div className="row">
                                         {this.modalElement("Ulica", this.state.newInfo.Street, 50, "Street")}
                                         {this.modalElement("Numer domu", this.state.newInfo.HouseNumber, 4, "HouseNumber")}
-                                        {this.modalElement("Numer mieszkania", this.state.newInfo.ApatrmentNumber, 4, "ApatrmentNumber")}
                                     </div>
-                                    <div class="row">
+                                    <div className="row">
                                         {this.modalElement("Miasto", this.state.newInfo.City, 30, "City")}
                                         {this.modalElement("Kod Pocztowy", this.state.newInfo.PostCode, 6, "PostCode")}
                                     </div>
                                 </form>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onClick={()=> this.saveNewData()}>Zapisz</button>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                                <button type="button" className="btn btn-primary" onClick={(e)=> this.saveNewData(e)}>Zapisz</button>
                             </div>
                         </div>
                     </div>
@@ -163,23 +161,30 @@ class UserView extends React.Component{
         )
     }
 
-    saveNewData()
+    saveNewData(e)
     {
-        api.User().update(this.state.Id, this.state.newInfo)
+        if(this.checkNewData() === true) 
+        {
+            e.currentTarget.setAttribute("data-bs-dismiss", "modal");
+
+            api.User().update(this.state.Id, this.state.newInfo);
+            e.currentTarget.click();
+        }
     }
 
     modalElement(NamePL, value, maxLength, valueName)
     {
         return(
-            <div class="col my-2">
+            <div className="col my-2">
                 {NamePL}<br/>
-                <input type="text"  value={value} maxLength={maxLength}
+                <input type="text" value={value} maxLength={maxLength} id={valueName+'Modal'} className="form-control"
                     onChange={e => this.setState(prevState => ({
                     newInfo: {
                         ...prevState.newInfo,
                         [valueName]: e.target.value
                     }   
                 }))}/>
+                <div className="invalid-feedback" id="firstInvalid">Niepoprawna wartość</div>
             </div>
         )
     }
@@ -195,45 +200,59 @@ class UserView extends React.Component{
 
     HistoryEntry(props2)
     {
+        //JSON template
+        /*
+        var pro = { 
+            order: {},
+            orderedProducts: [],
+            totalPrice: 0.0
+        }
+        */
+
+        var properties = {}
+        api.User().getOrderById(this.state.Id, props2.id)
+        .then(response => properties = response)
+        .catch(err=>console.log(err))
+
         return(
             <>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id={"panelsStayOpen-heading"+props2.id}>
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={"#panelsStayOpen-collapse"+props2.id} aria-expanded="true" aria-controls={"panelsStayOpen-collapse"+props2.id}>
-                        {props2.Date}
+                <div className="accordion-item">
+                    <h2 className="accordion-header" id={"panelsStayOpen-heading"+props2.id}>
+                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={"#panelsStayOpen-collapse"+props2.id} aria-expanded="true" aria-controls={"panelsStayOpen-collapse"+props2.id}>
+                        {props2.orderDate} &emsp; {properties.totalPrice} zł
                     </button>
                     </h2>
-                    <div id={"panelsStayOpen-collapse"+props2.id} class="accordion-collapse collapse" aria-labelledby={"panelsStayOpen-heading"+props2.id}>
-                        <div class="accordion-body">
-                            <ul class="list-group">
-                                {props2.Products?.map(item => {
-                                    console.log("here", item)
+                    <div id={"panelsStayOpen-collapse"+props2.id} className="accordion-collapse collapse" aria-labelledby={"panelsStayOpen-heading"+props2.id}>
+                        <div className="accordion-body">
+                            <ul className="list-group">
+                                {                                 
+                                properties.orderedProducts?.map(item => {
                                     if(item !== undefined)
                                         return(
-                                            <li class="list-group-item" key={item.id}>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="row">
+                                            <li className="list-group-item" key={item.id}>
+                                                <div className="row">
+                                                    <div className="col">
+                                                        <div className="row">
                                                             Nazwa produktu
                                                         </div>
-                                                        <div class="row">
-                                                            {item.Name} 
+                                                        <div className="row">
+                                                            {item.product.name} 
                                                         </div>
                                                     </div>
-                                                    <div class="col">
-                                                        <div class="row">
+                                                    <div className="col">
+                                                        <div className="row">
                                                             Zamówiona ilość
                                                         </div>
-                                                        <div class="row">
-                                                        {item.Amount}
+                                                        <div className="row">
+                                                        {item.quantity}
                                                         </div>
                                                     </div>
-                                                    <div class="col">
-                                                        <div class="row">
+                                                    <div className="col">
+                                                        <div className="row">
                                                             Cena jednostkowa
                                                         </div>
-                                                        <div class="row">
-                                                            {item.PricePerPiece} zł
+                                                        <div className="row">
+                                                            {item.price} zł
                                                         </div>
                                                     </div>
                                                 </div>
@@ -249,40 +268,22 @@ class UserView extends React.Component{
     }
 
     History(props){
-        var orderHistory = [ //JUST FOR TESTS TODO: Delete this
+        //JSON template
+        /*
+        var temp = [
             {
-                id: 1,
-                Date: "1.1.2022",
-                Products: [
-                    {
-                    Name: "Cement",
-                    Amount: 5,
-                    PricePerPiece: 10,
-                },
-                {
-                    Name: "Rura",
-                    Amount: 1,
-                    PricePerPiece: 11,
-                }
-                ]
-            },
-            {
-                id: 2,
-                Date: "2.1.2022",
-                Products: [
-                    {
-                        Name: "Dachówka",
-                        Amount: 100,
-                        PricePerPiece: 8
-                    },
-                    {
-                        Name: "Rura",
-                        Amount: 18,
-                        PricePerPiece: 11,
-                    }
-                ]
+                id: '1',
+                orderDate: '2.1.2022',
+                paymentMethod: 'BLIK'
             }
         ]
+        */
+
+        var orderHistory = []
+        api.User().getOrders(this.state.Id)
+        .then(response => orderHistory = response)
+        .catch(err => console.log(err));
+
 
         if(orderHistory.length > 0)
         {
@@ -290,7 +291,7 @@ class UserView extends React.Component{
                 <>
                     {orderHistory.map(i => {
                         return(
-                            <div class="accordion" id="accordionPanelsStayOpen">
+                            <div className="accordion" id="accordionPanelsStayOpen">
                                 {this.HistoryEntry(i)}
                             </div>
                         )
@@ -311,10 +312,68 @@ class UserView extends React.Component{
     Delete(props){
         return(
             <>
-                <h3 class="my-4">Czy aby na pewno chcesz usunąć twoje konto?</h3>
-                <input type="button" className="btn btn-danger" value="Usuń konto" />
+                <h3 className="my-4">Czy aby na pewno chcesz usunąć twoje konto?</h3>
+                <input type="button" className="btn btn-danger" value="Usuń konto" onClick={()=>
+                    api.User().delete(this.state.Id)
+                } />
             </>
         )
+    }
+
+    checkNewData()
+    {
+        var isGood = true;
+        if(this.state.newInfo.Name.match(/^[a-zA-Z]+$/) == null)
+        {
+            isGood = false;
+            document.getElementById('NameModal')?.classList.add("is-invalid");
+        }
+        else
+            document.getElementById('NameModal').classList.remove("is-invalid");
+        if(this.state.newInfo.Surname.match(/^[a-zA-Z]+$/) == null)
+        {
+            isGood = false;
+            document.getElementById('SurnameModal').classList.add("is-invalid");
+        }
+        else
+            document.getElementById('SurnameModal').classList.remove("is-invalid");
+        if(this.state.newInfo.Phone.match(/^(\+\d{2})?( )?\d{1,9}$/) == null)
+        {
+            isGood = false;
+            document.getElementById('PhoneModal').classList.add("is-invalid");
+        }
+        else
+            document.getElementById('PhoneModal').classList.remove("is-invalid");
+        if(this.state.newInfo.Street.match(/^[a-zA-Z]+$/) == null)
+        {
+            isGood = false;
+            document.getElementById('StreetModal').classList.add("is-invalid");
+        }
+        else
+            document.getElementById('StreetModal').classList.remove("is-invalid");
+        if(this.state.newInfo.HouseNumber.match(/^\d+(\/{1}\d+)?$/) == null)
+        {
+            isGood = false;
+            document.getElementById('HouseNumberModal').classList.add("is-invalid");
+        }
+        else
+            document.getElementById('HouseNumberModal').classList.remove("is-invalid");
+        if(this.state.newInfo.City.match(/^[a-zA-Z]+$/) == null)
+        {
+            isGood = false;
+            document.getElementById('CityModal').classList.add("is-invalid");
+        }
+        else
+            document.getElementById('CityModal').classList.remove("is-invalid");
+        if(this.state.newInfo.PostCode.match(/^\d+(-\d+)?$/) == null)
+        {
+            isGood = false;
+            document.getElementById('PostCodeModal').classList.add("is-invalid");
+        }
+        else
+            document.getElementById('PostCodeModal').classList.remove("is-invalid");
+
+        return isGood;
     }
 
 }

@@ -15,8 +15,8 @@ export default {
             logout: (username) => axios.post(url + "logout/", {Login: username}),
 
             //Order raports
-            getOrders: (userId) => axios.get(url+userId + "/report"),
-            getOrderById: (userId, orderId) => axios.get(url+userId+"/report/full/" + orderId) 
+            getOrders: (userId) => axios.get(url+userId + "report"),
+            getOrderById: (userId, orderId) => axios.get(url+userId+"report/full/" + orderId) 
             
         }
     },

@@ -124,7 +124,7 @@ class Register extends React.Component
         }
         else this.removeInvalid(ZIPCode);
 
-        if(this.state.Street.match(/^[a-zA-Z]+ \d+((\/){1}[0-9]+)?$/) == null)
+        if(this.state.Street.match(/^[a-zA-Z]+$/) == null)
         {
             allGood = false;
             this.addInvalid(Street);
