@@ -29,7 +29,7 @@ public class UserService {
     @Transactional
     public User newUser(UserDto userDto) throws SuchUsernameExistsException {
         Optional<User> usr = this.userRepository.findUserByUserName(userDto.userName());
-        if(!usr.isPresent()){
+        if(usr.isPresent()){
             throw new SuchUsernameExistsException("Username: " + usr.get().getUserName() + " already exists! Choose different one!");
         }
         User user = User.fromDto(userDto);
@@ -37,7 +37,6 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    @Transactional
     public boolean logIn(String username, String password){
         Optional<User> usr = this.userRepository.findUserByUserName(username);
         if(usr.isPresent()){
@@ -59,7 +58,6 @@ public class UserService {
         return false;
     }
 
-    @Transactional
     public boolean logOut(Long userId){
         User user = this.getUser(userId);
         user.setLoggedIn(false);

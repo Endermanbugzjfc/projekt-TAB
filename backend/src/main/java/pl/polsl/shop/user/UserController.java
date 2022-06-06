@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        this.userService.clearUserData(id);
+    public boolean deleteUser(@PathVariable Long id) {
+        return this.userService.clearUserData(id);
     }
 
     @GetMapping("/login/{id}")
@@ -57,7 +57,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDto updateUser(@RequestBody User newUser, @PathVariable Long id) {
-        return userService.updateUser(UserDto.fromUser(newUser), id);
+    public UserDto updateUser(@RequestBody UserDto newUserDto, @PathVariable Long id) {
+        return userService.updateUser(newUserDto, id);
     }
 }
