@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
+@Table(name="users")
 @Entity(name = "User")
 public class User {
 
@@ -207,8 +208,8 @@ public class User {
         user.setBirthDate(userDto.birthDate());
         user.setPesel(userDto.pesel());
         user.setEmploymentDate(userDto.employmentDate());
-        user.setAddress(userDto.address());
-        user.setShoppingCart(userDto.shoppingCart());
+        user.setAddress(Address.fromDto(userDto.addressDto()));
+        user.setShoppingCart(ShoppingCart.fromDto(userDto.shoppingCartDto()));
         return user;
     }
 }

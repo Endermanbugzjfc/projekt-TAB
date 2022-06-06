@@ -1,5 +1,6 @@
 package pl.polsl.shop.user.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.shop.user.SuchUsernameExistsException;
@@ -12,6 +13,7 @@ public class UserController {
 
     private UserService userService;
 
+    @Autowired
     public UserController(UserService userService){
         this.userService = userService;
     }

@@ -1,7 +1,6 @@
 package pl.polsl.shop.user.rest;
 
-import pl.polsl.shop.cart.ShoppingCart;
-import pl.polsl.shop.user.Address;
+import pl.polsl.shop.cart.ShoppingCartDto;
 import pl.polsl.shop.user.Type;
 import pl.polsl.shop.user.User;
 
@@ -11,8 +10,8 @@ import java.util.Date;
 
 public record UserDto(Long id, String userName, String password, String legalName,
                       String surname, String phoneNumber, Type type, Date birthDate,
-                      String pesel, LocalDate employmentDate, Address address,
-                      ShoppingCart shoppingCart
+                      String pesel, LocalDate employmentDate, AddressDto addressDto,
+                      ShoppingCartDto shoppingCartDto
                       ) implements Serializable {
 
     public static UserDto fromUser(User user){
@@ -22,7 +21,7 @@ public record UserDto(Long id, String userName, String password, String legalNam
                 user.getSurname(), user.getPhoneNumber(),
                 user.getType(), user.getBirthDate(),
                 user.getPesel(), user.getEmploymentDate(),
-                user.getAddress(), user.getShoppingCart()
+                AddressDto.fromAddress(user.getAddress()), ShoppingCartDto.fromShoppingCart(user.getShoppingCart())
         );
     }
 }
