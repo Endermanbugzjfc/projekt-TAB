@@ -1,7 +1,5 @@
 package pl.polsl.shop.cart;
 
-import pl.polsl.shop.cart.SelectedProduct;
-
 import java.util.Date;
 import java.util.List;
 

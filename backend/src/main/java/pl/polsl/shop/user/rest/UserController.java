@@ -1,7 +1,10 @@
-package pl.polsl.shop.user;
+package pl.polsl.shop.user.rest;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.polsl.shop.user.SuchUsernameExistsException;
+import pl.polsl.shop.user.User;
+import pl.polsl.shop.user.UserService;
 
 @RestController
 @RequestMapping("/user")

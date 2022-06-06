@@ -1,12 +1,13 @@
 package pl.polsl.shop.user;
 
 import pl.polsl.shop.cart.ShoppingCart;
+import pl.polsl.shop.user.rest.UserDto;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Entity(name = "users")
+@Entity(name = "User")
 public class User {
 
     @Id
@@ -58,7 +59,8 @@ public class User {
     @Transient
     private boolean loggedIn;
 
-    public User() { }
+    public User() {
+    }
 
     public User(String userName, String password, String legalName, String surname, String phoneNumber, Type type, Date birthDate, String pesel, LocalDate employmentDate, Address address) {
         this.userName = userName;
@@ -178,17 +180,16 @@ public class User {
         this.loggedIn = loggedIn;
     }
 
-    public boolean clearUserData(){
+    public boolean clearUserData() {
         setPassword("");
         setLegalName("");
         setSurname("");
         setPhoneNumber("");
         setPesel("");
         setAddress(null);
-        if(getType().equals(Type.CUSTOMER)){
+        if (getType().equals(Type.CUSTOMER)) {
             setType(Type.DELETED);
-        }
-        else{
+        } else {
             setType(Type.FIRED);
         }
         return true;
@@ -208,7 +209,6 @@ public class User {
         user.setEmploymentDate(userDto.employmentDate());
         user.setAddress(userDto.address());
         user.setShoppingCart(userDto.shoppingCart());
-        user.setLoggedIn(userDto.isLoggedIn());
         return user;
     }
 }
