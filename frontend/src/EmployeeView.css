@@ -6,6 +6,10 @@
     height: 700px;
 }
 
+.dateSelect{
+    width: 220px;
+}
+
 .report{
     background-color: rgb(230, 230, 230);   
     margin-left: 15%;

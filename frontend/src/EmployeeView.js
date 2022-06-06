@@ -34,9 +34,14 @@ class EmployeeView extends React.Component{
                 Street: '',
                 Salary: 0,
                 EmploymentDate: ''
-            }
+            },
+            currentRaport: null,
+            raportFrom: new Date(),
+            raportTo: new Date(),
+            raportProductId: '',
+            RaportClass: new Raport(),
         }
-        this.ShowReport = this.ShowReport.bind(this);
+        //this.ShowReport = this.ShowReport.bind(this);
     }
 
     componentDidMount(){
@@ -50,10 +55,9 @@ class EmployeeView extends React.Component{
                 Name: response.data.Name,
                 Surname: response.data.Surname,
                 Phone: response.data.Phone,
-                PostCode: addr[4],
-                City: addr[3],
+                PostCode: addr[3],
+                City: addr[2],
                 HouseNumber: addr[1],
-                ApatrmentNumber: addr[2],
                 Street: addr[0],
                 EmploymentDate: response.data.EmploymentDate,
                 BirthDay: response.data.BirthDay,
@@ -96,7 +100,7 @@ class EmployeeView extends React.Component{
                                 {this.EmployeeData()}
                             </div>
                             <div className="tab-pane fade" id="generate_report" role="tabpanel" aria-labelledby="generate_report_list">
-                                {this.GenerateReport()}
+                                {/*this.GenerateReport()*/ this.state.RaportClass.GenerateReport()}
                             </div>
                             <div className="tab-pane fade" id="show_stock" role="tabpanel" aria-labelledby="stock_list">
                                 {this.ShowStock()}
@@ -212,59 +216,6 @@ class EmployeeView extends React.Component{
                   
         return Address;
     }
-
-    // TODO: date_from and date_to should have the same size (I don't know why they are different)
-    GenerateReport(props){
-        return(
-            <>
-            <h2>Wygeneruj raport</h2>
-            <div className="row">
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="date_from">Od:</span>
-                    <input type="date" className="form-control" aria-label="date_from_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-            </div>
-            <div className="row">
-                <div className="input-group mb-3">
-                    <span className="input-group-text" id="date_to">Do:</span>
-                    <input type="date" iclass="form-control" aria-label="date_to_input" aria-describedby="inputGroup-sizing-default"/>
-                </div>
-            </div>
-            <div className="row">
-                <div>
-                    <button type="button" className="btn btn-success" onClick={this.ShowReport}>Generuj</button>
-                </div>
-            </div>
-            </>
-        )
-    }
-
-    // TODO: Display it after clicking on "Generuj" button by the user
-    ShowReport(props){
-           return(
-               <>
-               <div className="report">
-                    <h3>Raport pieniężny za okres <b>-</b></h3>
-                    <div className="row me-5">
-                        <div className="my-3">
-                            Wydatki:  <b>-</b>
-                        </div>
-                    </div>
-                    <div className="row me-5">
-                        <div className="my-1">
-                            Przychód:  <b>-</b>
-                        </div>
-                    </div>
-                    <div className="row me-5">
-                        <div className="my-1">
-                            Dochód:  <b>-</b>
-                        </div>
-                    </div>
-                </div>
-               </>
-           )
-    }
-
     // TODO: implement displaying stock
     ShowStock(props){
         return(
@@ -272,6 +223,104 @@ class EmployeeView extends React.Component{
                 Stock here
             </>
         )
+    }
+
+}
+
+
+
+class Raport extends React.Component
+{
+    constructor(props)
+    {
+        super(props)
+        this.state = {
+            currentRaport: null,
+            raportFrom: new Date(),
+            raportTo: new Date(),
+            raportProductId: '',
+            selectedOption: '0',
+        }
+    }
+
+    GenerateReport(props){
+        return(
+            <>
+            <h2>Wygeneruj raport</h2>
+            <div className="row">
+                <div className="input-group mb-3 dateSelect row mx-1">
+                    <span className="input-group-text" id="date_from">Od:</span>
+                    <input type="date" className="form-control" aria-label="date_from_input" value={this.state.raportFrom} aria-describedby="inputGroup-sizing-default"
+                     onChange={
+                        e => this.setState({raportFrom: e.target.value})
+                    } />
+                </div>
+                <div className="input-group mb-3 dateSelect row mx-1">
+                    <span className="input-group-text" id="date_to">Do:</span>
+                    <input type="date" className="form-control" aria-label="date_to_input" value={this.state.raportTo} aria-describedby="inputGroup-sizing-default"
+                    onChange={e => this.setState({raportTo: e.target.value})}
+                    />
+                </div>
+                <div className="col-4 mx-1">
+                    <div className="row">
+                        <select className="form-select"> {/**TODO: selected option get it */}
+                            <option value="0">Całokształt</option>
+                            <option value="1">Dla pojedyńczgo produktu</option>
+                        </select>
+                    </div>
+                    <div className="row mt-2">
+                        <input type="text" placeholder="ID produktu" value={this.state.raportProductId} onChange={(e) => this.setState({raportProductId: e.target.value})}/>
+                    </div>
+                </div>
+            </div>
+            <div className="row">
+                <div>
+                    <button type="button" className="btn btn-success" onClick={() => this.CheckRaportRequest()}>Generuj</button>
+                </div>
+            </div>
+            {this.state.currentRaport}
+            </>
+        )
+    }
+
+    CheckRaportRequest()
+    {
+        var raport;
+        if(this.state.raportFrom > this.state.raportTo)
+        { 
+            raport = <> Data początkowa nie może być później niż data końcowa! </>
+        }
+        else if(this.state.raportProductId.length < 0)
+        {
+            raport = <> Nie podano id produktu! </>
+        }
+        console.log(this.state.selectedOption)
+        this.setState({currentRaport: raport})
+    }
+
+    ShowReport(props){
+        var raport = 
+               <>
+               <div className="report">
+                    <h3>Raport pieniężny za okres <br/> <b>{this.state.raportFrom} - {this.state.raportTo}</b></h3>
+                    <div className="row me-5">
+                        <div className="my-2">
+                            Wydatki:  <b>-</b>
+                        </div>
+                    </div>
+                    <div className="row me-5">
+                        <div className="my-2">
+                            Przychód:  <b>-</b>
+                        </div>
+                    </div>
+                    <div className="row me-5">
+                        <div className="my-2">
+                            Dochód:  <b>-</b>
+                        </div>
+                    </div>
+                </div>
+               </>
+        this.setState({currentRaport: raport})
     }
 
 }
