@@ -1,5 +1,6 @@
 package pl.polsl.shop.cart;
 
+import pl.polsl.shop.cart.rest.ShoppingCartDto;
 import pl.polsl.shop.product.Product;
 import pl.polsl.shop.user.User;
 
@@ -7,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity(name = "shopping_carts")
+@Entity(name = "ShoppingCart")
 public class ShoppingCart {
 
     @Id
@@ -88,5 +89,14 @@ public class ShoppingCart {
             this.itemsAmount--;
         }
         return removed;
+    }
+
+    @Transient
+    public static ShoppingCart fromDto(ShoppingCartDto shoppingCartDto) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setCreationDate(shoppingCartDto.creationDate());
+        shoppingCart.setItemsAmount(shoppingCartDto.itemsAmount());
+        shoppingCart.setSelectedProducts(shoppingCartDto.selectedProducts());
+        return shoppingCart;
     }
 }
