@@ -7,7 +7,8 @@ const UserSlice = createSlice(
             loggedIn: false,
             id: "",
             login: "",
-            name: ""
+            name: "",
+            role: ""
         },
         reducers: {
             login: (state, user) => {
@@ -15,6 +16,7 @@ const UserSlice = createSlice(
                 state.id = user.payload.id;
                 state.login = user.payload.login;
                 state.name = user.payload.name;
+                state.role = user.payload.role;
                 state.loggedIn = true;
             },
             isLoggedIn : (state) =>{ return state.loggedIn },
@@ -24,6 +26,7 @@ const UserSlice = createSlice(
                 state.id = "";
                 state.login = "";
                 state.name = "";
+                state.role = "";
             }
         }
     }
