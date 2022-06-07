@@ -35,11 +35,11 @@ class EmployeeView extends React.Component{
                 Salary: 0,
                 EmploymentDate: ''
             },
+
             currentRaport: null,
-            raportFrom: new Date(),
-            raportTo: new Date(),
+            raportFrom: null,
+            raportTo: null,
             raportProductId: '',
-            RaportClass: new Raport(),
         }
         //this.ShowReport = this.ShowReport.bind(this);
     }
@@ -100,7 +100,7 @@ class EmployeeView extends React.Component{
                                 {this.EmployeeData()}
                             </div>
                             <div className="tab-pane fade" id="generate_report" role="tabpanel" aria-labelledby="generate_report_list">
-                                {/*this.GenerateReport()*/ this.state.RaportClass.GenerateReport()}
+                                {this.GenerateReport() /*this.state.RaportClass.GenerateReport()*/}
                             </div>
                             <div className="tab-pane fade" id="show_stock" role="tabpanel" aria-labelledby="stock_list">
                                 {this.ShowStock()}
@@ -225,24 +225,6 @@ class EmployeeView extends React.Component{
         )
     }
 
-}
-
-
-
-class Raport extends React.Component
-{
-    constructor(props)
-    {
-        super(props)
-        this.state = {
-            currentRaport: null,
-            raportFrom: new Date(),
-            raportTo: new Date(),
-            raportProductId: '',
-            selectedOption: '0',
-        }
-    }
-
     GenerateReport(props){
         return(
             <>
@@ -250,80 +232,120 @@ class Raport extends React.Component
             <div className="row">
                 <div className="input-group mb-3 dateSelect row mx-1">
                     <span className="input-group-text" id="date_from">Od:</span>
-                    <input type="date" className="form-control" aria-label="date_from_input" value={this.state.raportFrom} aria-describedby="inputGroup-sizing-default"
-                     onChange={
-                        e => this.setState({raportFrom: e.target.value})
-                    } />
+                    <input type="date" className="form-control" aria-label="date_from_input" aria-describedby="inputGroup-sizing-default" id="raportDateFrom" onChange={(e)=>this.setState({raportFrom : e.target.value})} />
                 </div>
                 <div className="input-group mb-3 dateSelect row mx-1">
                     <span className="input-group-text" id="date_to">Do:</span>
-                    <input type="date" className="form-control" aria-label="date_to_input" value={this.state.raportTo} aria-describedby="inputGroup-sizing-default"
-                    onChange={e => this.setState({raportTo: e.target.value})}
-                    />
+                    <input type="date" className="form-control" aria-label="date_to_input" aria-describedby="inputGroup-sizing-default" id="raportDateTo" onChange={(e)=>this.setState({raportTo : e.target.value})}/>
                 </div>
                 <div className="col-4 mx-1">
                     <div className="row">
-                        <select className="form-select"> {/**TODO: selected option get it */}
+                        <select className="form-select" id="raportRange"> {/**TODO: selected option get it */}
                             <option value="0">Całokształt</option>
                             <option value="1">Dla pojedyńczgo produktu</option>
                         </select>
                     </div>
                     <div className="row mt-2">
-                        <input type="text" placeholder="ID produktu" value={this.state.raportProductId} onChange={(e) => this.setState({raportProductId: e.target.value})}/>
+                        <input type="text" placeholder="ID produktu" id="IDproduktu" value={this.state.raportProductId} onChange={(e) => this.setState({raportProductId: e.target.value})}/>
                     </div>
                 </div>
             </div>
             <div className="row">
                 <div>
-                    <button type="button" className="btn btn-success" onClick={() => this.CheckRaportRequest()}>Generuj</button>
+                    <button type="button" className="btn btn-success" onClick={() => this.setState({currentRaport: this.CheckRaportRequest()})}>Generuj</button>
                 </div>
             </div>
-            {this.state.currentRaport}
+            <div className="mt-3">
+                {this.state.currentRaport}
+            </div>
             </>
         )
     }
 
     CheckRaportRequest()
     {
-        var raport;
-        if(this.state.raportFrom > this.state.raportTo)
+        var raport = <>io</>;
+        if(this.state.raportFrom ==null || this.state.raportTo == null || this.state.raportFrom === "" ||this.state.raportTo === "" )
+        {
+            raport = <> Nie podano przedziału czasowego! </>
+        }
+        else if(this.state.raportFrom > this.state.raportTo)
         { 
             raport = <> Data początkowa nie może być później niż data końcowa! </>
         }
-        else if(this.state.raportProductId.length < 0)
+        else if(this.state.raportProductId.length < 1 && document.getElementById("raportRange").value === "1") 
         {
+            
             raport = <> Nie podano id produktu! </>
         }
-        console.log(this.state.selectedOption)
-        this.setState({currentRaport: raport})
+        else 
+        {
+            raport = this.ShowReport(document.getElementById("raportRange").value);
+        }
+        return raport;
     }
 
-    ShowReport(props){
-        var raport = 
+    ShowReport(index){
+        var dateFrom = document.getElementById("raportDateFrom").value
+        var dateTo = document.getElementById("raportDateTo").value
+        var RaportInfo = {productName: "Błąd", totalExpense: "Błąd", totalIncome: "Błąd"};
+        if(index === "0")
+        {
+            api.Product().getFullReport()
+            .then(
+                response => RaportInfo = response
+            )
+            .catch(
+                err => {
+                    console.log(err)
+                }
+            )
+        }
+        else
+        {
+            api.Product().getProductReport(this.state.raportProductId)
+            .then(
+                response => RaportInfo = response
+            )
+            .catch(
+                err => {
+                    console.log(err)
+                }
+            )
+        }
+
+        return( 
                <>
                <div className="report">
-                    <h3>Raport pieniężny za okres <br/> <b>{this.state.raportFrom} - {this.state.raportTo}</b></h3>
-                    <div className="row me-5">
+                    <h3>Raport pieniężny za okres <br/> <b>{dateFrom} - {dateTo}</b></h3>
+                    <div className="row me-1">
                         <div className="my-2">
-                            Wydatki:  <b>-</b>
+                            Nazwa produktu:  <b>{RaportInfo.productName}</b>
                         </div>
                     </div>
-                    <div className="row me-5">
+                    <div className="row me-1">
                         <div className="my-2">
-                            Przychód:  <b>-</b>
+                            Wydatki:  <b>{RaportInfo.totalExpense}</b>
                         </div>
                     </div>
-                    <div className="row me-5">
+                    <div className="row me-1">
                         <div className="my-2">
-                            Dochód:  <b>-</b>
+                            Przychód:  <b>{RaportInfo.totalIncome}</b>
+                        </div>
+                    </div>
+                    <div className="row me-1">
+                        <div className="my-2">
+                            Dochód:  <b>{RaportInfo.totalIncome - RaportInfo.totalExpense}</b>
                         </div>
                     </div>
                 </div>
                </>
-        this.setState({currentRaport: raport})
+        )
+        //this.setState({currentRaport: raport})
+        //return raport;
     }
 
-}
 
+}
 
 export default EmployeeView
