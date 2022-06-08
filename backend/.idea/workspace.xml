@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="598b973d-5ec1-4f57-8753-5a9177b51768" name="Changes" comment="" />
+    <list default="true" id="c9890227-25f8-4852-b2dd-542309d3766f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TAB.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/polsl/shop/order/OrderReportDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/polsl/shop/order/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/polsl/shop/order/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/polsl/shop/order/OrderedProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/polsl/shop/order/OrderedProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/polsl/shop/order/OrderedProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/polsl/shop/order/OrderedProductRepository.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,6 +59,15 @@
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
