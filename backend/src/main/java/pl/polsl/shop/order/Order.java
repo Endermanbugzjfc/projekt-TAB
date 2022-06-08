@@ -6,7 +6,8 @@ import pl.polsl.shop.user.User;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity(name = "orders")
+@Table(name = "orders")
+@Entity(name = "Order")
 public class Order {
 
     @Id
@@ -77,7 +78,7 @@ public class Order {
     @Transient
     public static Order fromDTO(OrderDto orderDto) {
         Order order = new Order();
-        order.setUser(orderDto.userDto());
+        order.setUser(User.fromDto(orderDto.userDto()));
         order.setOrderDate(orderDto.orderDate());
         order.setPaymentMethod(orderDto.paymentMethod());
         return order;

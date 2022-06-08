@@ -12,7 +12,7 @@ public record OrderDto(Long id, UserDto userDto,
 
     public static OrderDto fromOrder(Order order) {
         return new OrderDto(
-                order.getId(), order.getUser(),
+                order.getId(), UserDto.fromUser(order.getUser()),
                 order.getOrderDate(), order.getPaymentMethod()
         );
     }

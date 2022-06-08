@@ -1,5 +1,6 @@
 package pl.polsl.shop.order;
 
+import pl.polsl.shop.order.rest.OrderedProductDto;
 import pl.polsl.shop.product.Product;
 
 import javax.persistence.*;
@@ -76,5 +77,14 @@ public class OrderedProduct {
     }
 
     public OrderedProduct() {
+    }
+
+    @Transient
+    public static OrderedProduct fromDto(OrderedProductDto orderedProductDto){
+        OrderedProduct orderedProduct = new OrderedProduct();
+        orderedProduct.setQuantity(orderedProductDto.quantity());
+        orderedProduct.setProduct(Product.fromDto(orderedProductDto.product()));
+        orderedProduct.setPrice(orderedProductDto.price());
+        return orderedProduct;
     }
 }
