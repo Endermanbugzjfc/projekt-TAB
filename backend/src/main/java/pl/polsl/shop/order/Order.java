@@ -33,7 +33,7 @@ public class Order {
     @Column(name = "payment_method", nullable = false)
     private PaymentMethod paymentMethod;
 
-    public Order(){
+    public Order() {
 
     }
 
