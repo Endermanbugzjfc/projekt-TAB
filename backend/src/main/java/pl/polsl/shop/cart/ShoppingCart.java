@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity(name = "ShoppingCart")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
 
     @Id
@@ -95,8 +96,7 @@ public class ShoppingCart {
     public static ShoppingCart fromDto(ShoppingCartDto shoppingCartDto) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setCreationDate(shoppingCartDto.creationDate());
-        shoppingCart.setItemsAmount(shoppingCartDto.itemsAmount());
-        shoppingCart.setSelectedProducts(shoppingCartDto.selectedProducts());
+        shoppingCart.setSelectedProducts(shoppingCartDto.selectedProducts().stream().map(SelectedProduct::fromDto).toList());
         return shoppingCart;
     }
 }

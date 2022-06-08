@@ -1,5 +1,7 @@
 package pl.polsl.shop.cart;
 
+import pl.polsl.shop.cart.rest.SelectedProductDto;
+import pl.polsl.shop.cart.rest.ShoppingCartDto;
 import pl.polsl.shop.product.Product;
 
 import javax.persistence.*;
@@ -61,4 +63,10 @@ public class SelectedProduct {
         this.product = product;
     }
 
+    @Transient
+    public static SelectedProduct fromDto(SelectedProductDto selectedProductDto) {
+        SelectedProduct selectedProduct = new SelectedProduct();
+        selectedProduct.setCart(shoppingCartDto.creationDate());
+        return selectedProduct;
+    }
 }

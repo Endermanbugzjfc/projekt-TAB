@@ -1,5 +1,6 @@
 package pl.polsl.shop.cart.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.shop.cart.ShoppingCartService;
 import pl.polsl.shop.product.ProductService;
@@ -12,6 +13,7 @@ public class ShoppingCartController {
     private UserService userService;
     private ProductService productService;
 
+    @Autowired
     public ShoppingCartController(ShoppingCartService shoppingCartService, UserService userService, ProductService productService){
         this.shoppingCartService = shoppingCartService;
         this.userService = userService;
