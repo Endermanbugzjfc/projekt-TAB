@@ -8,23 +8,6 @@ class AdminView extends React.Component {
 
     constructor(props) {
         super(props);
-
-        /* USER_DTO:
-        userData = {
-            id: '',
-            userName: '',
-            password: '',
-            legalName: '',
-            surname: '',
-            phoneNumber:'',
-            type: '',
-            birthDay: '',
-            pesel: '',
-            employmentDate: '',
-            address : {id, country, zipCode, location, streetName, streetNumber},
-            shoppingCart: {id, selectedProducts: []}
-        }
-        */
         this.state = {
             Id: '',
             Email : '', //login

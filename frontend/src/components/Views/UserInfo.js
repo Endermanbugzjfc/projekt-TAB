@@ -1,10 +1,26 @@
 import React from "react"
 import api from "../../actions/api"
 import { store } from "../../actions/store"
-import { login } from "../../reducers/dUser"
 
 class UserInfo extends React.Component
 {
+    /* USER_DTO:
+        userData = {
+            id: '',
+            userName: '',
+            password: '',
+            legalName: '',
+            surname: '',
+            phoneNumber:'',
+            type: '',
+            birthDay: '',
+            pesel: '',
+            employmentDate: '',
+            address : {id, country, zipCode, location, streetName, streetNumber},
+            shoppingCart: {id, selectedProducts: []}
+        }
+    */
+
     constructor(props)
     {
         super(props)
@@ -33,8 +49,6 @@ class UserInfo extends React.Component
                 City: '',
                 HouseNumber: '',
                 Street: '',
-                Type: '', //role
-                EmploymentDate: '',
             },
         }
     }
@@ -73,8 +87,6 @@ class UserInfo extends React.Component
                 City: this.state.City,
                 HouseNumber: this.state.HouseNumber,
                 Street: this.state.Street,
-                Type: this.state.Type,
-                EmploymentDate: this.state.EmploymentDate
             }
         }))
     }
@@ -201,7 +213,9 @@ class UserInfo extends React.Component
         {
             e.currentTarget.setAttribute("data-bs-dismiss", "modal");
 
-            api.User().update(this.state.Id, this.state.newInfo)
+            var newUserInfo = this.findChanges();
+
+            api.User().update(this.state.Id, newUserInfo)
             .then(() => {})
             .catch(err => 
                 {
@@ -210,6 +224,19 @@ class UserInfo extends React.Component
                 });
             e.currentTarget.click();
         }
+    }
+
+    findChanges()
+    {
+        var userInfo = {}
+        if(this.state.Name !== this.state.newInfo.Name) userInfo.legalName = this.state.newInfo.Name
+        if(this.state.Surname !== this.state.newInfo.Surname) userInfo.surname = this.state.newInfo.Surname
+        if(this.state.Phone !== this.state.newInfo.Phone) userInfo.phoneNumber = this.state.newInfo.Phone
+        if(this.state.PostCode !== this.state.newInfo.PostCode) userInfo.zipCode = this.state.newInfo.PostCode
+        if(this.state.City !== this.state.newInfo.City) userInfo.location = this.state.newInfo.City
+        if(this.state.HouseNumber !== this.state.newInfo.HouseNumber) userInfo.streetNumber = this.state.newInfo.HouseNumber
+        if(this.state.Street !== this.state.newInfo.Street) userInfo.streetName = this.state.newInfo.Street
+        return userInfo;
     }
 
     checkNewData()

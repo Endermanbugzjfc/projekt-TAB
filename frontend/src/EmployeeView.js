@@ -2,6 +2,7 @@ import React from "react";
 import api from "./actions/api.js";
 import { store } from "./actions/store.js";
 import Navbar from "./components/Navbar.js";
+import UserInfo from "./components/Views/UserInfo.js";
 import "./EmployeeView.css"
 
 class EmployeeView extends React.Component{
@@ -10,34 +11,6 @@ class EmployeeView extends React.Component{
         super(props);
 
         this.state = {
-            Id: '',
-            Email : '', //login
-            Name: '',
-            Surname: '',
-            BirthDay: '',
-            Pesel: '',
-            Phone: '',
-            PostCode: '',
-            City: '',
-            HouseNumber: '',
-            Street: '',
-            Type: '', //role
-            EmploymentDate: '',
-            newInfo : {
-                Email: '',
-                Name: '',
-                Surname: '',
-                BirthDay: '',
-                Pesel: '',
-                Phone: '',
-                PostCode: '',
-                City: '',
-                HouseNumber: '',
-                Street: '',
-                Type: '', //role
-                EmploymentDate: '',
-            },
-
             currentRaport: null,
             raportFrom: null,
             raportTo: null,
@@ -47,43 +20,6 @@ class EmployeeView extends React.Component{
     }
 
     componentDidMount(){
-        api.User().getUserById(store.getState().persistedReducer.id)
-        .then(response =>
-            {
-                this.setState({
-                Id: response.data.id,
-                Email: response.data.userName,
-                Name: response.data.legalName,
-                Surname: response.data.surname,
-                BirthDay: response.data.birthDay,
-                Pesel: response.data.pesel,
-                Phone: response.data.phoneNumber,
-                PostCode: response.data.address.zipCode,
-                City: response.data.address.location,
-                HouseNumber: response.data.address.streetNumber,
-                Street: response.data.address.streetName,
-                Type: response.data.type,
-                EmploymentDate: response.data.employmentDate,
-                })
-            })
-        .catch(err => console.log(err));
-
-        this.setState(() => ({
-            newInfo: {
-                Email: this.state.Email,
-                Name: this.state.Name,
-                Surname: this.state.Surname,
-                BirthDay: this.state.BirthDay,
-                Pesel: this.state.Pesel,
-                Phone: this.state.Phone,
-                PostCode: this.state.PostCode,
-                City: this.state.City,
-                HouseNumber: this.state.HouseNumber,
-                Street: this.state.Street,
-                Type: this.state.Type,
-                EmploymentDate: this.state.EmploymentDate
-            }
-        }))
     }   
 
     render(){
@@ -101,7 +37,7 @@ class EmployeeView extends React.Component{
                     <div className="col">
                         <div className="tab-content" id="nav-tabContent">
                             <div className="tab-pane fade show active" id="employee_data" role="tabpanel" aria-labelledby="employee_data_list">
-                                {this.EmployeeData()}
+                                <UserInfo/>
                             </div>
                             <div className="tab-pane fade" id="generate_report" role="tabpanel" aria-labelledby="generate_report_list">
                                 {this.GenerateReport() /*this.state.RaportClass.GenerateReport()*/}
@@ -116,110 +52,6 @@ class EmployeeView extends React.Component{
         )
     }
     
-    EmployeeData(props){
-        return(
-            <>
-                <div className="row me-5">
-                    <div className="my-2">
-                        Imię:  <b>{this.state.Name}</b>
-                    </div>
-                </div>
-                <div className="row me-5">
-                    <div className="my-2">
-                        Nazwisko:  <b>{this.state.Surname}</b>
-                    </div>
-                </div>
-                <div className="row me-5">
-                    <div className="my-2">
-                        Pesel:  <b>{this.state.Pesel}</b>
-                    </div>
-                </div>
-                <div className="row me-5">
-                    <div className="my-2">
-                        Numer telefonu: <b>{this.state.Phone}</b>
-                    </div>
-                </div>
-                <div className="row me-5">
-                    <div className="my-2">
-                        Adres: <b>{this.getPrettyAddress()}</b> 
-                    </div>
-                </div>
-                <div className="row me-5">
-                    <div className="my-2">
-                        Data zatrudnienia:  <b>{this.state.EmploymentDate}</b>
-                    </div>
-                </div>
-                <button className="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#EditPersonalInfo" >Edytuj dane</button>
-
-                <div className="modal fade" id="EditPersonalInfo" data-bs-backdrop="static" tabIndex="-1" aria-labelledby="EditPersonalInfoLabel" aria-hidden="true">
-                    <div className="modal-dialog modal-lg">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="EditPersonalInfoLabel">Edycja informacji</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                                <form>
-                                    <div className="row">
-                                        {this.modalBodyElement("Imię", "text", this.state.newInfo.Name, "Name")}
-                                        {this.modalBodyElement("Nazwisko", "text", this.state.newInfo.Surname, "Surname")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalBodyElement("Telefon", "tel", this.state.newInfo.Phone, "Phone")}
-                                        {this.modalBodyElement("Data zatrudnienia", "date", this.state.newInfo.EmploymentDate, "EmploymentDate")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalBodyElement("Ulica", "text", this.state.newInfo.Street, "Street")}
-                                        {this.modalBodyElement("Numer domu", "text", this.state.newInfo.HouseNumber, "HouseNumber")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalBodyElement("Miasto", "text", this.state.newInfo.City, "City")}
-                                        {this.modalBodyElement("Kod pocztowy", "text", this.state.newInfo.PostCode, "PostCode")}
-                                    </div>
-                                </form>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={()=>this.saveNewData()}>Zapisz</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-            </>
-        )
-    }
-
-    saveNewData()
-    {
-        api.User().update(this.state.Id, this.state.newInfo)
-    }
-
-    modalBodyElement(text, type, value, stateName)
-    {
-        return(
-            <>
-                <div className="col">
-                    {text} <br/>
-                    <input type={type} value={value}
-                        onChange={e => this.setState(prevState => ({
-                            newInfo: {
-                                ...prevState.newInfo,
-                                [stateName]: e.target.value
-                            }
-                        }))} />
-                </div>
-            </>
-        )
-    }
-
-    getPrettyAddress()
-    {
-        var Address = '';
-        Address += this.state.Street + ' ' + this.state.HouseNumber + ', ';
-        Address += this.state.PostCode + ' ' + this.state.City;
-                  
-        return Address;
-    }
     // TODO: implement displaying stock
     ShowStock(props){
         return(
