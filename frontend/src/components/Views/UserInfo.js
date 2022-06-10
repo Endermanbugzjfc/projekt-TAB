@@ -1,6 +1,7 @@
 import React from "react"
 import api from "../../actions/api"
 import { store } from "../../actions/store"
+import { login } from "../../reducers/dUser"
 
 class UserInfo extends React.Component
 {
@@ -20,6 +21,7 @@ class UserInfo extends React.Component
             HouseNumber: '',
             Street: '',
             Type: '', //role
+            EmploymentDate: '',
             newInfo : {
                 Email: '',
                 Name: '',
@@ -32,6 +34,7 @@ class UserInfo extends React.Component
                 HouseNumber: '',
                 Street: '',
                 Type: '', //role
+                EmploymentDate: '',
             },
         }
     }
@@ -39,22 +42,23 @@ class UserInfo extends React.Component
     componentDidMount(){
         api.User().getUserById(store.getState().persistedReducer.id)
         .then(response =>
-            {
-                this.setState({
-                Id: response.data.id,
-                Email: response.data.userName,
-                Name: response.data.legalName,
-                Surname: response.data.surname,
-                BirthDay: response.data.birthDay,
-                Pesel: response.data.pesel,
-                Phone: response.data.phoneNumber,
-                PostCode: response.data.address.zipCode,
-                City: response.data.address.location,
-                HouseNumber: response.data.address.streetNumber,
-                Street: response.data.address.streetName,
-                Type: response.data.type,
-                })
+        {
+            this.setState({
+            Id: response.data.id,
+            Email: response.data.userName,
+            Name: response.data.legalName,
+            Surname: response.data.surname,
+            BirthDay: response.data.birthDay,
+            Pesel: response.data.pesel,
+            Phone: response.data.phoneNumber,
+            PostCode: response.data.address.zipCode,
+            City: response.data.address.location,
+            HouseNumber: response.data.address.streetNumber,
+            Street: response.data.address.streetName,
+            Type: response.data.type,
+            EmploymentDate: response.data.employmentDate,
             })
+        })
         .catch(err => console.log(err));
         //Setting the current informations for the change form modal
         this.setState(() => ({
@@ -70,36 +74,57 @@ class UserInfo extends React.Component
                 HouseNumber: this.state.HouseNumber,
                 Street: this.state.Street,
                 Type: this.state.Type,
+                EmploymentDate: this.state.EmploymentDate
             }
         }))
-
     }
     
 
     render()
     {
-        return(
+        //console.log(store.getState().persistedReducer.role)
+        var list = []
+        list.push(<>
+            <div className="row me-5">
+                <div className="my-3">
+                    Imię:  <b> {this.state.Name} </b>
+                </div>
+            </div>
+            <div className="row me-5">
+                <div className="my-1">
+                    Nazwisko:  <b> {this.state.Surname}</b>
+                </div>
+            </div>
+            <div className="row me-5">
+                <div className="my-3">
+                    Numer telefonu: <b>{this.state.Phone}</b>
+                </div>
+            </div>
+            <div className="row me-5">
+                <div className="my-1">
+                    Adres:  <b>{this.getPrettyAddress()}</b>
+                </div>
+            </div>
+        </>
+        )
+        if(store.getState().persistedReducer.role !== "CUSTOMER")
+            list.push(
+                <>
+                <div className="row me-5">
+                        <div className="my-2">
+                            Pesel:  <b>{this.state.Pesel}</b>
+                        </div>
+                    </div>
+                    <div className="row me-5">
+                        <div className="my-2">
+                            Data zatrudnienia:  <b>{this.state.EmploymentDate}</b>
+                        </div>
+                    </div>
+                </>
+            )
+        return( 
             <>
-                <div className="row me-5">
-                    <div className="my-3">
-                        Imię:  <b> {this.state.Name} </b>
-                    </div>
-                </div>
-                <div className="row me-5">
-                    <div className="my-1">
-                        Nazwisko:  <b> {this.state.Surname}</b>
-                    </div>
-                </div>
-                <div className="row me-5">
-                    <div className="my-3">
-                        Numer telefonu: <b>{this.state.Phone}</b>
-                    </div>
-                </div>
-                <div className="row me-5">
-                    <div className="my-1">
-                        Adres:  <b>{this.getPrettyAddress()}</b>
-                    </div>
-                </div>
+                {list}
                 <button className="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#EditPersonalInfo" >Edytuj dane</button>
                 {this.infoEditModal()}
             </>

@@ -102,7 +102,7 @@ class Login extends React.Component
 
             api.User().login(User);
 
-            var testUser = {id: "1", login: "A1", name:"Alvin"}
+            var testUser = {id: "1", login: "A1", name:"Alvin", role: 'CUSTOMER'} //TODO: delete this
             store.dispatch(login(testUser))
         }
     }

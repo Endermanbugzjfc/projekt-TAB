@@ -160,7 +160,7 @@ class EmployeeView extends React.Component{
                             </div>
                             <div className="modal-body">
                                 <form>
-                                <div className="row">
+                                    <div className="row">
                                         {this.modalBodyElement("Imię", "text", this.state.newInfo.Name, "Name")}
                                         {this.modalBodyElement("Nazwisko", "text", this.state.newInfo.Surname, "Surname")}
                                     </div>
