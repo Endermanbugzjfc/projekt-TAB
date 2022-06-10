@@ -9,8 +9,25 @@ class AdminView extends React.Component {
     constructor(props) {
         super(props);
 
+        /* USER_DTO:
+        userData = {
+            id: '',
+            userName: '',
+            password: '',
+            legalName: '',
+            surname: '',
+            phoneNumber:'',
+            type: '',
+            birthDay: '',
+            pesel: '',
+            employmentDate: '',
+            address : {id, country, zipCode, location, streetName, streetNumber},
+            shoppingCart: {id, selectedProducts: []}
+        }
+        */
         this.state = {
             Id: '',
+            Email : '', //login
             Name: '',
             Surname: '',
             BirthDay: '',
@@ -20,9 +37,10 @@ class AdminView extends React.Component {
             City: '',
             HouseNumber: '',
             Street: '',
-            Salary: 0,
+            Type: '', //role
             EmploymentDate: '',
             newInfo : {
+                Email: '',
                 Name: '',
                 Surname: '',
                 BirthDay: '',
@@ -32,8 +50,8 @@ class AdminView extends React.Component {
                 City: '',
                 HouseNumber: '',
                 Street: '',
-                Salary: 0,
-                EmploymentDate: ''
+                Type: '', //role
+                EmploymentDate: '',
             }
         }
 
@@ -47,26 +65,27 @@ class AdminView extends React.Component {
         api.User().getUserById(store.getState().persistedReducer.id)
         .then(response =>
             {
-                var addr = response.data.Address.split(',');
-                //Street,HouseNr,ApNr,City,ZIP
                 this.setState({
                 Id: response.data.id,
-                Name: response.data.Name,
-                Surname: response.data.Surname,
-                Phone: response.data.Phone,
-                PostCode: addr[4],
-                City: addr[3],
-                HouseNumber: addr[1],
-                ApatrmentNumber: addr[2],
-                Street: addr[0],
-                EmploymentDate: response.data.EmploymentDate,
-                BirthDay: response.data.BirthDay,
+                Email: response.data.userName,
+                Name: response.data.legalName,
+                Surname: response.data.surname,
+                BirthDay: response.data.birthDay,
+                Pesel: response.data.pesel,
+                Phone: response.data.phoneNumber,
+                PostCode: response.data.address.zipCode,
+                City: response.data.address.location,
+                HouseNumber: response.data.address.streetNumber,
+                Street: response.data.address.streetName,
+                Type: response.data.type,
+                EmploymentDate: response.data.employmentDate,
                 })
             })
         .catch(err => console.log(err));
 
         this.setState(() => ({
             newInfo: {
+                Email: this.state.Email,
                 Name: this.state.Name,
                 Surname: this.state.Surname,
                 BirthDay: this.state.BirthDay,
@@ -76,9 +95,9 @@ class AdminView extends React.Component {
                 City: this.state.City,
                 HouseNumber: this.state.HouseNumber,
                 Street: this.state.Street,
-                Salary: this.state.Salary,
-
-            } 
+                Type: this.state.Type,
+                EmploymentDate: this.state.EmploymentDate
+            }
         }))
     }
 
@@ -256,10 +275,10 @@ class AdminView extends React.Component {
 
             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                 <div class="btn-group me-2" role="group" aria-label="First button">
-                    <button type="button" class="btn btn-danger" onClick={this.handleOnCancelClick}>Odrzuć zmiany</button>
+                    <button type="button" class="btn btn-danger" onClick={() => this.handleOnCancelClick()}>Odrzuć zmiany</button>
                 </div>
                 <div class="btn-group me-2" role="group" aria-label="Second button">
-                    <button type="button" class="btn btn-success" onClick={this.handleOnSaveClick}>Zapisz</button>
+                    <button type="button" class="btn btn-success" onClick={ () => this.handleOnSaveClick(role)}>Zapisz</button>
                 </div>
             </div>
         </div>
@@ -299,31 +318,6 @@ class AdminView extends React.Component {
     // TODO: meybe better way to display information about deleting the user?
     Delete(props, id) {
         alert('Użytkownik z id:' + id + ' został usunięty.')
-    }
-
-    //TODO: href
-    ManageWorkers2(text, label)
-    {
-        return (
-            <>
-                <div class="mt-3 col">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success dropdown-toggle me-2" data-bs-toggle="dropdown" aria-expanded="false">
-                            {text}
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">ID</a></li>
-                            <li><a class="dropdown-item" href="#">Imię i nazwisko</a></li>
-                            <li><a class="dropdown-item" href="#">Numer PESEL</a></li>
-                        </ul>
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Wyszukaj" aria-label={label} />
-                            <button class="btn btn-outline-success" type="submit">Szukaj</button>
-                        </form>
-                    </div>
-                </div>
-            </>
-        )
     }
 
     ManageWorkers(text, label)
@@ -400,6 +394,8 @@ class AdminView extends React.Component {
 
     handleOnSaveClick(e) {
         alert('Hello! handleOnSaveClick() here! Implement me!');
+        
+
     }
 }
 

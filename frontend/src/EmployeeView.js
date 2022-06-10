@@ -11,6 +11,7 @@ class EmployeeView extends React.Component{
 
         this.state = {
             Id: '',
+            Email : '', //login
             Name: '',
             Surname: '',
             BirthDay: '',
@@ -20,9 +21,10 @@ class EmployeeView extends React.Component{
             City: '',
             HouseNumber: '',
             Street: '',
-            Salary: 0,
+            Type: '', //role
             EmploymentDate: '',
             newInfo : {
+                Email: '',
                 Name: '',
                 Surname: '',
                 BirthDay: '',
@@ -32,8 +34,8 @@ class EmployeeView extends React.Component{
                 City: '',
                 HouseNumber: '',
                 Street: '',
-                Salary: 0,
-                EmploymentDate: ''
+                Type: '', //role
+                EmploymentDate: '',
             },
 
             currentRaport: null,
@@ -48,25 +50,27 @@ class EmployeeView extends React.Component{
         api.User().getUserById(store.getState().persistedReducer.id)
         .then(response =>
             {
-                var addr = response.data.Address.split(',');
-                //Street,HouseNr,ApNr,City,ZIP
                 this.setState({
                 Id: response.data.id,
-                Name: response.data.Name,
-                Surname: response.data.Surname,
-                Phone: response.data.Phone,
-                PostCode: addr[3],
-                City: addr[2],
-                HouseNumber: addr[1],
-                Street: addr[0],
-                EmploymentDate: response.data.EmploymentDate,
-                BirthDay: response.data.BirthDay,
+                Email: response.data.userName,
+                Name: response.data.legalName,
+                Surname: response.data.surname,
+                BirthDay: response.data.birthDay,
+                Pesel: response.data.pesel,
+                Phone: response.data.phoneNumber,
+                PostCode: response.data.address.zipCode,
+                City: response.data.address.location,
+                HouseNumber: response.data.address.streetNumber,
+                Street: response.data.address.streetName,
+                Type: response.data.type,
+                EmploymentDate: response.data.employmentDate,
                 })
             })
         .catch(err => console.log(err));
 
         this.setState(() => ({
             newInfo: {
+                Email: this.state.Email,
                 Name: this.state.Name,
                 Surname: this.state.Surname,
                 BirthDay: this.state.BirthDay,
@@ -76,9 +80,9 @@ class EmployeeView extends React.Component{
                 City: this.state.City,
                 HouseNumber: this.state.HouseNumber,
                 Street: this.state.Street,
-                Salary: this.state.Salary,
-
-            } 
+                Type: this.state.Type,
+                EmploymentDate: this.state.EmploymentDate
+            }
         }))
     }   
 

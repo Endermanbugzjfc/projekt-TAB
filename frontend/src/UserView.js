@@ -11,57 +11,69 @@ class UserView extends React.Component{
 
         this.state = {
             Id: '',
+            Email : '', //login
             Name: '',
             Surname: '',
+            BirthDay: '',
+            Pesel: '',
             Phone: '',
             PostCode: '',
             City: '',
             HouseNumber: '',
             Street: '',
+            Type: '', //role
             newInfo : {
+                Email: '',
                 Name: '',
                 Surname: '',
+                BirthDay: '',
+                Pesel: '',
                 Phone: '',
                 PostCode: '',
                 City: '',
                 HouseNumber: '',
-                Street: ''
-            }
+                Street: '',
+                Type: '', //role
+            },
+
         }
     }
 
     componentDidMount(){
-
         api.User().getUserById(store.getState().persistedReducer.id)
         .then(response =>
             {
-                var addr = response.data.Address.split(',');
-                //Street,HouseNr,City,ZIP
                 this.setState({
-                Id: response.data.Id,
-                Name: response.data.Name,
-                Surname: response.data.Surname,
-                Phone: response.data.Phone,
-                PostCode: addr[3],
-                City: addr[2],
-                HouseNumber: addr[1],
-                Street: addr[0]
+                Id: response.data.id,
+                Email: response.data.userName,
+                Name: response.data.legalName,
+                Surname: response.data.surname,
+                BirthDay: response.data.birthDay,
+                Pesel: response.data.pesel,
+                Phone: response.data.phoneNumber,
+                PostCode: response.data.address.zipCode,
+                City: response.data.address.location,
+                HouseNumber: response.data.address.streetNumber,
+                Street: response.data.address.streetName,
+                Type: response.data.type,
                 })
             })
         .catch(err => console.log(err));
-
-
         //Setting the current informations for the change form modal
         this.setState(() => ({
             newInfo: {
+                Email: this.state.Email,
                 Name: this.state.Name,
                 Surname: this.state.Surname,
+                BirthDay: this.state.BirthDay,
+                Pesel: this.state.Pesel,
                 Phone: this.state.Phone,
                 PostCode: this.state.PostCode,
                 City: this.state.City,
                 HouseNumber: this.state.HouseNumber,
-                Street: this.state.Street
-            } 
+                Street: this.state.Street,
+                Type: this.state.Type,
+            }
         }))
 
     }   
