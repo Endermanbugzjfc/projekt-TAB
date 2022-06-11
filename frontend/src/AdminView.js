@@ -9,11 +9,7 @@ class AdminView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            
         }
-
-        this.handleTelephoneNumberChange = this.handleTelephoneNumberChange.bind(this);
-        this.handlePeselChange = this.handlePeselChange.bind(this);
     }
 
     componentDidMount() {
@@ -134,19 +130,6 @@ class AdminView extends React.Component {
             )
         }
         )
-    }
-
-
-    handleTelephoneNumberChange(e) {
-        if (e.target.value.match(/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/) != null) {
-            this.setState({ Phone: e.target.value });
-        }
-    }
-
-    handlePeselChange(e) {
-        if (e.target.value.match(/[0-9]{11}$/) != null) {
-            this.setState({ Pesel: e.target.value });
-        }
     }
 }
 
