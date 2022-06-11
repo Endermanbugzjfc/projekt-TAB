@@ -55,7 +55,7 @@ class AddNewWorker extends React.Component
                             {this.FormElement("employment_date", "Data zatrudnienia", "date", "employment_date_input", this.state.EmploymentDate, "EmploymentDate")}
                             {this.FormElement("login", "Login", "text", "login_input", this.state.UserName, "UserName")}
                             {this.FormElement("password", "Hasło", "text", "password_input", this.state.Password1, "Password1")}
-                            {this.FormElement("password2", "Powtórz sasło", "text", "password2_input", this.state.Password2, "Password2")}
+                            {this.FormElement("password2", "Powtórz hasło", "text", "password2_input", this.state.Password2, "Password2")}
 
                         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                             <div class="btn-group me-2" role="group" aria-label="First button">

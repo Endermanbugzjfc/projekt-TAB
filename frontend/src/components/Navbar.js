@@ -11,7 +11,7 @@ class Navbar extends React.Component
     }
 
     componentDidMount(){
-        var status = store.getState().persistedReducer.isLoggedIn
+        var status = store.getState().persistedReducer.loggedIn
         this.setState({loggedIn: status})
 
         if(this.state.loggedIn)
