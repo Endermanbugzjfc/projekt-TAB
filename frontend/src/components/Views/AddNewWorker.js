@@ -1,4 +1,5 @@
 import React from "react";
+import api from "../../actions/api";
 
 class AddNewWorker extends React.Component
 {
@@ -86,8 +87,60 @@ class AddNewWorker extends React.Component
     {
         if(this.CheckAddForm())
         {
-                
+            var worker = {
+                userName: this.state.UserName,
+                password: this.state.Password1,
+                legalName: this.state.Name,
+                surname: this.state.Surname,
+                phoneNumber: this.state.Phone,
+                type: this.state.role,
+                birthDay: this.state.BirthDate,
+                pesel: this.state.Pesel,
+                employmentDate: this.state.EmploymentDate,
+                address : {
+                    country: this.state.Country,
+                    zipCode: this.state.PostCode,
+                    location: this.state.City,
+                    streetName: this.state.Street,
+                    streetNumber: this.state.HouseNumber
+                },
+            }
+
+            api.User().register(worker)
+            .then(response => {
+                if(response.status === 200)
+                {
+                    this.Cleanup();
+                }
+                else
+                {
+                    alert("Coś poszło nie tak w trakcie zapisywania")
+                }
+                })
+            .catch(err => {
+                console.log(err)
+                alert("Nie udało się dodać nowego prawocnika")
+            })
+
         }
+    }
+
+    Cleanup()
+    {
+        this.setState({UserName: ''});
+        this.setState({Password1: ''});
+        this.setState({Name: ''});
+        this.setState({Surname: ''});
+        this.setState({Phone: ''});
+        this.setState({role: ''});
+        this.setState({BirthDate: ''});
+        this.setState({Pesel: ''});
+        this.setState({EmploymentDate: ''});
+        this.setState({Country: ''});
+        this.setState({PostCode: ''});
+        this.setState({City: ''});
+        this.setState({Street: ''});
+        this.setState({HouseNumber: ''});
     }
 
 
@@ -148,7 +201,6 @@ class AddNewWorker extends React.Component
         }
         
         return isGood;
-
     }
 
 }
