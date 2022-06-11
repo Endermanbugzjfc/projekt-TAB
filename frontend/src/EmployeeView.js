@@ -1,6 +1,5 @@
 import React from "react";
 import api from "./actions/api.js";
-import { store } from "./actions/store.js";
 import Navbar from "./components/Navbar.js";
 import UserInfo from "./components/Views/UserInfo.js";
 import "./EmployeeView.css"
@@ -16,7 +15,6 @@ class EmployeeView extends React.Component{
             raportTo: null,
             raportProductId: '',
         }
-        //this.ShowReport = this.ShowReport.bind(this);
     }
 
     componentDidMount(){
@@ -25,7 +23,7 @@ class EmployeeView extends React.Component{
     render(){
         return(
             <>
-                 <Navbar/>
+                <Navbar/>
                 <div className="back row">
                     <div className="col-3">
                         <div className="list-group" id="list-tab" role="tablist">

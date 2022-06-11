@@ -26,7 +26,7 @@ class UserInfo extends React.Component
         super(props)
         this.state = {
             Id: '',
-            Email : '', //login
+            UserName : '', //login
             Name: '',
             Surname: '',
             BirthDay: '',
@@ -36,19 +36,19 @@ class UserInfo extends React.Component
             City: '',
             HouseNumber: '',
             Street: '',
+            Country:'',
             Type: '', //role
             EmploymentDate: '',
             newInfo : {
-                Email: '',
+                UserName: '',
                 Name: '',
                 Surname: '',
-                BirthDay: '',
-                Pesel: '',
                 Phone: '',
                 PostCode: '',
                 City: '',
                 HouseNumber: '',
                 Street: '',
+                Country: ''
             },
         }
     }
@@ -59,7 +59,7 @@ class UserInfo extends React.Component
         {
             this.setState({
             Id: response.data.id,
-            Email: response.data.userName,
+            UserName: response.data.userName,
             Name: response.data.legalName,
             Surname: response.data.surname,
             BirthDay: response.data.birthDay,
@@ -69,6 +69,7 @@ class UserInfo extends React.Component
             City: response.data.address.location,
             HouseNumber: response.data.address.streetNumber,
             Street: response.data.address.streetName,
+            Country: response.data.address.country,
             Type: response.data.type,
             EmploymentDate: response.data.employmentDate,
             })
@@ -77,7 +78,7 @@ class UserInfo extends React.Component
         //Setting the current informations for the change form modal
         this.setState(() => ({
             newInfo: {
-                Email: this.state.Email,
+                UserName: this.state.UserName,
                 Name: this.state.Name,
                 Surname: this.state.Surname,
                 BirthDay: this.state.BirthDay,
@@ -87,6 +88,7 @@ class UserInfo extends React.Component
                 City: this.state.City,
                 HouseNumber: this.state.HouseNumber,
                 Street: this.state.Street,
+                Country: this.state.Country
             }
         }))
     }
@@ -98,22 +100,27 @@ class UserInfo extends React.Component
         var list = []
         list.push(<>
             <div className="row me-5">
-                <div className="my-3">
+                <div className="my-2">
+                    Nazwa użytkownika:  <b> {this.state.UserName} </b>
+                </div>
+            </div>
+            <div className="row me-5">
+                <div className="my-2">
                     Imię:  <b> {this.state.Name} </b>
                 </div>
             </div>
             <div className="row me-5">
-                <div className="my-1">
+                <div className="my-2">
                     Nazwisko:  <b> {this.state.Surname}</b>
                 </div>
             </div>
             <div className="row me-5">
-                <div className="my-3">
+                <div className="my-2">
                     Numer telefonu: <b>{this.state.Phone}</b>
                 </div>
             </div>
             <div className="row me-5">
-                <div className="my-1">
+                <div className="my-2">
                     Adres:  <b>{this.getPrettyAddress()}</b>
                 </div>
             </div>
@@ -159,7 +166,10 @@ class UserInfo extends React.Component
                                     <div className="row">
                                         {this.modalElement("Imię", this.state.newInfo.Name, 50, "Name")}
                                         {this.modalElement("Nazwisko", this.state.newInfo.Surname, 50, "Surname")}
+                                    </div>
+                                    <div className="row">
                                         {this.modalElement("Telefon", this.state.newInfo.Phone, 19, "Phone")}
+                                        {this.modalElement("Kraj zamieszkania", this.state.newInfo.Country, 60, "Country" )}
                                     </div>
                                     <div className="row">
                                         {this.modalElement("Ulica", this.state.newInfo.Street, 50, "Street")}
@@ -202,7 +212,7 @@ class UserInfo extends React.Component
     {
         var Address = '';
         Address += this.state.Street + ' ' + this.state.HouseNumber + ', ';
-        Address += this.state.PostCode + ' ' + this.state.City;
+        Address += this.state.PostCode + ' ' + this.state.City + ', ' + this.state.Country;
                   
         return Address;
     }

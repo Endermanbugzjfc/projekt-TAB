@@ -33,30 +33,30 @@ class Login extends React.Component
     {
         return(
             <>
-                <div class="form-signin top-space">
+                <div className="form-signin top-space">
                     <form className="needs-validation">
-                        <h1 class="h3 mb-3 fw-normal text-center">Logowanie</h1> 
+                        <h1 className="h3 mb-3 fw-normal text-center">Logowanie</h1> 
 
-                        <div class="form-floating">
-                            <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" value={this.state.Login} onChange={e => this.handleChange(e, "Login")} />
-                            <label for="floatingEmail">Adres E-mail</label>
-                            <div className="invalid-feedback">Nieprawidłowy e-mail</div>
+                        <div className="form-floating">
+                            <input type="text" className="form-control" id="floatingLogin" placeholder="name@example.com" value={this.state.Login} onChange={e => this.handleChange(e, "Login")} />
+                            <label htmlFor="floatingLogin">Nazwa użytkownika</label>
+                            <div className="invalid-feedback">Nieprawidłowy login</div>
                         </div>
-                        <div class="form-floating form-myBox">
-                            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" value={this.state.Password} onChange={e => this.handleChange(e, "Password")}/>
-                            <label for="floatingPassword">Hasło</label>
+                        <div className="form-floating form-myBox">
+                            <input type="password" className="form-control" id="floatingPassword" placeholder="Password" value={this.state.Password} onChange={e => this.handleChange(e, "Password")}/>
+                            <label htmlFor="floatingPassword">Hasło</label>
                             <div className="invalid-feedback">Wpisz haslo</div>
                         </div>
 
-                        <div class="checkbox mb-4 mt-3">
+                        <div className="checkbox mb-4 mt-3">
                             <label>
                                 <input type="checkbox" value="remember-me"/> Zapamiętaj mnie
                             </label>
                         </div>
-                        <input class="w-100 btn btn-lg btn-primary" type="button" value="Zaloguj się" onClick={() => this.CheckLoginForm()}/>
-                        <p class="mt-3 text-center">Nie masz konta?</p>
+                        <input className="w-100 btn btn-lg btn-primary" type="button" value="Zaloguj się" onClick={() => this.CheckLoginForm()}/>
+                        <p className="mt-3 text-center">Nie masz konta?</p>
                         <Link to="/register">
-                            <p class="text-center">Załóż nowe konto</p>
+                            <p className="text-center">Załóż nowe konto</p>
                         </Link>
                     </form>
                 </div>
@@ -72,17 +72,16 @@ class Login extends React.Component
     CheckLoginForm()
     {
         var allGood = true;
-        var EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-        var Email =  document.getElementById("floatingEmail");
+        var Login = document.getElementById("floatingLogin");
         var Pass =  document.getElementById("floatingPassword");
 
-        if(this.state.Login.match(EmailRegex) == null)
+        if(this.state.Login.match(/^\w+$/) == null)
         {
             allGood = false;
-            Email.classList.add("is-invalid")
+            Login.classList.add("is-invalid")
         }
-        else Email.classList.remove("is-invalid")
+        else Login.classList.remove("is-invalid")
 
         if(this.state.Password.length < 1)
         {
@@ -104,6 +103,7 @@ class Login extends React.Component
 
             var testUser = {id: "1", login: "A1", name:"Alvin", role: 'CUSTOMER'} //TODO: delete this
             store.dispatch(login(testUser))
+            window.location.href = '/'
         }
     }
 

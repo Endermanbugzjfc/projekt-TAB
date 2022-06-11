@@ -9,19 +9,20 @@ class Register extends React.Component
     {
         super(props)
         this.state = {
-            Login: "", //<-- Email
+            Login: "",
             Name: "",
             Surname: "",
             Password: "",
             Password2: "",
             Phone_number: "",
             Street: "",
+            HouseNumber: '',
             City: "",
             ZIPCode: "",
-            State: "",
+            Country: "",
 
         }
-        this.checkRegisterForm = this.checkRegisterForm.bind(this);
+        //this.checkRegisterForm = this.checkRegisterForm.bind(this);
     }
 
     render()
@@ -38,7 +39,7 @@ class Register extends React.Component
                         {this.registerElement("floatingSurname", "text", "Surname", "Nazwisko", this.state.Surname, "Musisz podać poprawne nazwisko")}
                     </div>
                     <div className="row">
-                        {this.registerElement("floatingEmail", "email", "Login", "Adres E-Mail", this.state.Login, "Musisz podać poprawny mail")}
+                        {this.registerElement("floatingLogin", "text", "Login", "Nazwa użytkownika", this.state.Login, "Musisz podać poprawną nazwę użytkownika")}
                         {this.registerElement("floatingPhone", "tel", "Phone_number", "Numer telefonu", this.state.Phone_number, "Musisz podać poprawny numer telefonu (wszystko pisane razem)")}
                     </div>
                     <div className="row">
@@ -53,10 +54,10 @@ class Register extends React.Component
                     </div>
                     <div className="row">
                         {this.registerElement("floatingPost", "text", "ZIPCode", "Kod pocztowy", this.state.ZIPCode, "Musisz podać poprawny kod pocztowy")}
-                        {this.registerElement("floatingState", "text", "State", "Województwo", this.state.State, "Musisz podać poprawne Województwo")}
+                        {this.registerElement("floatingCountry", "text", "Country", "Kraj", this.state.Country, "Musisz podać poprawny kraj")}
                     </div>
                     
-                    <input className="w-100 btn btn-lg btn-primary mt-5" type="button" onClick={this.checkRegisterForm} value="Zarejestruj się" />
+                    <input className="w-100 btn btn-lg btn-primary mt-5" type="button" onClick={() => this.checkRegisterForm()} value="Zarejestruj się" />
                     
                 </form>
             </div>
@@ -96,10 +97,9 @@ class Register extends React.Component
     checkRegisterForm()
     {
         var allGood = true;
-        var EmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
 
-        var Email =  document.getElementById("floatingEmail");
+        var Login =  document.getElementById("floatingLogin");
         var ZIPCode =  document.getElementById("floatingPost");
         var Street = document.getElementById("floatingStreet");
         var Phone = document.getElementById("floatingPhone");
@@ -108,14 +108,14 @@ class Register extends React.Component
         var Name = document.getElementById("floatingName");
         var Surname = document.getElementById("floatingSurname");
         var City = document.getElementById("floatingCity");
-        var State = document.getElementById("floatingState");
+        var Country = document.getElementById("floatingCountry");
 
-        if(this.state.Login.match(EmailRegex) == null)
+        if(this.state.Login.match(/^\w+$/) == null)
         {
             allGood = false;
-            this.addInvalid(Email);
+            this.addInvalid(Login);
         }
-        else this.removeInvalid(Email);
+        else this.removeInvalid(Login);
 
         if(this.state.ZIPCode.match(/^\d{2}-\d{3}$/) == null)
         {
@@ -171,12 +171,12 @@ class Register extends React.Component
         }
         else this.removeInvalid(City);
 
-        if(this.state.State.match(/^[a-zA-Z]+$/) == null)
+        if(this.state.Country.match(/^[a-zA-Z]+$/) == null)
         {
             allGood = false;
-            this.addInvalid(State);
+            this.addInvalid(Country);
         }
-        else this.removeInvalid(State);
+        else this.removeInvalid(Country);
         
 
         if(allGood)
