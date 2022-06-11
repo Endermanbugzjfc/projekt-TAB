@@ -8,6 +8,20 @@ class AdminView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            Name: '',
+            Surname: '',
+            Street: '',
+            HouseNumber: '',
+            PostCode: '',
+            City: '',
+            Country: '',
+            Phone: '',
+            BirthDate: '',
+            Pesel: '',
+            EmploymentDate: '',
+            UserName: '',
+            Password1: '',
+            Password2: ''
         }
 
         this.handleTelephoneNumberChange = this.handleTelephoneNumberChange.bind(this);
@@ -65,54 +79,116 @@ class AdminView extends React.Component {
     AddNewWorkerForm(role) {
         return(<>
         <div class="mt-3">
-            <div class="row">
-                {this.FormElement("name", "Imię", "text", "name_input")}
-                {this.FormElement("surname", "Nazwisko", "text", "surname_input")}
-            </div>
-            <div class="row">
-                {this.FormElement("street_name", "Ulica", "text", "street_input")}
-                {this.FormElement("street_number", "Numer domu/mieszkania", "text", "street_nr_input")}
-            </div>
-            <div class="row">
-                {this.FormElement("zip_code", "Kod pocztowy", "text", "zip_code_input")}
-                {this.FormElement("location", "Miejscowość", "text", "location_input")}
-            </div>
-            <div class="row">
-                {this.FormElement("country_code", "Kraj", "text", "country_input")}
-                {this.FormElement("phone_number", "Numer telefonu", "tel", "phone_number_input")}
-            </div>
-            <div class="row">
-                {this.FormElement("birth_date", "Data urodzenia", "date", "birth_date_input")}
-                {this.FormElement("pesel", "Pesel", "text", "pesel_input")}
-            </div>
-                {this.FormElement("employment_date", "Data zatrudnienia", "date", "employment_date_input")}
-                {this.FormElement("login", "Login", "text", "login_input")}
-                {this.FormElement("password", "Hasło", "text", "password_input")}
-                {this.FormElement("password2", "Powtórz sasło", "text", "password2_input")}
+            <form className="needs-validation">
+                <div class="row">
+                    {this.FormElement("name", "Imię", "text", "name_input", this.state.Name, "Name")}
+                    {this.FormElement("surname", "Nazwisko", "text", "surname_input", this.state.Surname, "Surname")}
+                </div>
+                <div class="row">
+                    {this.FormElement("street_name", "Ulica", "text", "street_input", this.state.Street, "Street")}
+                    {this.FormElement("street_number", "Numer domu/mieszkania", "text", "street_nr_input", this.state.HouseNumber, "HouseNumber")}
+                </div>
+                <div class="row">
+                    {this.FormElement("zip_code", "Kod pocztowy", "text", "zip_code_input", this.state.PostCode, "PostCode")}
+                    {this.FormElement("location", "Miejscowość", "text", "location_input", this.state.City, "City")}
+                </div>
+                <div class="row">
+                    {this.FormElement("country_code", "Kraj", "text", "country_input", this.state.Country, "Country")}
+                    {this.FormElement("phone_number", "Numer telefonu", "tel", "phone_number_input", this.state.Phone, "Phone")}
+                </div>
+                <div class="row">
+                    {this.FormElement("birth_date", "Data urodzenia", "date", "birth_date_input", this.state.BirthDate, "BirthDate")}
+                    {this.FormElement("pesel", "Pesel", "text", "pesel_input", this.state.Pesel, "Pesel")}
+                </div>
+                    {this.FormElement("employment_date", "Data zatrudnienia", "date", "employment_date_input", this.state.EmploymentDate, "EmploymentDate")}
+                    {this.FormElement("login", "Login", "text", "login_input", this.state.UserName, "UserName")}
+                    {this.FormElement("password", "Hasło", "text", "password_input", this.state.Password1, "Password1")}
+                    {this.FormElement("password2", "Powtórz sasło", "text", "password2_input", this.state.Password2, "Password2")}
 
-            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                <div class="btn-group me-2" role="group" aria-label="First button">
-                    <button type="button" class="btn btn-danger" onClick={() => this.handleOnCancelClick()}>Odrzuć zmiany</button>
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group me-2" role="group" aria-label="First button">
+                        <button type="button" class="btn btn-danger" onClick={() => this.handleOnCancelClick()}>Odrzuć zmiany</button>
+                    </div>
+                    <div class="btn-group me-2" role="group" aria-label="Second button">
+                        <button type="button" class="btn btn-success" onClick={ () => this.handleOnSaveClick(role)}>Zapisz</button>
+                    </div>
                 </div>
-                <div class="btn-group me-2" role="group" aria-label="Second button">
-                    <button type="button" class="btn btn-success" onClick={ () => this.handleOnSaveClick(role)}>Zapisz</button>
-                </div>
-            </div>
+            </form>
         </div>
         </>
         )
     }
 
-    FormElement(id, span, type, label)
+    FormElement(id, span, type, label, value, valueName)
     {
         return(<>
             <div class="col">
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id={id}>{span}</span>
-                    <input type={type} class="form-control" aria-label={label} aria-describedby="inputGroup-sizing-default" />
+                    <span class="input-group-text">{span}</span>
+                    <input type={type} class="form-control" id={valueName + "Form"} aria-label={label} aria-describedby="inputGroup-sizing-default" value={value} onChange={e =>{this.setState({[valueName]: e.target.value})}} />
                 </div>
             </div>
         </>)
+    }
+
+    CheckOneEntry(id, regex, state)
+    {
+        if(state.match(regex) == null)
+        {
+            document.getElementById(id)?.classList.add("is-invalid");
+            return false;
+        }
+        else
+        {
+            document.getElementById(id).classList.remove("is-invalid");
+            return true;
+        }
+    }
+
+    CheckAddForm()
+    {
+        var isGood = true;
+        isGood = this.CheckOneEntry("NameForm", /^[a-zA-Z]+$/, this.state.Name) && isGood;
+        isGood = this.CheckOneEntry("SurnameForm", /^[a-zA-Z]+$/, this.state.Surname) && isGood;
+        isGood = this.CheckOneEntry("PhoneForm", /^(\+\d{2})?( )?\d{1,9}$/, this.state.Phone) && isGood;
+        isGood = this.CheckOneEntry("StreetForm", /^[a-zA-Z]+$/, this.state.Street) && isGood;
+        isGood = this.CheckOneEntry("HouseNumberForm", /^\d+(\/{1}\d+)?$/, this.state.HouseNumber) && isGood;
+        isGood = this.CheckOneEntry("CityForm", /^[a-zA-Z]+$/, this.state.City) && isGood;
+        isGood = this.CheckOneEntry("PostCodeForm", /^\d+(-\d+)?$/, this.state.PostCode) && isGood;
+        isGood = this.CheckOneEntry("CountryForm", /^[a-zA-Z]+$/, this.state.Country) && isGood;
+        isGood = this.CheckOneEntry("PeselForm", /^[0-9]{11}$/, this.state.Pesel) && isGood;
+        isGood = this.CheckOneEntry("UserNameForm", /^\w+$/, this.state.UserName) && isGood;
+
+        if(this.state.BirthDate.length < 1)
+        {
+            document.getElementById("BirthDateForm")?.classList.add("is-invalid");
+            isGood = false;
+        }
+        else
+            document.getElementById("BirthDateForm").classList.remove("is-invalid");
+
+        if(this.state.EmploymentDate.length < 1)
+        {
+            document.getElementById("EmploymentDateForm")?.classList.add("is-invalid");
+            isGood = false;
+        }
+        else
+            document.getElementById("EmploymentDateForm").classList.remove("is-invalid");
+
+        if(this.state.Password1 !== this.state.Password2 || this.state.Password1.length < 1 || this.state.Password2.length < 1)
+        {
+            document.getElementById("Password1Form")?.classList.add("is-invalid");
+            document.getElementById("Password2Form")?.classList.add("is-invalid");
+            isGood = false;
+        }
+        else
+        {
+            document.getElementById("Password1Form").classList.remove("is-invalid");
+            document.getElementById("Password2Form").classList.remove("is-invalid");
+        }
+        
+        return isGood;
+
     }
 
 
@@ -210,7 +286,8 @@ class AdminView extends React.Component {
     }
 
     handleOnSaveClick(role) {
-        alert('Hello! handleOnSaveClick() here! Implement me!');
+        
+       if(this.CheckAddForm()) alert('Good!');
         
 
     }
