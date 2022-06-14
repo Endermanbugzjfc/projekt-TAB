@@ -23,6 +23,9 @@ public class SelectedProduct {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
     @ManyToOne
     @JoinColumn(name = "shopping_cart_id", nullable = false)
     private ShoppingCart shoppingCart;
@@ -47,6 +50,14 @@ public class SelectedProduct {
         this.id = id;
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
     public ShoppingCart getCart() {
         return this.shoppingCart;
     }
@@ -66,7 +77,8 @@ public class SelectedProduct {
     @Transient
     public static SelectedProduct fromDto(SelectedProductDto selectedProductDto) {
         SelectedProduct selectedProduct = new SelectedProduct();
-        selectedProduct.setCart(shoppingCartDto.creationDate());
+        selectedProduct.setQuantity(selectedProductDto.quantity());
+        selectedProduct.setCart(ShoppingCart.fromDto(selectedProductDto.shoppingCartDto()));
         return selectedProduct;
     }
 }

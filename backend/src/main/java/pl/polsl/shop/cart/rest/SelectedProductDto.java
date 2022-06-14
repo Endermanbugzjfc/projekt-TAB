@@ -5,10 +5,11 @@ import pl.polsl.shop.product.rest.ProductDTO;
 
 import java.io.Serializable;
 
-public record SelectedProductDto (Long id, ProductDTO productDTO) implements Serializable {
+public record SelectedProductDto (Long id, Integer quantity, ProductDTO productDTO, ShoppingCartDto shoppingCartDto) implements Serializable {
     public static SelectedProductDto fromSelectedProduct(SelectedProduct selectedProduct) {
         return new SelectedProductDto(
-                selectedProduct.getId(), ProductDTO.fromProduct(selectedProduct.getProduct())
+                selectedProduct.getId(), selectedProduct.getQuantity(), ProductDTO.fromProduct(selectedProduct.getProduct()),
+                ShoppingCartDto.fromShoppingCart(selectedProduct.getCart())
         );
     }
 }
