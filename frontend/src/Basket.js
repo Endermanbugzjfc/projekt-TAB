@@ -10,7 +10,7 @@ class Basket extends React.Component
     {
         super(props)
         this.state = {
-            products: null
+            Cart: null
         }
 
         /**
@@ -35,19 +35,19 @@ class Basket extends React.Component
         if(loginStatus === false)
         {
             api.Cart().getNotLogCart()
-            .then( response => this.setState({products: response}))
+            .then( response => this.setState({Cart: response}))
             .catch(err => console.log(err));
         }
         else
         {
             api.Cart().getUserCart(store.getState().persistedReducer.id)
-            .then( response => this.setState({products: response}))
+            .then( response => this.setState({Cart: response}))
             .catch(err => console.log(err));
         }
 
         //TEMPORARY
         var cart = {
-            id: '',
+            id: '0',
             creationDate: '',
             selectedProducts: [
                 {
@@ -136,7 +136,7 @@ class Basket extends React.Component
                 }
             ]
         } 
-        this.setState({products: cart})
+        this.setState({Cart: cart})
     }
 
 
@@ -159,7 +159,7 @@ class Basket extends React.Component
     listOfProducts()
     {
         var returns;
-        if(this.state.products != null) 
+        if(this.state.Cart != null) 
         {
             returns = <>
                 <div className="table-responsive-sm col">
@@ -170,13 +170,13 @@ class Basket extends React.Component
                             <th scope="col">Producent</th>
                             <th scope="col">Ilość</th>
                             <th scope="col">Zostało w <br/>magazynie</th>
-                            <th scope="col">Cena za szt.</th>
-                            <th scope="col">Cena całkowita</th>
+                            <th scope="col">Cena<br/>za szt.</th>
+                            <th scope="col">Cena<br/>całkowita</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                this.state.products.selectedProducts.map(prod =>{
+                                this.state.Cart.selectedProducts.map(prod =>{
                                 return this.displayProduct(prod);
                                 })
                             }
@@ -195,7 +195,7 @@ class Basket extends React.Component
     payment()
     {
         var price = 0;
-        this.state.products?.selectedProducts.map(product => price += parseFloat(product.productDTO.retailPrice) * parseFloat(product.quantity) )
+        this.state.Cart?.selectedProducts.map(product => price += parseFloat(product.productDTO.retailPrice) * parseFloat(product.quantity) )
         return <>
         <form>
             <div className="mt-5 row">
@@ -203,18 +203,18 @@ class Basket extends React.Component
             </div>
             <div className="my-2 row">
                 Wybierz fromę płatności:
-                <div class="btn-group" id="PaymentMethod" role="group" aria-label="Payment radio toggle button group">
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"/>
-                    <label class="btn btn-outline-dark" for="btnradio1">BLIK</label>
+                <div className="btn-group" id="PaymentMethod" role="group" aria-label="Payment radio toggle button group">
+                    <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autoComplete="off" onClick={() => this.setState({payment: "BLIK"})}/>
+                    <label className="btn btn-outline-dark" htmlFor="btnradio1">BLIK</label>
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
-                    <label class="btn btn-outline-dark" for="btnradio2">Transfer</label>
+                    <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autoComplete="off" onClick={() => this.setState({payment: "Transfer"})}/>
+                    <label className="btn btn-outline-dark" htmlFor="btnradio2">Transfer</label>
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off"/>
-                    <label class="btn btn-outline-dark" for="btnradio3">Kartą</label>
+                    <input type="radio" className="btn-check" name="btnradio" id="btnradio3" autoComplete="off" onClick={() => this.setState({payment: "Karta"})}/>
+                    <label className="btn btn-outline-dark" htmlFor="btnradio3">Kartą</label>
 
-                    <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off"/>
-                    <label class="btn btn-outline-dark" for="btnradio4">Przy odbiorze</label>
+                    <input type="radio" className="btn-check" name="btnradio" id="btnradio4" autoComplete="off" onClick={() => this.setState({payment: "Pobranie"})}/>
+                    <label className="btn btn-outline-dark" htmlFor="btnradio4">Przy odbiorze</label>
                 </div>
             </div>
             <div className="my-2">
@@ -237,6 +237,7 @@ class Basket extends React.Component
                     <td>{product.productDTO.retailPrice} zł</td>
                     <td>{parseFloat(product.productDTO.retailPrice) * parseFloat(product.quantity) } zł</td>
                     <td> <a className="btn btn-secondary btn-sm" href={"/product/" + product.productDTO.productId}>Zobacz w sklepie</a> </td>
+                    <td> <input type="button" className="btn btn-danger btn-sm" value="Usuń" onClick={() => {this.deleteFromBasket(product.productDTO.productId)}}/> </td>
                 </tr>
             </>
         )
@@ -244,7 +245,14 @@ class Basket extends React.Component
 
     Buy()
     {
-        
+        if(this.state.payment !== undefined)
+            api.Cart().BuyAll(this.state.Cart.id, this.state.payment)
+            .catch(err => console.log(err))
+    }
+
+    deleteFromBasket(ProdId)
+    {
+        api.Cart().deleteProduct(this.state.Cart.id, ProdId).catch(err => console.log(err))
     }
 
 }

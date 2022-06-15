@@ -17,7 +17,6 @@ class UserView extends React.Component{
 
 
     render(){
-        console.log("I am beeing loaded")
         return(
             <>
                 <Navbar/>
@@ -48,31 +47,35 @@ class UserView extends React.Component{
         )
     }
 
-    HistoryEntry(props2)
+    HistoryEntry(props)
     {
         //JSON template
-        /*
-        var pro = { 
-            order: {},
-            orderedProducts: [],
-            totalPrice: 0.0
+        
+        var properties = { 
+            id: '1',
+            orderDate: 'HEHE',
+            paymentMethod: 'HAH',
+            orderedProducts: [{
+                id: '', quantity: 0, price: 0.0, productDto: {}
+            }],
+            totalCost: 0.0
         }
-        */
+        
 
-        var properties = {}
-        api.User().getOrderById(this.state.Id, props2.id)
+        var properties2 = {}
+        api.User().getOrderById(this.state.Id, props.id)
         .then(response => properties = response)
         .catch(err=>console.log(err))
 
         return(
             <>
                 <div className="accordion-item">
-                    <h2 className="accordion-header" id={"panelsStayOpen-heading"+props2.id}>
-                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={"#panelsStayOpen-collapse"+props2.id} aria-expanded="true" aria-controls={"panelsStayOpen-collapse"+props2.id}>
-                        {props2.orderDate} &emsp; {properties.totalPrice} zł
+                    <h2 className="accordion-header" id={"panelsStayOpen-heading"+props.id}>
+                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={"#panelsStayOpen-collapse"+props.id} aria-expanded="true" aria-controls={"panelsStayOpen-collapse"+props.id}>
+                        {props.orderDate} &emsp; {properties.totalPrice} zł
                     </button>
                     </h2>
-                    <div id={"panelsStayOpen-collapse"+props2.id} className="accordion-collapse collapse" aria-labelledby={"panelsStayOpen-heading"+props2.id}>
+                    <div id={"panelsStayOpen-collapse"+props.id} className="accordion-collapse collapse" aria-labelledby={"panelsStayOpen-heading"+props.id}>
                         <div className="accordion-body">
                             <ul className="list-group">
                                 {                                 
@@ -120,15 +123,15 @@ class UserView extends React.Component{
 
     History(props){
         //JSON template
-        /*
-        var temp = [
+        
+        var temp = 
             {
                 id: '1',
                 orderDate: '2.1.2022',
                 paymentMethod: 'BLIK'
             }
-        ]
-        */
+        
+        
 
         var orderHistory = []
         api.User().getOrders(this.state.Id)

@@ -1,4 +1,5 @@
 import React from "react";
+import api from "../actions/api";
 import { store } from "../actions/store";
 import './Offer.css'
 
@@ -34,6 +35,17 @@ class Offer extends React.Component{
 
             selectedAmount: 1,
             EditButton: <></>,
+
+            changedOffer: {
+                productId: props.product.productId,
+                name: props.product.name,
+                producer: props.product.producer,
+                description: props.product.description,
+                category: props.product.category,
+                inStock: props.product.inStock,
+                purchasePrice: props.product.purchasePrice,
+                retailPrice: props.product.retailPrice,
+            }
         }
     }
 
@@ -43,7 +55,7 @@ class Offer extends React.Component{
         {
             var EditButton = <>
                 <div className="col-2 text-center mt-2">
-                    <input type="button" className="btn btn-secondary" value="Edytuj" data-bs-toggle="modal" data-bs-target="#EditProduct" />
+                    <input type="button" className="btn btn-secondary" value="Edytuj" data-bs-toggle="modal" data-bs-target={"#EditProduct" + this.state.productId} />
                 </div>
             </>
             this.setState({EditButton: EditButton})
@@ -56,7 +68,7 @@ class Offer extends React.Component{
     EditModal = () => {
         return(
             <>
-                <div className="modal fade" id="EditProduct" data-bs-backdrop="static" tabIndex="-1" aria-labelledby="EditProduct" aria-hidden="true">
+                <div className="modal fade" id={"EditProduct" + this.state.productId} data-bs-backdrop="static" tabIndex="-1" aria-labelledby="EditProduct" aria-hidden="true">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -64,6 +76,24 @@ class Offer extends React.Component{
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
+                                <form>
+                                    <div className="row">
+                                        {this.modalElement("Nazwa produktu", this.state.changedOffer.name, 20, "name")}
+                                    </div>
+                                    <div className="row">
+                                        {this.modalElement("Producent", this.state.changedOffer.producer, 30, "producer")}
+                                    </div>
+                                    <div className="row">
+                                        {this.modalElement("Opis", this.state.changedOffer.description, 1000, "description")}
+                                    </div>
+                                    <div className="row">
+                                        {this.modalElement("Cena", this.state.changedOffer.retailPrice, 10, "retailPrice")}
+                                    </div>
+                                    <div className="row">
+                                        {this.modalElement("Sztuki", this.state.changedOffer.inStock, 20, "inStock")}
+                                    </div>
+                                </form>
+
                                 {/* <form>
                                 <div className="row">
                                         {this.modalBodyElement("Imię", "text", this.state.newInfo.Name, "Name")}
@@ -85,7 +115,7 @@ class Offer extends React.Component{
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={()=>this.saveData()}>Zapisz</button>
+                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={()=>this.saveProduct()}>Zapisz</button>
                             </div>
                         </div>
                     </div>
@@ -93,16 +123,27 @@ class Offer extends React.Component{
             </>
         )
     }
-    /*
-    if(store.getState().persistedReducer.role == "EMPLOYEE" || true)
+    modalElement(NamePL, value, maxLength, valueName)
     {
-        EditButton = <>
-            <div className="col">
-                <input type="button" className="btn btn-secondary" value="Edytuj produkt"/>
+        return(
+            <div className="col my-2">
+                {NamePL}<br/>
+                <input type="text" value={value} maxLength={maxLength} id={valueName+'Modal'} className="form-control"
+                    onChange={e => this.setState(prevState => ({
+                    changedOffer: {
+                        ...prevState.newInfo,
+                        [valueName]: e.target.value
+                    }   
+                }))}/>
+                <div className="invalid-feedback" id="firstInvalid">Niepoprawna wartość</div>
             </div>
-        </>
+        )
     }
-    */
+
+    saveProduct()
+    {
+        // api.Product()
+    }
 
     render(){
         return(
@@ -112,8 +153,8 @@ class Offer extends React.Component{
                         <img alt="Product_img"/>
                     </div>
                     <div className="col">
-                        <div className="row  text-break">Nazwa: {this.state.name} </div>
-                        <div className="row  text-break">Producent: { this.state.producer != null ? this.state.producer : "Nieznany"} </div>
+                        <div className="row text-break">Nazwa: {this.state.name} </div>
+                        <div className="row text-break">Producent: { this.state.producer != null ? this.state.producer : "Nieznany"} </div>
                         <div className="row text-break">Opis: {this.state.description != null ? this.state.description : "Brak" } </div>
                     </div>
                     <div className="col">
