@@ -24,32 +24,40 @@ class Products extends React.Component{
     }
 
     tempList = {
-        id: 1,
-        price: 60,
-        left: 7,
-        title: "Farby malarskie"
+        productId: '1',
+        name: 'Farby malarskie',
+        producer: 'WOW',
+        description: 'ajajajaj',
+        category: 'huh',
+        inStock: 10,
+        purchasePrice: 1.56,
+        retailPrice: 5.1
     }
     tempList2 = {
-        id: 2,
-        price: 5,
-        left: 0,
-        title: "Kolorowa lampa ogrodowa"
+        productId: '2',
+        name: 'Dachówki',
+        producer: 'Ryn',
+        description: 'afasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfasdafasdfa',
+        category: 'huqweqh',
+        inStock: 6123341,
+        purchasePrice: 1123.4,
+        retailPrice: 12234.14
     }
 
     render(){
         return(
             <>
                 <Navbar/>
-                <div class="row">
-                    <div class="col-3">
-                        <div class="container">
+                <div className="row">
+                    <div className="col-3">
+                        <div className="container">
                             <h3> Cena </h3>
                             <input placeholder="Od" size={10} value={this.state.minPrice} id="minPrice" onChange={e => this.handleNumerChange(e, "minPrice")}></input>
                             -
                             <input placeholder="Do" size={10} value={this.state.maxPrice} id="maxPrice" onChange={e => this.handleNumerChange(e, "maxPrice")}></input>
                         </div>
                     </div>
-                    <div class="col">
+                    <div className="col">
                         {
                             <>
                             <Offer product={this.tempList}/>
