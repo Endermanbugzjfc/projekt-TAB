@@ -8,7 +8,8 @@ const UserSlice = createSlice(
             id: "",
             login: "",
             name: "",
-            role: ""
+            role: "",
+            cartId: "",
         },
         reducers: {
             login: (state, user) => {
@@ -18,6 +19,7 @@ const UserSlice = createSlice(
                 state.name = user.payload.name;
                 state.role = user.payload.role;
                 state.loggedIn = true;
+                state.cartId = user.payload.shoppingCartDto.id
             },
             isLoggedIn : (state) =>{ return state.loggedIn },
             logout: (state) =>{
@@ -27,6 +29,7 @@ const UserSlice = createSlice(
                 state.login = "";
                 state.name = "";
                 state.role = "";
+                state.cartId = "";
             }
         }
     }

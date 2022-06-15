@@ -31,21 +31,12 @@ class Offer extends React.Component{
             category: props.product.category,
             inStock: props.product.inStock,
             purchasePrice: props.product.purchasePrice,
-            retailPrice: props.product.retailPrice,
+            retailPrice: '' + props.product.retailPrice,
 
             selectedAmount: 1,
             EditButton: <></>,
 
-            changedOffer: {
-                productId: props.product.productId,
-                name: props.product.name,
-                producer: props.product.producer,
-                description: props.product.description,
-                category: props.product.category,
-                inStock: props.product.inStock,
-                purchasePrice: props.product.purchasePrice,
-                retailPrice: props.product.retailPrice,
-            }
+            newPrice: '' + props.product.retailPrice
         }
     }
 
@@ -55,7 +46,7 @@ class Offer extends React.Component{
         {
             var EditButton = <>
                 <div className="col-2 text-center mt-2">
-                    <input type="button" className="btn btn-secondary" value="Edytuj" data-bs-toggle="modal" data-bs-target={"#EditProduct" + this.state.productId} />
+                    <input type="button" className="btn btn-secondary" value="Edytuj cenę" data-bs-toggle="modal" data-bs-target={"#EditProduct" + this.state.productId} />
                 </div>
             </>
             this.setState({EditButton: EditButton})
@@ -69,53 +60,27 @@ class Offer extends React.Component{
         return(
             <>
                 <div className="modal fade" id={"EditProduct" + this.state.productId} data-bs-backdrop="static" tabIndex="-1" aria-labelledby="EditProduct" aria-hidden="true">
-                    <div className="modal-dialog modal-lg">
+                    <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="EditProduct">Edycja produktu</h5>
+                                <h5 className="modal-title" id="EditProduct">Edycja ceny produktu</h5>
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                                <form>
+                                <form className="needs-validation">
                                     <div className="row">
-                                        {this.modalElement("Nazwa produktu", this.state.changedOffer.name, 20, "name")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalElement("Producent", this.state.changedOffer.producer, 30, "producer")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalElement("Opis", this.state.changedOffer.description, 1000, "description")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalElement("Cena", this.state.changedOffer.retailPrice, 10, "retailPrice")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalElement("Sztuki", this.state.changedOffer.inStock, 20, "inStock")}
+                                        <div className="col my-2 form-group">
+                                            <label className="form-control-label" htmlFor="retailPriceModal">Cena</label>
+                                            <input type="text" value={this.state.newPrice} maxLength={10} id="retailPriceModal" className="form-control"
+                                                onChange={e => this.setState({newPrice: e.target.value})} required/>
+                                            <div className="invalid-feedback">Niepoprawna wartość</div>
+                                        </div>
                                     </div>
                                 </form>
-
-                                {/* <form>
-                                <div className="row">
-                                        {this.modalBodyElement("Imię", "text", this.state.newInfo.Name, "Name")}
-                                        {this.modalBodyElement("Nazwisko", "text", this.state.newInfo.Surname, "Surname")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalBodyElement("Telefon", "tel", this.state.newInfo.Phone, "Phone")}
-                                        {this.modalBodyElement("Data zatrudnienia", "date", this.state.newInfo.EmploymentDate, "EmploymentDate")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalBodyElement("Ulica", "text", this.state.newInfo.Street, "Street")}
-                                        {this.modalBodyElement("Numer domu", "text", this.state.newInfo.HouseNumber, "HouseNumber")}
-                                    </div>
-                                    <div className="row">
-                                        {this.modalBodyElement("Miasto", "text", this.state.newInfo.City, "City")}
-                                        {this.modalBodyElement("Kod pocztowy", "text", this.state.newInfo.PostCode, "PostCode")}
-                                    </div>
-                                </form> */}
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={()=>this.saveProduct()}>Zapisz</button>
+                                <button type="button" className="btn btn-primary" onClick={(e)=> this.saveProduct(e)}>Zapisz</button>
                             </div>
                         </div>
                     </div>
@@ -123,26 +88,36 @@ class Offer extends React.Component{
             </>
         )
     }
-    modalElement(NamePL, value, maxLength, valueName)
+
+
+    checkPriceInput()
     {
-        return(
-            <div className="col my-2">
-                {NamePL}<br/>
-                <input type="text" value={value} maxLength={maxLength} id={valueName+'Modal'} className="form-control"
-                    onChange={e => this.setState(prevState => ({
-                    changedOffer: {
-                        ...prevState.newInfo,
-                        [valueName]: e.target.value
-                    }   
-                }))}/>
-                <div className="invalid-feedback" id="firstInvalid">Niepoprawna wartość</div>
-            </div>
-        )
+        var isGood = true
+        if(this.state.newPrice.match(/^\d+((,|\.)\d{1,2})?$/) == null)
+        {
+            document.getElementById('retailPriceModal')?.classList.add("is-invalid");
+            isGood = false;
+        }
+        else
+        {
+            document.getElementById('retailPriceModal')?.classList.remove("is-invalid");
+        }
+        return isGood;
     }
 
-    saveProduct()
+    saveProduct(e)
     {
-        // api.Product()
+        if(this.checkPriceInput() === true)
+        {
+            e.currentTarget.setAttribute("data-bs-dismiss", "modal");
+
+            api.Product().changePrice(this.state.productId, this.newPrice)
+            .catch(err => console.log(err))
+            alert("Zapisno!");
+            this.setState({retailPrice: this.state.newPrice.replace(',','.')})
+        }
+        else
+            e.currentTarget.removeAttribute("data-bs-dismiss");
     }
 
     render(){
@@ -168,7 +143,7 @@ class Offer extends React.Component{
                                 <label htmlFor="amount">Ilość</label>
                             </div>
                             <div className="col">
-                                <input className="btn btn-info" type="button" value="Dodaj do koszyka" onClick={() => console.log("clicked the button")}/>
+                                <input className="btn btn-info" type="button" value="Dodaj do koszyka" onClick={() => this.addToCart()}/>
                             </div>
                         </div>
                     </div>
@@ -184,6 +159,17 @@ class Offer extends React.Component{
         if(e.target.value.match(/^\d*$/) != null)
         {
             this.setState({selectedAmount: e.target.value})
+        }
+    }
+
+    addToCart()
+    {
+        if(this.state.selectedAmount !== '')
+        {
+            var cartId = store.getState().persistedReducer.loggedIn ? api.Cart().getUserCart(store.getState().persistedReducer.id) : api.Cart().getNotLogCart();
+
+            api.Cart().insert(cartId, this.state.productId, this.state.selectedAmount)
+            .catch(err => console.log(err))
         }
     }
 }
