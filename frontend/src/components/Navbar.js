@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import api from "../actions/api";
 import {store} from "../actions/store";
 import "./Navbar.css"
 
@@ -7,7 +8,7 @@ class Navbar extends React.Component
 {
     constructor(props){
         super(props);
-        this.state = { username: "", loggedIn: false, basket:[] };
+        this.state = { username: "", loggedIn: false, basket:[], categories:[] };
     }
 
     componentDidMount(){
@@ -20,6 +21,11 @@ class Navbar extends React.Component
             //console.log("New name:", newName)
             this.setState({username: newName})
         }
+
+        api.Product().getCategories()
+        .then(response => this.setState({categories: response.data}))
+        .catch(err => console.log(err))
+
     }
 
     componentDidUpdate()
@@ -105,8 +111,7 @@ class Navbar extends React.Component
 
     categoriesOffcanvas() {
 
-        var categories = ['Kategoria 1', 'Kategoria 2', 'Kategoria 3', 'Kategoria 4', 'Kategoria 5', 'Kategoria 6'];
-
+        // var categories = ['Kategoria 1', 'Kategoria 2', 'Kategoria 3', 'Kategoria 4', 'Kategoria 5', 'Kategoria 6'];
         return(
             <>
             <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasCategories" aria-labelledby="offcanvasCategoriesLabel">
@@ -115,19 +120,19 @@ class Navbar extends React.Component
                     <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body">
-                    {/*Button grid*/}
-                    {/*I just started learning React, please don't kill me for this mess ;-; */}   
-                    {
-                        [0,1].map((i) => {
-                            return <div className="row" key={i}>{
-                                [0,1,2].map((j) => {
-                                    return <div className="col btn category-button" key={(i+1)*3+j}>
-                                        {categories[i*3+j]}
-                                    </div>})
-                            }
+                    <div className="container">
+                     {
+                        this.state.categories.map((cat) => {
+                            return <>
+                            <div className="row">
+                                <div className="col btn category">{cat} <br/></div>
                             </div>
+                            </>
+                            
                         })
-                    }
+                    }   
+                    </div>
+                    
                 </div>
             </div>
         </>
