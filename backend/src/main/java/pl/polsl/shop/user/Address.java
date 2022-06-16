@@ -1,7 +1,10 @@
 package pl.polsl.shop.user;
 
+import pl.polsl.shop.user.rest.AddressDto;
+
 import javax.persistence.*;
 
+@Table(name = "addresses")
 @Entity(name = "Address")
 public class Address {
 
@@ -99,7 +102,19 @@ public class Address {
     public User getUser() {
         return user;
     }
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Transient
+    public static Address fromDto(AddressDto addressDto){
+        Address address = new Address();
+        address.setCountry(addressDto.country());
+        address.setZipCode(addressDto.zipCode());
+        address.setLocation(addressDto.location());
+        address.setStreetName(addressDto.streetName());
+        address.setStreetNumber(addressDto.streetNumber());
+        return address;
     }
 }
