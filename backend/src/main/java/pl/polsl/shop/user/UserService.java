@@ -7,6 +7,9 @@ import pl.polsl.shop.cart.ShoppingCartService;
 import pl.polsl.shop.user.rest.UserDto;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service("userService")
@@ -82,8 +85,8 @@ public class UserService {
             user.setBirthDate(updatedUserDto.birthDate());
             user.setPesel(updatedUserDto.pesel());
             user.setEmploymentDate(updatedUserDto.employmentDate());
-            user.setShoppingCart(updatedUserDto.shoppingCart());
-            user.setAddress(updatedUserDto.address());
+            user.setShoppingCart(ShoppingCart.fromDto(updatedUserDto.shoppingCartDto()));
+            user.setAddress(Address.fromDto(updatedUserDto.addressDto()));
             this.userRepository.save(user);
             return UserDto.fromUser(user);
         }
@@ -94,5 +97,35 @@ public class UserService {
         return this.userRepository.findUserByShoppingCart_Id(shoppingCart).orElseThrow(
                 () -> new NoSuchUserException("User with shopping cart ID: " + shoppingCart.getId() + " does not exist")
         );
+    }
+
+    public List<User> findUsers(String name, String surname, String pesel, Type type){
+        if(name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()){
+            return this.userRepository.findAllByType(type);
+        }
+        if(!name.trim().isEmpty() && !surname.trim().isEmpty() && !pesel.trim().isEmpty()){
+            return this.userRepository.findAllByLegalNameAndSurnameAndPeselAndType(name, surname, pesel, type);
+        }
+        else{
+            if(!name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()){
+                return this.userRepository.findAllByLegalNameAndType(name, type);
+            }
+            if(name.trim().isEmpty() && !surname.trim().isEmpty() && pesel.trim().isEmpty()){
+                return this.userRepository.findAllBySurnameAndType(surname, type);
+            }
+            if(name.trim().isEmpty() && surname.trim().isEmpty() && !pesel.trim().isEmpty()){
+                return this.userRepository.findAllByPeselAndType(pesel, type);
+            }
+            if(!name.trim().isEmpty() && !surname.trim().isEmpty() && pesel.trim().isEmpty()){
+                return this.userRepository.findAllByLegalNameAndSurnameAndType(name, surname, type);
+            }
+            if(!name.trim().isEmpty() && surname.trim().isEmpty() && !pesel.trim().isEmpty()){
+                return this.userRepository.findAllByLegalNameAndPeselAndType(name, pesel, type);
+            }
+            if(name.trim().isEmpty() && !surname.trim().isEmpty() && !pesel.trim().isEmpty()){
+                return this.userRepository.findAllBySurnameAndPeselAndType(surname, pesel, type);
+            }
+        }
+        return Collections.emptyList();
     }
 }
