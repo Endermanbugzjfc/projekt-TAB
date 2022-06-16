@@ -1,11 +1,13 @@
 package pl.polsl.shop.order;
 
+import pl.polsl.shop.order.rest.OrderDto;
 import pl.polsl.shop.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity(name = "orders")
+@Table(name = "orders")
+@Entity(name = "Order")
 public class Order {
 
     @Id
@@ -71,5 +73,14 @@ public class Order {
 
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    @Transient
+    public static Order fromDTO(OrderDto orderDto) {
+        Order order = new Order();
+        order.setUser(User.fromDto(orderDto.userDto()));
+        order.setOrderDate(orderDto.orderDate());
+        order.setPaymentMethod(orderDto.paymentMethod());
+        return order;
     }
 }
