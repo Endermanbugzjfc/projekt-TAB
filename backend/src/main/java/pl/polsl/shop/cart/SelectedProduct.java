@@ -34,8 +34,9 @@ public class SelectedProduct {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    public SelectedProduct(Product product) {
+    public SelectedProduct(Product product, Integer quantity) {
         this.product = product;
+        this.quantity = quantity;
     }
 
     public SelectedProduct() {

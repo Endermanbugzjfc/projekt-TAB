@@ -78,9 +78,9 @@ public class ShoppingCart {
         this.selectedProducts = selectedProducts;
     }
 
-    public void addProduct(Product product) {
-        this.selectedProducts.add(new SelectedProduct(product));
-        this.itemsAmount++;
+    public void addProduct(Product product, Integer quantity) {
+        this.selectedProducts.add(new SelectedProduct(product, quantity));
+        this.itemsAmount+=quantity;
     }
 
     public boolean removeProduct(SelectedProduct selectedProduct) {

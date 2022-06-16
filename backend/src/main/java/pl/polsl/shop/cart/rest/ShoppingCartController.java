@@ -31,14 +31,12 @@ public class ShoppingCartController {
     }
 
     @PutMapping("/{cartId}")
-    public boolean updateShoppingCart(@PathVariable("cartId") Long cartId, @RequestBody Long productId){
-        this.shoppingCartService.addToCart(cartId, productService.getProductData(productId));
-        return true;
+    public ShoppingCartDto updateShoppingCart(@PathVariable("cartId") Long cartId, @RequestBody Long productId, @RequestBody Integer quantity){
+        return ShoppingCartDto.fromShoppingCart(this.shoppingCartService.addToCart(cartId, productService.getProductData(productId), quantity));
     }
 
     @DeleteMapping("/{cartId}")
-    public boolean deleteFromShoppingCart(@PathVariable("cartId") Long cartId, @RequestBody Long productId){
-        this.shoppingCartService.removeFromCart(cartId, productService.getProductData(productId));
-        return true;
+    public ShoppingCartDto deleteFromShoppingCart(@PathVariable("cartId") Long cartId, @RequestBody Long productId){
+        return ShoppingCartDto.fromShoppingCart(this.shoppingCartService.removeFromCart(cartId, productService.getProductData(productId)));
     }
 }
