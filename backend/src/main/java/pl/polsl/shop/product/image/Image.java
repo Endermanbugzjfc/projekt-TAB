@@ -18,12 +18,23 @@ public class Image {
             sequenceName = "image_sequence",
             allocationSize = 1
     )
+    @Column(name = "id", nullable = false)
+    private Long id;
+
     @Column(name = "image_uri", nullable = false)
     private String imageURI;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getImageURI() {
         return imageURI;
