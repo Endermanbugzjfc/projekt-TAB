@@ -87,7 +87,7 @@ public class ShoppingCart {
         boolean removed = this.selectedProducts.remove(selectedProduct);
         if (removed) {
             selectedProduct.setCart(null);
-            this.itemsAmount--;
+            this.itemsAmount-= selectedProduct.getQuantity();
         }
         return removed;
     }
