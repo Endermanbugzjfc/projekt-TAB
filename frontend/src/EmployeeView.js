@@ -1,6 +1,7 @@
 import React from "react";
 import api from "./actions/api.js";
 import Navbar from "./components/Navbar.js";
+import AddNewProduct from "./components/Views/AddNewProduct.js";
 import UserInfo from "./components/Views/UserInfo.js";
 import "./EmployeeView.css"
 
@@ -29,7 +30,7 @@ class EmployeeView extends React.Component{
                         <div className="list-group" id="list-tab" role="tablist">
                             <a className="list-group-item list-group-item-action active" id="employee_data_list" data-bs-toggle="list" href="#employee_data" role="tab" aria-controls="employee_data">Twoje dane</a>
                             <a className="list-group-item list-group-item-action" id="generate_report_list"  data-bs-toggle="list" href="#generate_report" role="tab" aria-controls="generate_report">Wygeneruj raport</a>
-                            <a className="list-group-item list-group-item-action" id="stock_list"  data-bs-toggle="list" href="#show_stock" role="tab" aria-controls="show_stock">Magazyn</a>
+                            <a className="list-group-item list-group-item-action" id="newProduct"  data-bs-toggle="list" href="#addNewProduct" role="tab" aria-controls="addNewProduct">Dodaj nowy produkt</a>
                         </div>
                     </div>
                     <div className="col">
@@ -40,21 +41,12 @@ class EmployeeView extends React.Component{
                             <div className="tab-pane fade" id="generate_report" role="tabpanel" aria-labelledby="generate_report_list">
                                 {this.GenerateReport() /*this.state.RaportClass.GenerateReport()*/}
                             </div>
-                            <div className="tab-pane fade" id="show_stock" role="tabpanel" aria-labelledby="stock_list">
-                                {this.ShowStock()}
+                            <div className="tab-pane fade" id="addNewProduct" role="tabpanel" aria-labelledby="newProduct">
+                                <AddNewProduct/>
                             </div>
                         </div>
                     </div>
                 </div>
-            </>
-        )
-    }
-    
-    // TODO: implement displaying stock
-    ShowStock(props){
-        return(
-            <>
-                Stock here
             </>
         )
     }
