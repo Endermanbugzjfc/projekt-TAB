@@ -1,12 +1,14 @@
 package pl.polsl.shop.user;
 
 import pl.polsl.shop.cart.ShoppingCart;
+import pl.polsl.shop.user.rest.UserDto;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Entity(name = "users")
+@Table(name="users")
+@Entity(name = "User")
 public class User {
 
     @Id
@@ -192,5 +194,22 @@ public class User {
             setType(Type.FIRED);
         }
         return true;
+    }
+
+    @Transient
+    public static User fromDto(UserDto userDto){
+        User user = new User();
+        user.setUserName(userDto.userName());
+        user.setPassword(userDto.password());
+        user.setLegalName(userDto.legalName());
+        user.setSurname(userDto.surname());
+        user.setPhoneNumber(userDto.phoneNumber());
+        user.setType(userDto.type());
+        user.setBirthDate(userDto.birthDate());
+        user.setPesel(userDto.pesel());
+        user.setEmploymentDate(userDto.employmentDate());
+        user.setAddress(Address.fromDto(userDto.addressDto()));
+        user.setShoppingCart(ShoppingCart.fromDto(userDto.shoppingCartDto()));
+        return user;
     }
 }

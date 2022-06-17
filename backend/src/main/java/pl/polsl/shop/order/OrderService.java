@@ -68,7 +68,7 @@ public class OrderService {
                 totalCost
         );
     }
-
+  
     private Order addProducts(Order order, Collection<SelectedProduct> selectedProducts) {
         List<OrderedProduct> orderedProducts = selectedProducts.stream()
                 .map(selectedProduct -> this.orderedProductRepository.findByOrder_IdAndProduct_Id(
