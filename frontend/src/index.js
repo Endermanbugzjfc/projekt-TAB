@@ -15,6 +15,7 @@ import Basket from './Basket';
 import {store} from './actions/store';
 import {persistor} from './actions/store'
 import {PersistGate} from 'redux-persist/integration/react'
+import { ProtectedRouteLogin, ProtectedRouteRole, ProtLogin } from './components/ProtectedRoute';
 
 ReactDOM.render(
     <Provider store={store}>
@@ -23,22 +24,22 @@ ReactDOM.render(
                 <Routes>
                     <Route path='/' element={<App/>}/>
                     
-                    <Route path="login" element={<Login/>}/>
+                    <Route path="login" element={<ProtLogin><Login/></ProtLogin> }/>
 
-                    <Route path="register" element={<Register/>}/>
+                    <Route path="register" element={<ProtLogin><Register/></ProtLogin>}/>
 
-                    <Route path="user/*" element={<UserView/>}/>
+                    <Route path="user/*" element={<ProtectedRouteLogin><UserView/></ProtectedRouteLogin>}/>
 
-                    <Route path='basket/*' element={<Basket/>} />
+                    <Route path='basket/*' element={<ProtectedRouteLogin><Basket/></ProtectedRouteLogin>}/>
 
                     <Route path="products/*" element={<Products/>}/>
 
-                    <Route path="admin/*" element={<AdminView/>}/>
+                    <Route path="admin/*" element={<ProtectedRouteRole><AdminView/></ProtectedRouteRole>}/>
 
-                    <Route path="employee/*" element={<EmployeeView/>}/>
+                    <Route path="employee/*" element={<ProtectedRouteRole><EmployeeView/></ProtectedRouteRole>}/>
 
                     <Route path="*" element={
-                        <><Navbar/><p><h1>404</h1> Site not found</p><p><a href='/'>Go back to the main page</a></p></>
+                        FourOneFour()
                     }>
                     </Route>
                     
@@ -48,3 +49,8 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('root')
 );
+
+export function FourOneFour()
+{
+    return <><Navbar/><p><h1>404</h1> Site not found</p><p><a href='/'>Go back to the main page</a></p></>
+}

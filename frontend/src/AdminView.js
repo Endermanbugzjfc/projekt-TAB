@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar.js";
 import "./AdminView.css"
 import UserInfo from "./components/Views/UserInfo.js";
 import AddNewWorker from "./components/Views/AddNewWorker.js";
+import { store } from "./actions/store.js";
 
 class AdminView extends React.Component {
 
@@ -10,6 +11,8 @@ class AdminView extends React.Component {
         super(props);
         this.state = {
         }
+        if(store.getState().persistedReducer.role !== 'ADMIN')
+            window.location.href = '/'
     }
 
     componentDidMount() {

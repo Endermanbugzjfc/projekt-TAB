@@ -15,6 +15,10 @@ class Login extends React.Component
             Login: "",
             Password: ""
         }
+
+        if(store.getState().persistedReducer.loggedIn)
+            window.location.href = '/'
+
     }
 
 

@@ -1,5 +1,6 @@
 import React from "react";
 import api from "./actions/api.js";
+import { store } from "./actions/store.js";
 import Navbar from "./components/Navbar.js";
 import AddNewProduct from "./components/Views/AddNewProduct.js";
 import UserInfo from "./components/Views/UserInfo.js";
@@ -15,6 +16,11 @@ class EmployeeView extends React.Component{
             raportFrom: null,
             raportTo: null,
             raportProductId: '',
+        }
+
+        if(store.getState().persistedReducer.role !== 'EMPLOYEE')
+        {
+            window.location.href = '/'
         }
     }
 
