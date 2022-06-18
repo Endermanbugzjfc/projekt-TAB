@@ -3,6 +3,7 @@ import api from "./actions/api.js";
 import { store } from "./actions/store.js";
 import Navbar from "./components/Navbar.js";
 import UserInfo from "./components/Views/UserInfo.js";
+import { logout } from "./reducers/dUser.js";
 import "./UserView.css"
 
 class UserView extends React.Component{
@@ -167,8 +168,12 @@ class UserView extends React.Component{
         return(
             <>
                 <h3 className="my-4">Czy aby na pewno chcesz usunąć twoje konto?</h3>
-                <input type="button" className="btn btn-danger" value="Usuń konto" onClick={()=>
+                <input type="button" className="btn btn-danger" value="Usuń konto" onClick={()=> {
                     api.User().delete(this.state.Id)
+                    api.User().logout()
+                    store.dispatch(logout())
+                    window.location.href = '/';
+                }
                 } />
             </>
         )

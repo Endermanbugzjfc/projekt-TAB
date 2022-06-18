@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import api from "../actions/api";
 import {store} from "../actions/store";
+import { logout } from "../reducers/dUser";
 import "./Navbar.css"
 
 class Navbar extends React.Component
@@ -69,7 +70,7 @@ class Navbar extends React.Component
                             <div className="col col"></div>
                             <div className="col-2 col">
                                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                                    <li className="nav-item">
+                                    <li className="nav-item dropdown">
                                         {this.userIconAndLogin()}
                                     </li>
                                     <li className="nav-item"> 
@@ -90,13 +91,26 @@ class Navbar extends React.Component
 
     userIconAndLogin(){
         if(this.state.loggedIn){
+            var link = '/user';
+            if(store.getState().persistedReducer.role === 'CUSTOMER')
+                link = '/user'
+            else if (store.getState().persistedReducer.role === 'EMPLOYEE')
+                link = '/employee'
+            else if (store.getState().persistedReducer.role === 'ADMIN')
+                link = '/admin'
             return(
                 <>
-                    <Link to="/user" className="nav-link active bi bi-person">
-                    &nbsp;{
+                    <a class="nav-link dropdown-toggle active bi bi-person" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    &nbsp;
+                        {
                              this.state.username
                         }
-                    </Link>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                        
+                        <li><Link to={link} className="dropdown-item">Zarządzaj</Link></li>
+                        <li><input value={"Wyloguj"} className="dropdown-item" type="button" onClick={() => this.logOut()}/></li>
+                    </ul>
                 </>
             )
         }
@@ -107,6 +121,13 @@ class Navbar extends React.Component
                 </>
             )
         }
+    }
+
+    logOut()
+    {
+        //api.User().logout();
+        store.dispatch(logout())
+        window.location.reload();
     }
 
     categoriesOffcanvas() {

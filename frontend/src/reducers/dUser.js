@@ -19,7 +19,7 @@ const UserSlice = createSlice(
                 state.name = user.payload.name;
                 state.role = user.payload.role;
                 state.loggedIn = true;
-                state.cartId = user.payload.shoppingCartDto.id
+                state.cartId = user.payload.shoppingCartDto?.id
             },
             isLoggedIn : (state) =>{ return state.loggedIn },
             logout: (state) =>{

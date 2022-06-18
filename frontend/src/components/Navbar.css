@@ -6,3 +6,7 @@
     margin: 3px;
     height: 3rem;
 }
+
+.navbar-nav > li > .dropdown-menu { background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important; color: black; }
+
+.dropdown-item {color: #000 !important;}
