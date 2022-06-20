@@ -29,14 +29,16 @@ class Offer extends React.Component{
             producer: props.product.producer,
             description: props.product.description,
             category: props.product.category,
-            inStock: props.product.inStock,
+            inStock: '' + props.product.inStock,
             purchasePrice: props.product.purchasePrice,
             retailPrice: '' + props.product.retailPrice,
 
             selectedAmount: 1,
-            EditButton: <></>,
+            EditButton: <></>,            
+            Images: [],
 
-            newPrice: '' + props.product.retailPrice
+            newPrice: '' + props.product.retailPrice,
+            restockValue: '0'
         }
     }
 
@@ -45,17 +47,22 @@ class Offer extends React.Component{
         if(store.getState().persistedReducer.role === "EMPLOYEE" || true)
         {
             var EditButton = <>
-                <div className="col-2 text-center mt-2">
-                    <input type="button" className="btn btn-secondary" value="Edytuj cenę" data-bs-toggle="modal" data-bs-target={"#EditProduct" + this.state.productId} />
+                <div className="row">
+                    <div className="col-2 text-center mt-2">
+                        <input type="button" className="btn btn-secondary" value="Edytuj cenę" data-bs-toggle="modal" data-bs-target={"#EditProduct" + this.state.productId} />
+                    </div>
                 </div>
+                <div className="row">
+                    <div className="col-2 text-center mt-2">
+                        <input type="button" className="btn btn-secondary" value="Uzupełnij" data-bs-toggle="modal" data-bs-target={"#Restock" + this.state.productId} />
+                    </div>
+                </div>
+                
             </>
             this.setState({EditButton: EditButton})
         }
     }
-    
-    saveData = () => {
 
-    }
     EditModal = () => {
         return(
             <>
@@ -70,8 +77,8 @@ class Offer extends React.Component{
                                 <form className="needs-validation">
                                     <div className="row">
                                         <div className="col my-2 form-group">
-                                            <label className="form-control-label" htmlFor="retailPriceModal">Cena</label>
-                                            <input type="text" value={this.state.newPrice} maxLength={10} id="retailPriceModal" className="form-control"
+                                            <label className="form-control-label" htmlFor={"retailPriceModal" + this.state.productId}>Cena</label>
+                                            <input type="text" value={this.state.newPrice} maxLength={10} id={"retailPriceModal" + this.state.productId} className="form-control"
                                                 onChange={e => this.setState({newPrice: e.target.value})} required/>
                                             <div className="invalid-feedback">Niepoprawna wartość</div>
                                         </div>
@@ -89,18 +96,52 @@ class Offer extends React.Component{
         )
     }
 
+    RestockModal = () => 
+    {
+        return(
+            <>
+                <div className="modal fade" id={"Restock" + this.state.productId} data-bs-backdrop="static" tabIndex="-1" aria-labelledby="Restock" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="Restock">Zamówienie do magazynu</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                <form className="needs-validation">
+                                    <div className="row">
+                                        <div className="col my-2 form-group">
+                                            <label className="form-control-label" htmlFor={"restockModal" + this.state.productId}>Dodaj do magazynu</label>
+                                            <input type="text" value={this.state.restockValue} maxLength={10} id={"restockModal" + this.state.productId} className="form-control"
+                                                onChange={e => this.setState({restockValue: e.target.value})} required/>
+                                            <div className="invalid-feedback">Niepoprawna wartość</div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                                <button type="button" className="btn btn-primary" onClick={(e)=> this.Restock(e)}>Zapisz</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </>
+        )
+    }
+
 
     checkPriceInput()
     {
         var isGood = true
         if(this.state.newPrice.match(/^\d+((,|\.)\d{1,2})?$/) == null)
         {
-            document.getElementById('retailPriceModal')?.classList.add("is-invalid");
+            document.getElementById("retailPriceModal" + this.state.productId)?.classList.add("is-invalid");
             isGood = false;
         }
         else
         {
-            document.getElementById('retailPriceModal')?.classList.remove("is-invalid");
+            document.getElementById("retailPriceModal" + this.state.productId)?.classList.remove("is-invalid");
         }
         return isGood;
     }
@@ -118,6 +159,24 @@ class Offer extends React.Component{
         }
         else
             e.currentTarget.removeAttribute("data-bs-dismiss");
+    }
+
+    Restock(e)
+    {
+        if(this.state.restockValue.match(/^\d+$/) !== null)
+        {
+            document.getElementById("restockModal" + this.state.productId)?.classList.remove("is-invalid");
+            e.currentTarget.setAttribute("data-bs-dismiss", "modal");
+            api.Product().orderNew(this.state.productId, parseInt(this.state.restockValue))
+            .catch(err => console.log(err))
+            alert("Zamówiono!");
+            this.setState({inStock: (parseInt(this.state.inStock) + parseInt(this.state.restockValue)).toString()})
+        }
+        else
+        {
+            document.getElementById("restockModal" + this.state.productId)?.classList.add("is-invalid");
+            e.currentTarget.removeAttribute("data-bs-dismiss");
+        }
     }
 
     render(){
@@ -149,6 +208,7 @@ class Offer extends React.Component{
                     </div>
                     {this.state.EditButton}
                     {this.EditModal()}
+                    {this.RestockModal()}
                 </div>
             </>
         )
@@ -166,10 +226,21 @@ class Offer extends React.Component{
     {
         if(this.state.selectedAmount !== '')
         {
-            var cartId = store.getState().persistedReducer.loggedIn ? api.Cart().getUserCart(store.getState().persistedReducer.id) : api.Cart().getNotLogCart();
+            console.log("here")
+            if( parseInt(this.state.inStock) >= parseInt(this.state.selectedAmount))
+            {
+                document.getElementById("amount")?.classList.remove("is-invalid")
+                console.log("here2")
+                var cartId = store.getState().persistedReducer.loggedIn ? api.Cart().getUserCart(store.getState().persistedReducer.id) : api.Cart().getNotLogCart();
 
-            api.Cart().insert(cartId, this.state.productId, this.state.selectedAmount)
-            .catch(err => console.log(err))
+                api.Cart().insert(cartId, this.state.productId, this.state.selectedAmount)
+                .catch(err => console.log(err))
+            }
+            else
+            {
+                alert("Nie ma tyle sztuk w magazynie")
+                document.getElementById("amount")?.classList.add("is-invalid")
+            }
         }
     }
 }

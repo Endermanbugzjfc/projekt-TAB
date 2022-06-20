@@ -158,7 +158,7 @@ class UserView extends React.Component{
         {
             return(
                 <>
-                    <h4>Nie masz żadnej historii zamówień</h4>
+                    <h4 className="mt-4">Nie masz żadnej historii zamówień</h4>
                 </>
             )
         }

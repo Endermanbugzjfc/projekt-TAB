@@ -52,9 +52,17 @@ class Products extends React.Component{
                     <div className="col-3">
                         <div className="container">
                             <h3> Cena </h3>
-                            <input placeholder="Od" size={10} value={this.state.minPrice} id="minPrice" onChange={e => this.handleNumerChange(e, "minPrice")}></input>
-                            -
-                            <input placeholder="Do" size={10} value={this.state.maxPrice} id="maxPrice" onChange={e => this.handleNumerChange(e, "maxPrice")}></input>
+                            <div className="row">
+                                <input placeholder="Od" value={this.state.minPrice} id="minPrice" className="col me-2 form-control" onChange={e => this.handleNumerChange(e, "minPrice")}></input>
+                                _
+                                <input placeholder="Do" value={this.state.maxPrice} id="maxPrice" className="col ms-2 form-control" onChange={e => this.handleNumerChange(e, "maxPrice")}></input>
+                                    
+                            </div>
+                            <div className="row">
+                                <div className="col"> 
+                                    <input type="button" value="Szukaj" className="btn btn-primary mt-3" onClick={() => {this.SearchPrice()}}/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="col">
@@ -78,6 +86,12 @@ class Products extends React.Component{
         {
             this.setState({[name]: e.target.value})
         }
+    }
+
+    SearchPrice()
+    {
+        //TODO
+        //missing backend endpoint
     }
 
 }

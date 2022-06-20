@@ -15,8 +15,8 @@ function App() {
 				Znajdziesz tu wszystko, co jest potrzebne do urządzenia domu. <br/> Zapraszamy do zapoznania się z naszą ofertą
 			</div>
 		</div>
-		<img src='https://as2.ftcdn.net/v2/jpg/03/18/37/59/1000_F_318375953_txbFqlDB2ULXSU1hK5qQICiUR9nX4bGo.jpg' align="right" height="500px"/>
-		<img src='https://as2.ftcdn.net/v2/jpg/03/18/37/59/1000_F_318375996_x1ngOi3bkon1yAYjamJP4GTsNu3bnPsa.jpg' align="left" height="500px"/>
+		<img src='https://as2.ftcdn.net/v2/jpg/03/18/37/59/1000_F_318375953_txbFqlDB2ULXSU1hK5qQICiUR9nX4bGo.jpg' align="right" height="500px" alt='Harold1'/>
+		<img src='https://as2.ftcdn.net/v2/jpg/03/18/37/59/1000_F_318375996_x1ngOi3bkon1yAYjamJP4GTsNu3bnPsa.jpg' align="left" height="500px" alt='Harold2'/>
     </>
   );
 }
