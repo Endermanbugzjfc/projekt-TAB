@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pl.polsl.shop.order.rest.OrderDto;
 import pl.polsl.shop.order.rest.OrderLongReportDto;
+import pl.polsl.shop.order.rest.OrderReportDto;
 import pl.polsl.shop.order.rest.OrderedProductDto;
 
 import pl.polsl.shop.cart.SelectedProduct;
@@ -85,6 +86,19 @@ public class OrderService {
         Order order = this.newOrder(user.getId(), paymentMethod);
         this.addProducts(order, shoppingCart.getSelectedProducts());
         return this.orderRepository.save(order);
+    }
+
+    public List<OrderReportDto> getAllReportsFor(User user) {
+        return this.orderRepository.findAllByUser_Id(user).stream()
+                .map(order -> this.orderedProductRepository.findOrderedProductsByOrder_Id(order))
+                .map(orderedProducts -> {
+                            Order order = orderedProducts.get(0).getOrder();
+                            double sum = orderedProducts.stream()
+                                    .mapToDouble(OrderedProduct::getPrice)
+                                    .sum();
+                            return new OrderReportDto(order, orderedProducts, sum);
+                        }
+                ).toList();
     }
 
     public List<Order> getOrdersFor(User user) {
