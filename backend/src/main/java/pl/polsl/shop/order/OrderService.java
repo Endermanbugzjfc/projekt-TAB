@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import pl.polsl.shop.order.rest.OrderDto;
 import pl.polsl.shop.order.rest.OrderLongReportDto;
+import pl.polsl.shop.order.rest.OrderReportDto;
 import pl.polsl.shop.order.rest.OrderedProductDto;
 
 import pl.polsl.shop.cart.SelectedProduct;
@@ -35,7 +36,7 @@ public class OrderService {
         this.userService = userService;
     }
 
-    private Order newOrder(Long userId, PaymentMethod paymentMethod) {
+    public Order newOrder(Long userId, PaymentMethod paymentMethod) {
         User user = this.userService.getUser(userId);
         return new Order(user, paymentMethod);
     }
@@ -48,7 +49,7 @@ public class OrderService {
 
     public List<OrderDto> generateShortReport(Long userId){
         User user = userService.getUser(userId);
-        return this.orderRepository.findByUser_Id(user).stream().map(OrderDto::fromOrder).collect(Collectors.toList());
+        return this.orderRepository.findAllByUser_Id(user).stream().map(OrderDto::fromOrder).collect(Collectors.toList());
     }
 
     public OrderLongReportDto generateLongReport(Long userId, Long orderId){
@@ -68,7 +69,7 @@ public class OrderService {
                 totalCost
         );
     }
-}
+  
     private Order addProducts(Order order, Collection<SelectedProduct> selectedProducts) {
         List<OrderedProduct> orderedProducts = selectedProducts.stream()
                 .map(selectedProduct -> this.orderedProductRepository.findByOrder_IdAndProduct_Id(
@@ -87,10 +88,6 @@ public class OrderService {
         return this.orderRepository.save(order);
     }
 
-    public List<Order> getOrdersFor(User user) {
-        return this.orderRepository.findAllByUser_Id(user);
-    }
-
     public List<OrderReportDto> getAllReportsFor(User user) {
         return this.orderRepository.findAllByUser_Id(user).stream()
                 .map(order -> this.orderedProductRepository.findOrderedProductsByOrder_Id(order))
@@ -102,5 +99,9 @@ public class OrderService {
                             return new OrderReportDto(order, orderedProducts, sum);
                         }
                 ).toList();
+    }
+
+    public List<Order> getOrdersFor(User user) {
+        return this.orderRepository.findAllByUser_Id(user);
     }
 }
