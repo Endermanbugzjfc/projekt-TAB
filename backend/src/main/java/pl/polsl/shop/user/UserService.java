@@ -93,7 +93,7 @@ public class UserService {
     }
 
     public User findUserByShoppingCart_Id(ShoppingCart shoppingCart) {
-        return this.userRepository.findUserByShoppingCart_Id(shoppingCart).orElseThrow(
+        return this.userRepository.findUserByShoppingCart(shoppingCart).orElseThrow(
                 () -> new NoSuchUserException("User with shopping cart ID: " + shoppingCart.getId() + " does not exist")
         );
     }

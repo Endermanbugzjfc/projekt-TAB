@@ -47,13 +47,13 @@ public class OrderService {
 
     public List<OrderDto> generateShortReport(Long userId) {
         User user = userService.getUser(userId);
-        return this.orderRepository.findAllByUser_Id(user).stream().map(OrderDto::fromOrder).collect(Collectors.toList());
+        return this.orderRepository.findAllByUser(user).stream().map(OrderDto::fromOrder).collect(Collectors.toList());
     }
 
     public OrderLongReportDto generateLongReport(Long userId, Long orderId) {
         Order order = getOrder(orderId);
         User user = this.userService.getUser(userId);
-        List<OrderedProduct> orderedProducts = this.orderedProductRepository.findAllByOrder_Id(order);
+        List<OrderedProduct> orderedProducts = this.orderedProductRepository.findAllByOrder(order);
         Double totalCost = 0.0;
         for (OrderedProduct orderedProduct : orderedProducts) {
             totalCost += orderedProduct.getQuantity() * orderedProduct.getPrice();
@@ -70,7 +70,7 @@ public class OrderService {
 
     private Order addProducts(Order order, Collection<SelectedProduct> selectedProducts) {
         List<OrderedProduct> orderedProducts = selectedProducts.stream()
-                .map(selectedProduct -> this.orderedProductRepository.findByOrder_IdAndProduct_Id(
+                .map(selectedProduct -> this.orderedProductRepository.findByOrderAndProduct(
                                 order, selectedProduct.getProduct()
                         ).orElseGet(() -> new OrderedProduct(order, selectedProduct.getProduct()))
                 ).peek(orderedProduct -> orderedProduct.setQuantity(orderedProduct.getQuantity() + 1))// i think SelectedProduct requires its quantity
@@ -87,16 +87,16 @@ public class OrderService {
     }
 
     public List<Order> getOrdersFor(User user) {
-        return this.orderRepository.findAllByUser_Id(user);
+        return this.orderRepository.findAllByUser(user);
     }
 
     public List<OrderedProduct> getAllSalesOf(Product product) {
-        return this.orderedProductRepository.findAllByProduct_Id(product);
+        return this.orderedProductRepository.findAllByProduct(product);
     }
 
     public List<OrderReportDto> getAllReportsFor(User user) {
-        return this.orderRepository.findAllByUser_Id(user).stream()
-                .map(order -> this.orderedProductRepository.findOrderedProductsByOrder_Id(order))
+        return this.orderRepository.findAllByUser(user).stream()
+                .map(order -> this.orderedProductRepository.findOrderedProductsByOrder(order))
                 .map(orderedProducts -> {
                             Order order = orderedProducts.get(0).getOrder();
                             double sum = orderedProducts.stream()

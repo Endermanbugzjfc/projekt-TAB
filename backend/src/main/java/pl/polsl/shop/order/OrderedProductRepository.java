@@ -9,10 +9,8 @@ import java.util.Optional;
 
 @Repository
 interface OrderedProductRepository extends JpaRepository<OrderedProduct, Long> {
-    List<OrderedProduct> findAllByOrder_Id(Order order);
-    Optional<OrderedProduct> findByOrder_IdAndProduct_Id(Order order, Product product);
-
-    List<OrderedProduct> findOrderedProductsByOrder_Id(Order order);
-    List<OrderedProduct> findAllByProduct_Id(Product product);
-    List<OrderedProduct> findOrderedProductsByOrder_Id(Order order);
+    List<OrderedProduct> findAllByOrder(Order order);
+    Optional<OrderedProduct> findByOrderAndProduct(Order order, Product product);
+    List<OrderedProduct> findAllByProduct(Product product);
+    List<OrderedProduct> findOrderedProductsByOrder(Order order);
 }
