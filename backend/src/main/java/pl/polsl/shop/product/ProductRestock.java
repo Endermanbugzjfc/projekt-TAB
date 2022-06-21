@@ -3,6 +3,7 @@ package pl.polsl.shop.product;
 import javax.persistence.*;
 import java.util.Date;
 
+@Table(name="product_restock")
 @Entity(name = "ProductRestock")
 public class ProductRestock {
     @Id

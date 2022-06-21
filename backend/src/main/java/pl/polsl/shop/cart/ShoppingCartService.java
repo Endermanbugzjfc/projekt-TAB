@@ -35,7 +35,7 @@ public class ShoppingCartService {
     }
 
     public ShoppingCart getCartFor(User user) {
-        return this.shoppingCartRepository.findShoppingCartByUser_Id(user).orElseGet(
+        return this.shoppingCartRepository.findShoppingCartByUser(user).orElseGet(
                 () -> this.createShoppingCart(user)
         );
     }
@@ -64,7 +64,7 @@ public class ShoppingCartService {
 
     public ShoppingCart removeFromCart(Long cartId, Product product) {
         ShoppingCart shoppingCart = this.getCart(cartId);
-        SelectedProduct selectedProduct = this.selectedProductRepository.findSelectedProductByProduct_Id(product);
+        SelectedProduct selectedProduct = this.selectedProductRepository.findSelectedProductByProduct(product);
         boolean removed = shoppingCart.removeProduct(selectedProduct);
         if (removed) {
             this.shoppingCartRepository.save(shoppingCart);

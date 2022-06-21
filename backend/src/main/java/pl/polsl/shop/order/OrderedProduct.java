@@ -90,7 +90,7 @@ public class OrderedProduct {
     public static OrderedProduct fromDto(OrderedProductDto orderedProductDto){
         OrderedProduct orderedProduct = new OrderedProduct();
         orderedProduct.setQuantity(orderedProductDto.quantity());
-        orderedProduct.setProduct(Product.fromDto(orderedProductDto.product()));
+        orderedProduct.setProduct(Product.fromDTO(orderedProductDto.productDto()));
         orderedProduct.setPrice(orderedProductDto.price());
         return orderedProduct;
     }

@@ -1,7 +1,6 @@
 package pl.polsl.shop.cart;
 
 import pl.polsl.shop.cart.rest.SelectedProductDto;
-import pl.polsl.shop.cart.rest.ShoppingCartDto;
 import pl.polsl.shop.product.Product;
 
 import javax.persistence.*;

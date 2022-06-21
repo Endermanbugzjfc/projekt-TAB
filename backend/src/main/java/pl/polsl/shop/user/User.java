@@ -197,7 +197,7 @@ public class User {
     }
 
     @Transient
-    public static User fromDto(UserDto userDto){
+    public static User fromDto(UserDto userDto) {
         User user = new User();
         user.setUserName(userDto.userName());
         user.setPassword(userDto.password());

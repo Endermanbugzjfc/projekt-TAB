@@ -17,24 +17,24 @@ public class OrderController {
     private ShoppingCartService shoppingCartService;
 
     @Autowired
-    public OrderController(OrderService orderService, UserService userService, ShoppingCartService shoppingCartService){
+    public OrderController(OrderService orderService, UserService userService, ShoppingCartService shoppingCartService) {
         this.orderService = orderService;
         this.userService = userService;
         this.shoppingCartService = shoppingCartService;
     }
 
     @PostMapping("/cart/{cartId}")
-    public OrderDto buy(@PathVariable Long cartId, @RequestBody PaymentMethod paymentMethod){
+    public OrderDto buy(@PathVariable Long cartId, @RequestBody PaymentMethod paymentMethod) {
         return OrderDto.fromOrder(this.orderService.newOrder(cartId, paymentMethod));
     }
 
-    @GetMapping("/user/{id}/report")
-    public List<OrderDto> generateShortReport(@PathVariable Long userId){
+    @PostMapping("/user/{id}/report")
+    public List<OrderDto> generateShortReport(@PathVariable("id") Long userId) {
         return orderService.generateShortReport(userId);
     }
 
-    @GetMapping("/user/{id}/report/full/{orderId}")
-    public OrderLongReportDto generateLongReport(@PathVariable Long userId, @PathVariable Long orderId){
+    @PostMapping("/user/{id}/report/full/{orderId}")
+    public OrderLongReportDto generateLongReport(@PathVariable("id") Long userId, @PathVariable Long orderId) {
         return orderService.generateLongReport(userId, orderId);
     }
 }

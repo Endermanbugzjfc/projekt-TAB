@@ -6,5 +6,5 @@ import pl.polsl.shop.product.Product;
 
 @Repository
 interface SelectedProductRepository extends JpaRepository<SelectedProduct, Long> {
-    SelectedProduct findSelectedProductByProduct_Id(Product product);
+    SelectedProduct findSelectedProductByProduct(Product product);
 }

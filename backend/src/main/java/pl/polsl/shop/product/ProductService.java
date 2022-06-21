@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.shop.order.OrderService;
 import pl.polsl.shop.order.OrderedProduct;
 import pl.polsl.shop.product.rest.ProductDTO;
-import pl.polsl.shop.product.rest.ProductPriceUpdateDTO;
+import pl.polsl.shop.product.rest.ProductPriceQueryDTO;
 import pl.polsl.shop.product.rest.ProductReportDTO;
 import pl.polsl.shop.product.rest.ProductRestockDTO;
 
@@ -31,10 +31,18 @@ public class ProductService { //todo implement
         return this.productRepository.findAllByCategoryEquals(productCategory);
     }
 
-    public Product updateRetailPrice(ProductPriceUpdateDTO productPriceUpdateDto) {//PUT /product/price
-        Product product = this.productRepository.getById(productPriceUpdateDto.productId());
-        product.setRetailPrice(productPriceUpdateDto.newPrice());
-        return this.productRepository.save(product);
+    public List<Product> getByRetailPrice(ProductPriceQueryDTO productPriceQueryDTO) {//PUT /product/price
+        return this.productRepository.findAllByRetailPriceBetween(
+                productPriceQueryDTO.min(), productPriceQueryDTO.max()
+        );
+    }
+
+    public List<Product> getByRetailPriceAndCategory(ProductPriceQueryDTO productPriceQueryDTO, ProductCategory category) {//PUT /product/price
+        return this.productRepository.findAllByRetailPriceBetween(
+                        productPriceQueryDTO.min(), productPriceQueryDTO.max()
+                ).stream()
+                .filter(product -> product.getCategory().equals(category))
+                .toList();
     }
 
     @Transactional

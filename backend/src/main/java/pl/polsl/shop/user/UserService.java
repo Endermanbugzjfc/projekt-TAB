@@ -7,7 +7,6 @@ import pl.polsl.shop.cart.ShoppingCartService;
 import pl.polsl.shop.user.rest.UserDto;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -94,7 +93,7 @@ public class UserService {
     }
 
     public User findUserByShoppingCart_Id(ShoppingCart shoppingCart) {
-        return this.userRepository.findUserByShoppingCart_Id(shoppingCart).orElseThrow(
+        return this.userRepository.findUserByShoppingCart(shoppingCart).orElseThrow(
                 () -> new NoSuchUserException("User with shopping cart ID: " + shoppingCart.getId() + " does not exist")
         );
     }
