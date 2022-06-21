@@ -44,7 +44,7 @@ class Offer extends React.Component{
 
     componentDidMount()
     {
-        if(store.getState().persistedReducer.role === "EMPLOYEE" || true)
+        if(store.getState().persistedReducer.role === "EMPLOYEE" || (!process.env.NODE_ENV || process.env.NODE_ENV === 'development'))
         {
             var EditButton = <>
                 <div className="row">

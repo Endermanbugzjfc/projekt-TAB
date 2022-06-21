@@ -82,7 +82,7 @@ class Basket extends React.Component
                     id: '2',
                     quantity: 1,
                     productDTO: {
-                        productId:'2',
+                        productId:'6',
                         name: 'Rynna',
                         producer: 'Aleksander Wielki',
                         description: '2',
@@ -96,7 +96,7 @@ class Basket extends React.Component
                     id: '2',
                     quantity: 1,
                     productDTO: {
-                        productId:'2',
+                        productId:'3',
                         name: 'Rynna',
                         producer: 'Aleksander Wielki',
                         description: '2',
@@ -110,9 +110,9 @@ class Basket extends React.Component
                     id: '2',
                     quantity: 1,
                     productDTO: {
-                        productId:'2',
-                        name: 'Rynna',
-                        producer: 'Aleksander Wielki',
+                        productId:'4',
+                        name: 'Rynnaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                        producer: 'Aleksander WielkiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiWielkiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiWielkiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii',
                         description: '2',
                         category: '2',
                         inStock: '2',
@@ -124,7 +124,7 @@ class Basket extends React.Component
                     id: '2',
                     quantity: 1,
                     productDTO: {
-                        productId:'2',
+                        productId:'5',
                         name: 'Rynna',
                         producer: 'Aleksander Wielki',
                         description: '2',
@@ -162,26 +162,25 @@ class Basket extends React.Component
         if(this.state.Cart != null) 
         {
             returns = <>
-                <div className="table-responsive-sm col">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                            <th scope="col">Nazwa</th>
-                            <th scope="col">Producent</th>
-                            <th scope="col">Ilość</th>
-                            <th scope="col">Zostało w <br/>magazynie</th>
-                            <th scope="col">Cena<br/>za szt.</th>
-                            <th scope="col">Cena<br/>całkowita</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <div className="col">
+                    <div className="container">
+                        <div className="row">
+                            <div className="container row mx-2">
+                                <div className="col-2"><strong>Nazwa</strong></div>
+                                <div className="col-2"><strong>Ilość</strong></div>
+                                <div className="col-2"><strong>Zostało w <br/>magazynie</strong></div>
+                                <div className="col-2"><strong>Cena<br/>za szt.</strong></div>
+                                <div className="col-2"><strong>Cena<br/>całkowita</strong></div>
+                            </div>
+                        </div>
+                        <div class="accordion border border-dark border-start-0 border-end-0 border-bottom-0" id="accordionBasket">
                             {
                                 this.state.Cart.selectedProducts.map(prod =>{
-                                return this.displayProduct(prod);
+                                return this.displayProduct(prod)
                                 })
                             }
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
             </>
         } 
@@ -218,7 +217,7 @@ class Basket extends React.Component
                 </div>
             </div>
             <div className="my-2">
-                <input type="submit" value="Kup" className="btn btn-success" onClick={() => this.Buy()}/>
+                <input type="button" value="Kup" className="btn btn-success" onClick={() => this.Buy()}/>
             </div>
         </form>
 
@@ -229,16 +228,27 @@ class Basket extends React.Component
     {
         return(
             <>
-                <tr id={product.productDTO.productId} key={product.productDTO.productId}>
-                    <td>{product.productDTO.name}</td>
-                    <td>{product.productDTO.producer}</td>
-                    <td>{product.quantity}</td>
-                    <td id={"inStock" + product.productDTO.productId}>{product.productDTO.inStock}</td>
-                    <td>{product.productDTO.retailPrice} zł</td>
-                    <td>{parseFloat(product.productDTO.retailPrice) * parseFloat(product.quantity) } zł</td>
-                    <td> <a className="btn btn-secondary btn-sm" href={"/product/" + product.productDTO.productId}>Zobacz w sklepie</a> </td>
-                    <td> <input type="button" className="btn btn-danger btn-sm" value="Usuń" onClick={() => {this.deleteFromBasket(product.productDTO.productId)}}/> </td>
-                </tr>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id={"heading" + product.productDTO.productId}>
+                    <button class="accordion-button collapsed text-break" type="button" data-bs-toggle="collapse" data-bs-target={"#collapse" + product.productDTO.productId} aria-expanded="true" aria-controls={"collapse" + product.productDTO.productId}>
+                    
+                        <div className="col-2">{product.productDTO.name}</div>
+                        <div className="col-2 ms-2">{product.quantity}</div>
+                        <div className="col-2 ms-3" id={"inStock" + product.productDTO.productId}>{product.productDTO.inStock}</div>
+                        <div className="col-2">{product.productDTO.retailPrice} zł</div>
+                        <div className="col-2">{parseFloat(product.productDTO.retailPrice) * parseFloat(product.quantity) } zł</div>
+                        <div className="col"> <input type="button" className="btn btn-danger btn-sm" value="Usuń" onClick={() => {this.deleteFromBasket(product.productDTO.productId)}}/> </div>
+                        
+                    </button>
+                </h2>
+                <div id={"collapse" + product.productDTO.productId} class="accordion-collapse collapse" aria-labelledby={"heading" + product.productDTO.productId} data-bs-parent="#accordionBasket">
+                    <div class="accordion-body text-break">
+                        <strong>Producent:</strong> {product.productDTO.producer} <br/>
+                        <strong>Opis:</strong> {product.productDTO.description}
+                    </div>
+                </div>
+            </div>
+                
             </>
         )
     }
@@ -248,6 +258,8 @@ class Basket extends React.Component
         if(this.state.payment !== undefined)
             api.Cart().BuyAll(this.state.Cart.id, this.state.payment)
             .catch(err => console.log(err))
+        else
+            alert("Wybierz formę płatności!")
     }
 
     deleteFromBasket(ProdId)
