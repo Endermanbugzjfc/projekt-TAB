@@ -18,7 +18,7 @@ class EmployeeView extends React.Component{
             raportProductId: '',
         }
 
-        if(store.getState().persistedReducer.role !== 'EMPLOYEE')
+        if(store.getState().persistedReducer.role !== 'EMPLOYEE' && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development'))
         {
             window.location.href = '/'
         }

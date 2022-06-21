@@ -12,6 +12,7 @@ export const ProtectedRouteLogin = ({children}) => {
 
 export const ProtectedRouteRole = ({children}) => {
 
+    if(process.env.NODE_ENV && process.env.NODE_ENV !== 'development') //check if development build
     if (!store.getState().persistedReducer.loggedIn) {
         return <Navigate to="/login" replace />;
     }

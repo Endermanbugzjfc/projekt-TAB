@@ -11,7 +11,7 @@ class AdminView extends React.Component {
         super(props);
         this.state = {
         }
-        if(store.getState().persistedReducer.role !== 'ADMIN')
+        if(store.getState().persistedReducer.role !== 'ADMIN'  && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development'))
             window.location.href = '/'
     }
 
