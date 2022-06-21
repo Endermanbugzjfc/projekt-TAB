@@ -39,10 +39,11 @@ public class ProductController {
                 .toList();
     }
 
-    @RequestMapping(method = RequestMethod.PUT, path = "/price")
-    public ProductDTO updatePrice(@RequestBody ProductPriceUpdateDTO priceUpdateDTO) {
-        Product product = this.productService.updateRetailPrice(priceUpdateDTO);
-        return ProductDTO.fromProduct(product);
+    @RequestMapping(method = RequestMethod.POST, path = "/price")
+    public List<ProductDTO> listByPrice(@RequestBody ProductPriceQueryDTO priceQueryDTO) {
+        return this.productService.getByRetailPrice(priceQueryDTO).stream()
+                .map(ProductDTO::fromProduct)
+                .toList();
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{productId}")

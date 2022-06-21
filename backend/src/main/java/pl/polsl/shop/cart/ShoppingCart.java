@@ -1,5 +1,6 @@
 package pl.polsl.shop.cart;
 
+import pl.polsl.shop.cart.rest.ShoppingCartDto;
 import pl.polsl.shop.product.Product;
 import pl.polsl.shop.user.User;
 
@@ -88,5 +89,13 @@ public class ShoppingCart {
             this.itemsAmount--;
         }
         return removed;
+    }
+
+    public static ShoppingCart fromDto(ShoppingCartDto shoppingCartDto) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setCreationDate(shoppingCartDto.creationDate());
+        shoppingCart.setSelectedProducts(shoppingCartDto.selectedProducts());
+        shoppingCart.setItemsAmount(shoppingCartDto.items());
+        return shoppingCart;
     }
 }

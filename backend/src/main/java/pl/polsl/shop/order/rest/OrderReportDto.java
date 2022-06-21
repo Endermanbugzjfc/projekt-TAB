@@ -1,6 +1,7 @@
-package pl.polsl.shop.order;
+package pl.polsl.shop.order.rest;
 
-import pl.polsl.shop.user.User;
+import pl.polsl.shop.order.Order;
+import pl.polsl.shop.order.OrderedProduct;
 
 import java.util.List;
 
