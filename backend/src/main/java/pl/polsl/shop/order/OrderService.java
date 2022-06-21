@@ -11,13 +11,14 @@ import pl.polsl.shop.order.rest.OrderedProductDto;
 import pl.polsl.shop.cart.SelectedProduct;
 import pl.polsl.shop.cart.ShoppingCart;
 
+import pl.polsl.shop.cart.ShoppingCartService;
+import pl.polsl.shop.product.Product;
 import pl.polsl.shop.user.User;
 import pl.polsl.shop.user.UserDto;
 import pl.polsl.shop.user.UserService;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service("orderService")
 public class OrderService {
@@ -87,6 +88,15 @@ public class OrderService {
         this.addProducts(order, shoppingCart.getSelectedProducts());
         return this.orderRepository.save(order);
     }
+
+    public List<Order> getOrdersFor(User user) {
+        return this.orderRepository.findAllByUser_Id(user);
+    }
+
+    public List<OrderedProduct> getAllSalesOf(Product product) {
+        return this.orderedProductRepository.findAllByProduct_Id(product);
+    }
+
 
     public List<OrderReportDto> getAllReportsFor(User user) {
         return this.orderRepository.findAllByUser_Id(user).stream()

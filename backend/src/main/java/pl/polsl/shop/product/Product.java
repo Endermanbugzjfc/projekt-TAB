@@ -1,8 +1,11 @@
 package pl.polsl.shop.product;
 
-import javax.persistence.*;
+import pl.polsl.shop.product.rest.ProductDTO;
 
-@Entity(name = "products")
+import javax.persistence.*;
+import java.util.List;
+
+@Entity(name = "Product")
 public class Product {
 
     @Id
@@ -28,7 +31,7 @@ public class Product {
     private String description;
 
     @Column(name = "category", nullable = false)
-    private String category;
+    private ProductCategory category;
 
     @Column(name = "number_of_items_in_stock", nullable = false)
     private int availableInStock;
@@ -39,8 +42,12 @@ public class Product {
     @Column(name = "retail_price", nullable = false)
     private double retailPrice;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name ="product_id")
+    private List<ProductRestock> restock;
+
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -48,7 +55,7 @@ public class Product {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -56,7 +63,7 @@ public class Product {
     }
 
     public String getProducer() {
-        return producer;
+        return this.producer;
     }
 
     public void setProducer(String producer) {
@@ -64,23 +71,23 @@ public class Product {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
+    public ProductCategory getCategory() {
+        return this.category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ProductCategory category) {
         this.category = category;
     }
 
     public int getAvailableInStock() {
-        return availableInStock;
+        return this.availableInStock;
     }
 
     public void setAvailableInStock(int availableInStock) {
@@ -88,7 +95,7 @@ public class Product {
     }
 
     public double getPurchasePrice() {
-        return purchasePrice;
+        return this.purchasePrice;
     }
 
     public void setPurchasePrice(double purchasePrice) {
@@ -96,10 +103,31 @@ public class Product {
     }
 
     public double getRetailPrice() {
-        return retailPrice;
+        return this.retailPrice;
     }
 
     public void setRetailPrice(double retailPrice) {
         this.retailPrice = retailPrice;
+    }
+
+    public List<ProductRestock> getRestock() {
+        return this.restock;
+    }
+
+    public void setRestock(List<ProductRestock> restock) {
+        this.restock = restock;
+    }
+
+    @Transient
+    public static Product fromDTO(ProductDTO productDTO) {
+        Product product = new Product();
+        product.setName(productDTO.name());
+        product.setProducer(productDTO.producer());
+        product.setDescription(productDTO.description());
+        product.setCategory(productDTO.category());
+        product.setAvailableInStock(productDTO.inStock());
+        product.setPurchasePrice(productDTO.purchasePrice());
+        product.setRetailPrice(productDTO.retailPrice());
+        return product;
     }
 }

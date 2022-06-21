@@ -56,13 +56,13 @@ public class ShoppingCartService {
         }
     }
 
-    public void addToCart(Long cartId, Product product) {
+    public ShoppingCart addToCart(Long cartId, Product product, Integer quantity) {
         ShoppingCart shoppingCart = this.getCart(cartId);
-        shoppingCart.addProduct(product);
-        this.shoppingCartRepository.save(shoppingCart);
+        shoppingCart.addProduct(product, quantity);
+        return this.shoppingCartRepository.save(shoppingCart);
     }
 
-    public void removeFromCart(Long cartId, Product product) {
+    public ShoppingCart removeFromCart(Long cartId, Product product) {
         ShoppingCart shoppingCart = this.getCart(cartId);
         SelectedProduct selectedProduct = this.selectedProductRepository.findSelectedProductByProduct_Id(product);
         boolean removed = shoppingCart.removeProduct(selectedProduct);
@@ -73,5 +73,6 @@ public class ShoppingCartService {
                     "Product " + product.getName() + " is not present in the given cart"
             );
         }
+        return shoppingCart;
     }
 }

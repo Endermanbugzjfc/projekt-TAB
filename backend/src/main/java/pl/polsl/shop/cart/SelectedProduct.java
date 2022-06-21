@@ -1,5 +1,7 @@
 package pl.polsl.shop.cart;
 
+import pl.polsl.shop.cart.rest.SelectedProductDto;
+import pl.polsl.shop.cart.rest.ShoppingCartDto;
 import pl.polsl.shop.product.Product;
 
 import javax.persistence.*;
@@ -21,6 +23,9 @@ public class SelectedProduct {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
     @ManyToOne
     @JoinColumn(name = "shopping_cart_id", nullable = false)
     private ShoppingCart shoppingCart;
@@ -29,8 +34,9 @@ public class SelectedProduct {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    public SelectedProduct(Product product) {
+    public SelectedProduct(Product product, Integer quantity) {
         this.product = product;
+        this.quantity = quantity;
     }
 
     public SelectedProduct() {
@@ -43,6 +49,14 @@ public class SelectedProduct {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public ShoppingCart getCart() {
@@ -61,4 +75,11 @@ public class SelectedProduct {
         this.product = product;
     }
 
+    @Transient
+    public static SelectedProduct fromDto(SelectedProductDto selectedProductDto) {
+        SelectedProduct selectedProduct = new SelectedProduct();
+        selectedProduct.setQuantity(selectedProductDto.quantity());
+        selectedProduct.setCart(ShoppingCart.fromDto(selectedProductDto.shoppingCartDto()));
+        return selectedProduct;
+    }
 }
