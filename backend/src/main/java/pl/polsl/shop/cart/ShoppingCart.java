@@ -8,7 +8,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity(name = "shopping_carts")
+@Entity(name = "ShoppingCart")
+@Table(name = "shopping_carts")
 public class ShoppingCart {
 
     @Id
@@ -77,25 +78,25 @@ public class ShoppingCart {
         this.selectedProducts = selectedProducts;
     }
 
-    public void addProduct(Product product) {
-        this.selectedProducts.add(new SelectedProduct(product));
-        this.itemsAmount++;
+    public void addProduct(Product product, Integer quantity) {
+        this.selectedProducts.add(new SelectedProduct(product, quantity));
+        this.itemsAmount+=quantity;
     }
 
     public boolean removeProduct(SelectedProduct selectedProduct) {
         boolean removed = this.selectedProducts.remove(selectedProduct);
         if (removed) {
             selectedProduct.setCart(null);
-            this.itemsAmount--;
+            this.itemsAmount-= selectedProduct.getQuantity();
         }
         return removed;
     }
 
+    @Transient
     public static ShoppingCart fromDto(ShoppingCartDto shoppingCartDto) {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setCreationDate(shoppingCartDto.creationDate());
-        shoppingCart.setSelectedProducts(shoppingCartDto.selectedProducts());
-        shoppingCart.setItemsAmount(shoppingCartDto.items());
+        shoppingCart.setSelectedProducts(shoppingCartDto.selectedProducts().stream().map(SelectedProduct::fromDto).toList());
         return shoppingCart;
     }
 }

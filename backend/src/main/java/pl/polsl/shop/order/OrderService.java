@@ -2,15 +2,12 @@ package pl.polsl.shop.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import pl.polsl.shop.cart.SelectedProduct;
+import pl.polsl.shop.cart.ShoppingCart;
 import pl.polsl.shop.order.rest.OrderDto;
 import pl.polsl.shop.order.rest.OrderLongReportDto;
 import pl.polsl.shop.order.rest.OrderReportDto;
 import pl.polsl.shop.order.rest.OrderedProductDto;
-
-import pl.polsl.shop.cart.SelectedProduct;
-import pl.polsl.shop.cart.ShoppingCart;
-import pl.polsl.shop.cart.ShoppingCartService;
 import pl.polsl.shop.product.Product;
 import pl.polsl.shop.user.User;
 import pl.polsl.shop.user.UserService;
