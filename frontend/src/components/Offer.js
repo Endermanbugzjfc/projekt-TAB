@@ -61,6 +61,13 @@ class Offer extends React.Component{
             </>
             this.setState({EditButton: EditButton})
         }
+
+        api.Product().getProductImages(this.state.productId)
+        .then(response => {
+            this.setState({Images: response.data})
+        })
+        .catch(err => console.log(err))
+
     }
 
     EditModal = () => {
@@ -184,8 +191,27 @@ class Offer extends React.Component{
             <>
                 <div className="row my-5 Offer">
                     <div className="col-2">
-                        <img alt="Product_img"/>
+                        <div id={"carouselImages" + this.state.productId} class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                {this.state.Images.map(img => {
+                                    return <>
+                                        <div class="carousel-item active">
+                                            <img src={img}  className="myImage d-block w-100" alt="Product_img"/>
+                                        </div>
+                                    </>
+                                })}
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target={"#carouselImages" + this.state.productId} data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target={"#carouselImages" + this.state.productId} data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
                     </div>
+                    
                     <div className="col">
                         <div className="row text-break">Nazwa: {this.state.name} </div>
                         <div className="row text-break">Producent: { this.state.producer != null ? this.state.producer : "Nieznany"} </div>

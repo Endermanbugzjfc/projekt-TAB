@@ -27,6 +27,7 @@ export default {
 
             getByCategory: (categoryid) => axios.get(url + categoryid),
             getProduct: (productId) => axios.get(url+ productId),
+            getProductImages: (productId) => axios.get(url + productId + '/images'),
 
             filterByPrice: (min, max) => axios.post(url + "price", {min, max}),
             searchByName: (stringName) => axios.post(url + "name", stringName),
