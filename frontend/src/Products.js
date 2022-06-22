@@ -90,8 +90,12 @@ class Products extends React.Component{
 
     SearchPrice()
     {
-        //TODO
-        //missing backend endpoint
+        var priceQueryDTO = {}
+        if(this.state.minPrice.length > 0) priceQueryDTO.min =this.state.minPrice
+        if(this.state.maxPrice.length > 0) priceQueryDTO.max =this.state.maxPrice
+
+        api.Product().getProductsByPriceAndCategory(priceQueryDTO, this.state.category)
+
     }
 
 }

@@ -19,7 +19,7 @@ export default {
             getOrderById: (userId, orderId) => axios.get(url+userId+"report/full/" + orderId),
 
             //Worker management
-            searchUser: (userDTO, type) => axios.get(url + 'find/' + type)
+            searchUser: (userDTO, type) => axios.post(url + 'find/' + type, userDTO)
             
         }
     },
@@ -35,6 +35,7 @@ export default {
 
             filterByPrice: (min, max) => axios.post(url + "price", {min, max}),
             searchByName: (stringName) => axios.post(url + "name", stringName),
+            getProductsByPriceAndCategory: (prices, category)  => axios.post(url + 'price/' + category, prices),
 
             //Management
             createProduct: (newProduct) => axios.post(url, newProduct),

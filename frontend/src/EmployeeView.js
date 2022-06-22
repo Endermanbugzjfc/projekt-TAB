@@ -24,9 +24,6 @@ class EmployeeView extends React.Component{
         }
     }
 
-    componentDidMount(){
-    }   
-
     render(){
         return(
             <>
@@ -72,7 +69,7 @@ class EmployeeView extends React.Component{
                 </div>
                 <div className="col-4 mx-1">
                     <div className="row">
-                        <select className="form-select" id="raportRange"> {/**TODO: selected option get it */}
+                        <select className="form-select" id="raportRange">
                             <option value="0">Całokształt</option>
                             <option value="1">Dla pojedyńczgo produktu</option>
                         </select>
@@ -107,7 +104,6 @@ class EmployeeView extends React.Component{
         }
         else if(this.state.raportProductId.length < 1 && document.getElementById("raportRange").value === "1") 
         {
-            
             raport = <> Nie podano id produktu! </>
         }
         else 
