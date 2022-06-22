@@ -16,7 +16,10 @@ export default {
 
             //Order raports
             getOrders: (userId) => axios.get(url+userId + "report"),
-            getOrderById: (userId, orderId) => axios.get(url+userId+"report/full/" + orderId) 
+            getOrderById: (userId, orderId) => axios.get(url+userId+"report/full/" + orderId),
+
+            //Worker management
+            searchUser: (userDTO, type) => axios.get(url + 'find/' + type)
             
         }
     },
@@ -39,8 +42,8 @@ export default {
             changePrice: (productId, newPrice) => axios.put(url+"price", {id: productId, price: newPrice}),
 
             //Buissness reports
-            getProductReport: (priductId) => axios.get(url + "report/" + priductId),
-            getFullReport: () => axios.get(url + "report/all"),
+            getProductReport: (priductId, dates) => axios.get(url + "report/" + priductId, dates),
+            getFullReport: (dates) => axios.get(url + "report/all", dates),
         }
     },
 

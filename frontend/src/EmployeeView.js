@@ -123,9 +123,9 @@ class EmployeeView extends React.Component{
         var RaportInfo = {productName: "Błąd", totalExpense: "Błąd", totalIncome: "Błąd"};
         if(index === "0")
         {
-            api.Product().getFullReport()
+            api.Product().getFullReport({start: dateFrom, end: dateTo})
             .then(
-                response => RaportInfo = response
+                response => RaportInfo = response.data
             )
             .catch(
                 err => {
@@ -135,9 +135,9 @@ class EmployeeView extends React.Component{
         }
         else
         {
-            api.Product().getProductReport(this.state.raportProductId)
+            api.Product().getProductReport(this.state.raportProductId, {start: dateFrom, end: dateTo})
             .then(
-                response => RaportInfo = response
+                response => RaportInfo = response.data
             )
             .catch(
                 err => {
