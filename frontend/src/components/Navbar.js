@@ -100,13 +100,13 @@ class Navbar extends React.Component
                 link = '/admin'
             return(
                 <>
-                    <a class="nav-link dropdown-toggle active bi bi-person" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a key="1" className="nav-link dropdown-toggle active bi bi-person" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     &nbsp;
                         {
                              this.state.username
                         }
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                    <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         
                         <li><Link to={link} className="dropdown-item">Zarządzaj</Link></li>
                         <li><input value={"Wyloguj"} className="dropdown-item" type="button" onClick={() => this.logOut()}/></li>
@@ -132,7 +132,7 @@ class Navbar extends React.Component
 
     categoriesOffcanvas() {
 
-        // var categories = ['Kategoria 1', 'Kategoria 2', 'Kategoria 3', 'Kategoria 4', 'Kategoria 5', 'Kategoria 6'];
+         //var categories = ['Kategoria1', 'Kategoria2', 'Kategoria3', 'Kategoria4', 'Kategoria5', 'Kategoria6'];
         return(
             <>
             <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasCategories" aria-labelledby="offcanvasCategoriesLabel">
@@ -146,7 +146,7 @@ class Navbar extends React.Component
                         this.state.categories.map((cat) => {
                             return <>
                             <div className="row">
-                                <div className="col btn category">{cat} <br/></div>
+                                <input type="buttom" className="col btn category" value={cat} onClick={() => {window.location.href = '/products/' + cat}} />
                             </div>
                             </>
                             

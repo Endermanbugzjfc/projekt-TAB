@@ -12,13 +12,25 @@ class Products extends React.Component{
             minPrice: "",
             maxPrice: "",
             category: "",
-            products: null
+            products: []
         }
     }
 
     componentDidMount()
     {
-        api.Product().getByCategory(this.state.category)
+        var category = window.location.href.split('/products')[1]
+        if(category.length !== 0)
+        {
+            category = category.split('/')[1]
+            this.setState({category: category})
+        }
+        var realCategories = [];
+        api.Product().getCategories().then(res => realCategories = res).catch(err => console.log(err))
+
+        if(!realCategories.includes(category) && realCategories.length > 0) window.location.href = '/'
+
+
+        api.Product().getByCategory(category)
         .then(res => this.setState({products: res}))
         .catch(err => console.log(err));
     }
@@ -67,13 +79,15 @@ class Products extends React.Component{
                     </div>
                     <div className="col">
                         {
-                            <>
-                            <Offer product={this.tempList}/>
-                            
-                            
-                            <Offer product={this.tempList2}/>
-                            </>
+                            this.state.products.map(prod => {
+                                return <Offer product={prod}/>
+                            })
                         }
+                        {/* //TODO: DELETE */}
+                        <Offer product={this.tempList}/>
+                        
+                        
+                        <Offer product={this.tempList2}/>
                     </div>
                 </div>
             </>

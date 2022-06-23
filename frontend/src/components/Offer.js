@@ -191,23 +191,23 @@ class Offer extends React.Component{
             <>
                 <div className="row my-5 Offer">
                     <div className="col-2">
-                        <div id={"carouselImages" + this.state.productId} class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
+                        <div id={"carouselImages" + this.state.productId} className="carousel slide" data-bs-ride="carousel">
+                            <div className="carousel-inner">
                                 {this.state.Images.map(img => {
                                     return <>
-                                        <div class="carousel-item active">
+                                        <div className="carousel-item active">
                                             <img src={img}  className="myImage d-block w-100" alt="Product_img"/>
                                         </div>
                                     </>
                                 })}
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target={"#carouselImages" + this.state.productId} data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
+                            <button className="carousel-control-prev" type="button" data-bs-target={"#carouselImages" + this.state.productId} data-bs-slide="prev">
+                                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target={"#carouselImages" + this.state.productId} data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
+                            <button className="carousel-control-next" type="button" data-bs-target={"#carouselImages" + this.state.productId} data-bs-slide="next">
+                                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Next</span>
                             </button>
                         </div>
                     </div>
@@ -252,13 +252,22 @@ class Offer extends React.Component{
     {
         if(this.state.selectedAmount !== '')
         {
-            console.log("here")
             if( parseInt(this.state.inStock) >= parseInt(this.state.selectedAmount))
             {
                 document.getElementById("amount")?.classList.remove("is-invalid")
-                console.log("here2")
-                var cartId = store.getState().persistedReducer.loggedIn ? api.Cart().getUserCart(store.getState().persistedReducer.id) : api.Cart().getNotLogCart();
-
+                var cartId
+                if(store.getState().persistedReducer.loggedIn)
+                {
+                    api.Cart().getUserCart(store.getState().persistedReducer.id)
+                    .then(res => cartId = res.data)
+                    .catch(err=> console.log(err))
+                }
+                else{
+                    api.Cart().getNotLogCart()
+                    .then(res => cartId = res.data)
+                    .catch(err=> console.log(err))
+                }
+                if(cartId === undefined) return;
                 api.Cart().insert(cartId, this.state.productId, this.state.selectedAmount)
                 .catch(err => console.log(err))
             }
