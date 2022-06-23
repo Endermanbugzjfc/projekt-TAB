@@ -25,6 +25,11 @@ public class ShoppingCartController {
         return ShoppingCartDto.fromShoppingCart(this.shoppingCartService.getCartFor(userService.getUser(userId)));
     }
 
+    @GetMapping("/getCart")
+    public ShoppingCartDto getCart(){
+        return ShoppingCartDto.fromShoppingCart(this.shoppingCartService.createShoppingCart());
+    }
+
     @GetMapping("/{cartId}")
     public ShoppingCartDto getCart(@PathVariable("cartId") Long cartId){
         return ShoppingCartDto.fromShoppingCart(this.shoppingCartService.getCart(cartId));

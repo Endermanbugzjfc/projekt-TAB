@@ -88,6 +88,7 @@ public class ShoppingCart {
         if (removed) {
             selectedProduct.setCart(null);
             this.itemsAmount-= selectedProduct.getQuantity();
+            selectedProduct.setQuantity(0);
         }
         return removed;
     }

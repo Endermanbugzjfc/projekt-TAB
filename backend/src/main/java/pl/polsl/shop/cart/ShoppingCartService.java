@@ -34,6 +34,14 @@ public class ShoppingCartService {
         return shoppingCartRepository.save(shoppingCart);
     }
 
+    public ShoppingCart createShoppingCart() {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setCreationDate(LocalDate.now());
+        shoppingCart.setSelectedProducts(Collections.emptyList());
+        shoppingCart.setItemsAmount(0);
+        return shoppingCartRepository.save(shoppingCart);
+    }
+
     public ShoppingCart getCartFor(User user) {
         return this.shoppingCartRepository.findShoppingCartByUser(user).orElseGet(
                 () -> this.createShoppingCart(user)

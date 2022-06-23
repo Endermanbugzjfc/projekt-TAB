@@ -26,7 +26,7 @@ public class SelectedProduct {
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_cart_id", nullable = false)
+    @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
 
     @ManyToOne
