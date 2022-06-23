@@ -10,6 +10,7 @@ import pl.polsl.shop.product.image.ImageService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "/product")
 public class ProductController {

@@ -80,7 +80,6 @@ class ManageUsers extends React.Component
 
     ShowResult()
     {
-        console.log(this.state.gottenWorkers)
         var returns = <>
             <ul className="list-group">
             {this.state.gottenWorkers.map((user, id) =>

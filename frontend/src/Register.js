@@ -123,7 +123,7 @@ class Register extends React.Component
         }
         else this.removeInvalid(ZIPCode);
 
-        if(this.state.Street.match(/^[a-zA-Z]+$/) == null)
+        if(this.state.Street.match(/^[a-zA-Z]+ \d{1,3}$/) == null)
         {
             allGood = false;
             this.addInvalid(Street);
@@ -181,14 +181,23 @@ class Register extends React.Component
         if(allGood)
         {
             var newUser = {
-                Login: this.state.Login,
-                Password: this.state.Password,
-                Name: this.state.Name,
-                Surname: this.state.Surname,
-                Address: this.state.ZIPCode + this.state.City + this.state.Street,
-                Phone_number: this.state.Phone_number
+                userName: this.state.Login,
+                password: this.state.Password,
+                legalName: this.state.Name,
+                surname: this.state.Surname,
+                addressDto: {
+                    country:this.state.Country,
+                    zipCode: this.state.ZIPCode,
+                    location: this.state.City,
+                    streetName: this.state.Street,
+                    streetNumber: this.state.HouseNumber
+                },
+                phoneNumber: this.state.Phone_number
             }
-            api.User().register(newUser).catch(err => console.log(err));
+            console.log(newUser)
+            api.User().register(newUser)
+            .then(() => window.location.href = '/')
+            .catch(err =>{alert("Coś poszło nie tak"); console.log(err)});
         }
     }
 

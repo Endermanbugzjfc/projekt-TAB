@@ -42,11 +42,11 @@ class AddNewProduct extends React.Component {
                         <div className="col">
                             <div className="input-group mb-3">
                                 <span className="input-group-text">Kategoria</span>
-                                <select className="form-select" aria-label="Category select">
+                                <select className="form-select" aria-label="Category select" onChange={(e) => this.setState({category: e.target.value})}>
 
                                     {this.state.categories.map(cat => {
                                         return <>
-                                            <option value={cat.id}>{cat.name}</option>
+                                            <option value={cat.id}>{cat}</option>
                                         </>
                                         }
                                         )}
@@ -121,6 +121,7 @@ class AddNewProduct extends React.Component {
                 purchasePrice: this.state.purchasePrice,
                 retailPrice: this.state.retailPrice
             }
+            if(this.state.category.length < 1) newProduct.category = this.state.categories[0];
             var productId = null;
             api.Product().createProduct(newProduct)
             .then(response => productId = response.data.productId)
