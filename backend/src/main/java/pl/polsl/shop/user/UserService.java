@@ -105,6 +105,10 @@ public class UserService {
     }
 
     public List<User> findUsers(String name, String surname, String pesel, Type type){
+        name = name == null ? "" : name;
+        surname = surname == null ? "" : surname;
+        pesel = pesel == null ? "" : pesel;
+
         if(name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()){
             return this.userRepository.findAllByType(type);
         }
