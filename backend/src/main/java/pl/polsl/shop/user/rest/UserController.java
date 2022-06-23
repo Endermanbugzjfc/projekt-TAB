@@ -8,6 +8,7 @@ import pl.polsl.shop.user.Type;
 import pl.polsl.shop.user.User;
 import pl.polsl.shop.user.UserService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,8 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/find/{type}")
-    public List<UserDto> findUsers(@RequestBody UserDto userDto, @PathVariable Type type){
-        return userService.findUsers(userDto.legalName(), userDto.surname(), userDto.pesel(), userDto.type())
-                .stream().map(UserDto::fromUser).collect(Collectors.toList());
+    public List<UserDto> findUsers(@RequestBody String name, String surname, String pesel, @PathVariable Type type){
+        return userService.findUsers(name, surname, pesel, type).stream().map(UserDto::fromUser).toList();
     }
 }
