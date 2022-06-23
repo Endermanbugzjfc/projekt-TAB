@@ -1,0 +1,14 @@
+.form-signup{
+    width: 100%;
+    max-width: 800px;
+    padding: 15px;
+    margin: auto;
+}
+
+.top-space{
+    margin-top: 50px;
+}
+
+.form-myBox{
+    margin-top: 10px;
+}

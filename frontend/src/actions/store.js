@@ -1,10 +1,18 @@
-import {createStore, applyMiddleware, compose } from "redux"
-import thunk from "redux-thunk"
-import { reducers } from "../reducers/reducersIndex"
+import {configureStore} from "@reduxjs/toolkit"
+import UserReducer from "../reducers/dUser"
+import {persistStore, persistReducer} from "redux-persist"
+import storage from "redux-persist/lib/storage"
 
-export const store = createStore(
-    reducers,
-    compose(
-        applyMiddleware(thunk)
-    )
-)
+const persistConfig = {
+    key: 'root',
+    storage
+}
+
+const persistedReducer = persistReducer(persistConfig, UserReducer)
+
+const store = configureStore(
+    {
+        reducer: { persistedReducer }
+    })
+const persistor = persistStore(store)
+export {persistor, store}
