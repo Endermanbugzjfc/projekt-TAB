@@ -76,8 +76,7 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/category")
-    public List<ProductCategory> listAllCategories() {
-        return this.productService.getAllCategories();
+    public List<String> listAllCategories() {
+        return this.productService.getAllCategories().stream().map(ProductCategory::toString).toList();
     }
-
 }
