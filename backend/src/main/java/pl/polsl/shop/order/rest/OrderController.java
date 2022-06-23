@@ -25,7 +25,9 @@ public class OrderController {
 
     @PostMapping("/cart/{cartId}")
     public OrderDto buy(@PathVariable Long cartId, @RequestBody PaymentMethod paymentMethod) {
-        return OrderDto.fromOrder(this.orderService.newOrder(cartId, paymentMethod));
+        return OrderDto.fromOrder(
+                this.orderService.newOrder(cartId, paymentMethod)
+        );
     }
 
     @PostMapping("/user/{id}/report")

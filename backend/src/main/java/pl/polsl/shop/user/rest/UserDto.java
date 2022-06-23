@@ -1,5 +1,7 @@
 package pl.polsl.shop.user.rest;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import pl.polsl.shop.cart.rest.ShoppingCartDto;
 import pl.polsl.shop.user.Type;
 import pl.polsl.shop.user.User;
@@ -8,10 +10,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
+@JsonInclude(Include.NON_NULL)
 public record UserDto(Long id, String userName, String password, String legalName,
                       String surname, String phoneNumber, Type type, Date birthDate,
-                      String pesel, LocalDate employmentDate, AddressDto addressDto,
-                      ShoppingCartDto shoppingCartDto
+                      String pesel, LocalDate employmentDate, AddressDto address,
+                      ShoppingCartDto shoppingCart
                       ) implements Serializable {
 
     public static UserDto fromUser(User user) {

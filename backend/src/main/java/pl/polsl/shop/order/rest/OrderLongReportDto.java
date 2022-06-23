@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-public record OrderLongReportDto(Long id, UserDto userDto, LocalDate orderDate, PaymentMethod paymentMethod,
+public record OrderLongReportDto(Long id, UserDto user, LocalDate orderDate, PaymentMethod paymentMethod,
                                  List<OrderedProductDto> orderedProducts, Double totalCost) implements Serializable {
 
 }

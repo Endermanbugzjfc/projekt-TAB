@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Table(name="users")
+@Table(name = "users")
 @Entity(name = "User")
 public class User {
 
@@ -51,10 +51,12 @@ public class User {
     @Column(name = "employment_date")
     private LocalDate employmentDate;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
 
     @Transient
@@ -199,17 +201,23 @@ public class User {
     @Transient
     public static User fromDto(UserDto userDto) {
         User user = new User();
-        user.setUserName(userDto.userName());
-        user.setPassword(userDto.password());
-        user.setLegalName(userDto.legalName());
-        user.setSurname(userDto.surname());
-        user.setPhoneNumber(userDto.phoneNumber());
-        user.setType(userDto.type());
-        user.setBirthDate(userDto.birthDate());
-        user.setPesel(userDto.pesel());
-        user.setEmploymentDate(userDto.employmentDate());
-        user.setAddress(Address.fromDto(userDto.addressDto()));
-        user.setShoppingCart(ShoppingCart.fromDto(userDto.shoppingCartDto()));
+        user.parseDto(userDto);
         return user;
+    }
+
+    public void parseDto(UserDto userDto) { //todo add null checks
+        this.setUserName(userDto.userName());
+        this.setPassword(userDto.password());
+        this.setLegalName(userDto.legalName());
+        this.setSurname(userDto.surname());
+        this.setPhoneNumber(userDto.phoneNumber());
+        this.setType(userDto.type());
+        this.setBirthDate(userDto.birthDate());
+        this.setPesel(userDto.pesel());
+        this.setEmploymentDate(userDto.employmentDate());
+        if (userDto.shoppingCart() != null) {
+            this.setShoppingCart(ShoppingCart.fromDto(userDto.shoppingCart()));
+        }
+        this.setAddress(Address.fromDto(userDto.address()));
     }
 }

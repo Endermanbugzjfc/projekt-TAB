@@ -7,7 +7,7 @@ import pl.polsl.shop.user.rest.UserDto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public record OrderDto(Long id, UserDto userDto,
+public record OrderDto(Long id, UserDto user,
         LocalDate orderDate, PaymentMethod paymentMethod) implements Serializable {
 
     public static OrderDto fromOrder(Order order) {

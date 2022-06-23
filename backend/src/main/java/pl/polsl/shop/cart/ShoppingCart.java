@@ -31,10 +31,11 @@ public class ShoppingCart {
     @Column(name = "number_of_items", nullable = false)
     private int itemsAmount;
 
-    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shopping_cart_id")
     private List<SelectedProduct> selectedProducts;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -79,7 +80,7 @@ public class ShoppingCart {
     }
 
     public void addProduct(Product product, Integer quantity) {
-        this.selectedProducts.add(new SelectedProduct(product, quantity));
+        this.selectedProducts.add(new SelectedProduct(product, quantity, this));
         this.itemsAmount+=quantity;
     }
 

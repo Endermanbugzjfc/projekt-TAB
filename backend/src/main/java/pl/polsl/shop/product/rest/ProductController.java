@@ -38,9 +38,9 @@ public class ProductController {
         return ProductDTO.fromProduct(newProduct);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/{category}")
-    public List<ProductDTO> listByCategory(@PathVariable("category") ProductCategory category) {
-        return this.productService.getProductsByCategory(category).stream()
+    @RequestMapping(method = RequestMethod.GET, path = "/list/{category}")
+    public List<ProductDTO> listByCategory(@PathVariable("category") String categoryName) {
+        return this.productService.getProductsByCategory(ProductCategory.valueOf(categoryName.toUpperCase())).stream()
                 .map(ProductDTO::fromProduct)
                 .toList();
     }
@@ -55,9 +55,11 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.POST, path = "/price/{category}")
     public List<ProductDTO> listByPriceAndCategory(
             @RequestBody ProductPriceQueryDTO priceQueryDTO,
-            @PathVariable("category") ProductCategory productCategory
+            @PathVariable("category") String productCategoryName
     ) {
-        return this.productService.getByRetailPriceAndCategory(priceQueryDTO, productCategory).stream()
+        return this.productService.getByRetailPriceAndCategory(
+                        priceQueryDTO, ProductCategory.valueOf(productCategoryName.toUpperCase())
+                ).stream()
                 .map(ProductDTO::fromProduct)
                 .toList();
     }

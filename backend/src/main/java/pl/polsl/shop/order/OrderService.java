@@ -10,6 +10,7 @@ import pl.polsl.shop.order.rest.OrderReportDto;
 import pl.polsl.shop.order.rest.OrderedProductDto;
 import pl.polsl.shop.product.Product;
 import pl.polsl.shop.user.User;
+import pl.polsl.shop.user.UserException;
 import pl.polsl.shop.user.UserService;
 import pl.polsl.shop.user.rest.UserDto;
 
@@ -35,8 +36,13 @@ public class OrderService {
     }
 
     public Order newOrder(Long userId, PaymentMethod paymentMethod) {
-        User user = this.userService.getUser(userId);
-        return new Order(user, paymentMethod);
+        User user;
+        try {
+            user = this.userService.getUser(userId);
+        } catch (UserException e) {
+            throw new RuntimeException(e);
+        }
+        return this.orderRepository.save(new Order(user, paymentMethod));
     }
 
     public Order getOrder(Long orderId) {
@@ -46,15 +52,25 @@ public class OrderService {
     }
 
     public List<OrderDto> generateShortReport(Long userId) {
-        User user = userService.getUser(userId);
+        User user;
+        try {
+            user = userService.getUser(userId);
+        } catch (UserException e) {
+            throw new RuntimeException(e);
+        }
         return this.orderRepository.findAllByUser(user).stream().map(OrderDto::fromOrder).collect(Collectors.toList());
     }
 
     public OrderLongReportDto generateLongReport(Long userId, Long orderId) {
         Order order = getOrder(orderId);
-        User user = this.userService.getUser(userId);
+        User user;
+        try {
+            user = this.userService.getUser(userId);
+        } catch (UserException e) {
+            throw new RuntimeException(e);
+        }
         List<OrderedProduct> orderedProducts = this.orderedProductRepository.findAllByOrder(order);
-        Double totalCost = 0.0;
+        double totalCost = 0.0;
         for (OrderedProduct orderedProduct : orderedProducts) {
             totalCost += orderedProduct.getQuantity() * orderedProduct.getPrice();
         }
