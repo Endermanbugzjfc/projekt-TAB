@@ -27,10 +27,6 @@ class Navbar extends React.Component
         .then(response => this.setState({categories: response.data}))
         .catch(err => console.log(err))
 
-    }
-
-    componentDidUpdate()
-    {
         var logged =  store.getState().persistedReducer.loggedIn
         if(this.state.loggedIn !== logged)
         {
@@ -40,6 +36,11 @@ class Navbar extends React.Component
         {
             this.setState({username: store.getState().persistedReducer.name})
         }
+
+    }
+
+    componentDidUpdate()
+    {
         //console.log(this.state.username)
         //console.log(logged)
     }
@@ -100,12 +101,12 @@ class Navbar extends React.Component
                 link = '/admin'
             return(
                 <>
-                    <a key="1" className="nav-link dropdown-toggle active bi bi-person" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span key="1" className="nav-link dropdown-toggle active bi bi-person" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     &nbsp;
                         {
                              this.state.username
                         }
-                    </a>
+                    </span>
                     <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         
                         <li><Link to={link} className="dropdown-item">Zarządzaj</Link></li>
@@ -125,14 +126,12 @@ class Navbar extends React.Component
 
     logOut()
     {
-        //api.User().logout();
+        api.User().logout(store.getState().persistedReducer.id);
         store.dispatch(logout())
         window.location.reload();
     }
 
     categoriesOffcanvas() {
-
-         //var categories = ['Kategoria1', 'Kategoria2', 'Kategoria3', 'Kategoria4', 'Kategoria5', 'Kategoria6'];
         return(
             <>
             <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasCategories" aria-labelledby="offcanvasCategoriesLabel">

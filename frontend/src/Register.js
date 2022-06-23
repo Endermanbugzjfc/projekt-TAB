@@ -22,7 +22,6 @@ class Register extends React.Component
             Country: "",
 
         }
-        //this.checkRegisterForm = this.checkRegisterForm.bind(this);
     }
 
     render()
@@ -189,7 +188,7 @@ class Register extends React.Component
                 Address: this.state.ZIPCode + this.state.City + this.state.Street,
                 Phone_number: this.state.Phone_number
             }
-            api.User().register(newUser);
+            api.User().register(newUser).catch(err => console.log(err));
         }
     }
 

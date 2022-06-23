@@ -42,7 +42,7 @@ class EmployeeView extends React.Component{
                                 <UserInfo/>
                             </div>
                             <div className="tab-pane fade" id="generate_report" role="tabpanel" aria-labelledby="generate_report_list">
-                                {this.GenerateReport() /*this.state.RaportClass.GenerateReport()*/}
+                                {this.GenerateReport()}
                             </div>
                             <div className="tab-pane fade" id="addNewProduct" role="tabpanel" aria-labelledby="newProduct">
                                 <AddNewProduct/>
@@ -169,8 +169,6 @@ class EmployeeView extends React.Component{
                 </div>
                </>
         )
-        //this.setState({currentRaport: raport})
-        //return raport;
     }
 
 

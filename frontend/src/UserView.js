@@ -52,18 +52,18 @@ class UserView extends React.Component{
     {
         //JSON template
         
-        var properties = { 
-            id: '1',
-            orderDate: 'HEHE',
-            paymentMethod: 'HAH',
-            orderedProducts: [{
-                id: '', quantity: 0, price: 0.0, productDto: {}
-            }],
-            totalCost: 0.0
-        }
+        // var properties = { 
+        //     id: '1',
+        //     orderDate: 'HEHE',
+        //     paymentMethod: 'HAH',
+        //     orderedProducts: [{
+        //         id: '', quantity: 0, price: 0.0, productDto: {}
+        //     }],
+        //     totalCost: 0.0
+        // }
         
 
-        var properties2 = {}
+        var properties = {}
         api.User().getOrderById(this.state.Id, props.id)
         .then(response => properties = response)
         .catch(err=>console.log(err))
@@ -122,17 +122,7 @@ class UserView extends React.Component{
         )
     }
 
-    History(props){
-        //JSON template
-        
-        var temp = 
-            {
-                id: '1',
-                orderDate: '2.1.2022',
-                paymentMethod: 'BLIK'
-            }
-        
-        
+    History(){
 
         var orderHistory = []
         api.User().getOrders(this.state.Id)
@@ -164,7 +154,7 @@ class UserView extends React.Component{
         }
     }
     
-    Delete(props){
+    Delete(){
         return(
             <>
                 <h3 className="my-4">Czy aby na pewno chcesz usunąć twoje konto?</h3>

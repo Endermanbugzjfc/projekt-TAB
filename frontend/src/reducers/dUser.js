@@ -15,9 +15,9 @@ const UserSlice = createSlice(
             login: (state, user) => {
                 console.log(user.payload)
                 state.id = user.payload.id;
-                state.login = user.payload.login;
-                state.name = user.payload.name;
-                state.role = user.payload.role;
+                state.login = user.payload.userName;
+                state.name = user.payload.legalName;
+                state.role = user.payload.type;
                 state.loggedIn = true;
                 state.cartId = user.payload.shoppingCartDto?.id
             },

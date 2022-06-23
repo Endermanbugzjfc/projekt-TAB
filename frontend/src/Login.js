@@ -103,11 +103,17 @@ class Login extends React.Component
                 password: this.state.Password
             }
 
-            api.User().login(User);
+            //var userData = {id: '', userName: '', legalName:'', type: ''}
+            api.User().login(User)
+            .then(response => {
+                //userData = response.data;
+                //store.dispatch(login(response.data))
+                window.location.href = '/'
+            })
+            //.catch(err => alert("Nie udało się zalogować", err));
 
-            var testUser = {id: "1", login: "A1", name:"Alvin", role: 'CUSTOMER'} //TODO: delete this
+            var testUser = {id: "1", userName: "A1", legalName:"Alvin", type: 'CUSTOMER'} //TODO: delete this
             store.dispatch(login(testUser))
-            window.location.href = '/'
         }
     }
 

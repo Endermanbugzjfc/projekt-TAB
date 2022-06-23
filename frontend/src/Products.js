@@ -35,27 +35,6 @@ class Products extends React.Component{
         .catch(err => console.log(err));
     }
 
-    tempList = {
-        productId: '1',
-        name: 'Farby malarskie',
-        producer: 'WOW',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non magna risus. Quisque id est volutpat, faucibus arcu ac, laoreet leo.',
-        category: 'huh',
-        inStock: 10,
-        purchasePrice: 1.56,
-        retailPrice: 5.1
-    }
-    tempList2 = {
-        productId: '2',
-        name: 'Dachówki',
-        producer: 'Ryn',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non magna risus. Quisque id est volutpat, faucibus arcu ac, laoreet leo.',
-        category: 'huqweqh',
-        inStock: 6123341,
-        purchasePrice: 1123.4,
-        retailPrice: 12234.14
-    }
-
     render(){
         return(
             <>
@@ -83,11 +62,6 @@ class Products extends React.Component{
                                 return <Offer product={prod}/>
                             })
                         }
-                        {/* //TODO: DELETE */}
-                        <Offer product={this.tempList}/>
-                        
-                        
-                        <Offer product={this.tempList2}/>
                     </div>
                 </div>
             </>

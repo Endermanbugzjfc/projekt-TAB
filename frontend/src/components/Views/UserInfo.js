@@ -96,7 +96,6 @@ class UserInfo extends React.Component
 
     render()
     {
-        //console.log(store.getState().persistedReducer.role)
         var list = []
         list.push(<>
             <div className="row me-5">

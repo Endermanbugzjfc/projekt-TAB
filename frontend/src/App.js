@@ -5,13 +5,13 @@ function App() {
   return (
     <>
 		<Navbar/>
-		<div class="row">
-			<div class="col">
-				<h1 class="h1 text-center">Witamy w sklepie Januszex!</h1>
+		<div className="row">
+			<div className="col">
+				<h1 className="h1 text-center">Witamy w sklepie Januszex!</h1>
 			</div>
 		</div> 
 		<div className="row">
-			<div class="col text-center h3 mt-5">
+			<div className="col text-center h3 mt-5">
 				Znajdziesz tu wszystko, co jest potrzebne do urządzenia domu. <br/> Zapraszamy do zapoznania się z naszą ofertą
 			</div>
 		</div>
