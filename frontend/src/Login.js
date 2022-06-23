@@ -99,21 +99,17 @@ class Login extends React.Component
         {
 
             var User = {
-                login: this.state.Login,
+                userName: this.state.Login,
                 password: this.state.Password
             }
 
-            //var userData = {id: '', userName: '', legalName:'', type: ''}
+            
             api.User().login(User)
             .then(response => {
-                //userData = response.data;
-                //store.dispatch(login(response.data))
+                store.dispatch(login(response.data))
                 window.location.href = '/'
             })
-            //.catch(err => alert("Nie udało się zalogować", err));
-
-            var testUser = {id: "1", userName: "A1", legalName:"Alvin", type: 'CUSTOMER'} //TODO: delete this
-            store.dispatch(login(testUser))
+            .catch(err => alert("Nie udało się zalogować", err));
         }
     }
 

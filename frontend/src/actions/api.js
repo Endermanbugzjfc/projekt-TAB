@@ -15,8 +15,8 @@ export default {
             logout: (userID) => axios.post(url + "logout/"+ userID),
 
             //Order raports
-            getOrders: (userId) => axios.get(url+userId + "report"),
-            getOrderById: (userId, orderId) => axios.get(url+userId+"report/full/" + orderId),
+            getOrders: (userId) => axios.get(url+userId + "/report"),
+            getOrderById: (userId, orderId) => axios.get(url+userId+"/report/full/" + orderId),
 
             //Worker management
             searchUser: (userDTO, type) => axios.post(url + 'find/' + type, userDTO)
@@ -28,7 +28,7 @@ export default {
         return {
             getCategories: () => axios.get(url + "category"),
 
-            getByCategory: (categoryid) => axios.get(url + categoryid),
+            getByCategory: (categoryid) => axios.get(url + 'list/' + categoryid),
             getProduct: (productId) => axios.get(url+ productId),
             getProductImages: (productId) => axios.get(url + productId + '/images'),
             sendProductImages: (productId, images) => axios.put(url + productId + '/images', images),
