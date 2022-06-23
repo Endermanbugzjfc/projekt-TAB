@@ -42,27 +42,14 @@ public class UserController {
         return this.userService.clearUserData(id);
     }
 
-    @GetMapping("/login/{id}")
-    public boolean logUser(@PathVariable(value = "id") Long id) {
-        User user = userService.getUser(id);
-
-        if(user != null) {
-            if (this.userService.logIn(user.getUserName(), user.getPassword())) {
-                return true;
-            }
-        }
-        return false;
+    @GetMapping("/login")
+    public boolean logUser(@RequestBody String userName, String password) {
+        return this.userService.logIn(userName, password);
     }
 
-    @PostMapping("/logout/{id}")
-    public boolean logOut(@PathVariable(value = "id") Long id){
-        User user = userService.getUser(id);
-        if(user != null) {
-            if (this.userService.logOut(user.getId())) {
-                return true;
-            }
-        }
-        return false;
+    @PostMapping("/logout")
+    public boolean logOut(@RequestBody String userName){
+        return this.userService.logOut(userName);
     }
 
     @PutMapping("/{id}")
