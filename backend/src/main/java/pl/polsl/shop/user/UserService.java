@@ -81,17 +81,17 @@ public class UserService {
     public UserDto updateUser(UserDto updatedUserDto, Long id){
         User user = getUser(id);
         if (user != null) {
-            user.setUserName(updatedUserDto.userName());
-            user.setPassword(updatedUserDto.password());
-            user.setLegalName(updatedUserDto.legalName());
-            user.setSurname(updatedUserDto.surname());
-            user.setPhoneNumber(updatedUserDto.phoneNumber());
-            user.setType(updatedUserDto.type());
-            user.setBirthDate(updatedUserDto.birthDate());
-            user.setPesel(updatedUserDto.pesel());
-            user.setEmploymentDate(updatedUserDto.employmentDate());
-            user.setShoppingCart(ShoppingCart.fromDto(updatedUserDto.shoppingCartDto()));
-            user.setAddress(Address.fromDto(updatedUserDto.addressDto()));
+            if(updatedUserDto.userName() != null) user.setUserName(updatedUserDto.userName());
+            if(updatedUserDto.password() != null) user.setPassword(updatedUserDto.password());
+            if(updatedUserDto.legalName() != null) user.setLegalName(updatedUserDto.legalName());
+            if(updatedUserDto.surname() != null) user.setSurname(updatedUserDto.surname());
+            if(updatedUserDto.phoneNumber() != null) user.setPhoneNumber(updatedUserDto.phoneNumber());
+            if(updatedUserDto.type() != null) user.setType(updatedUserDto.type());
+            if(updatedUserDto.birthDate() != null) user.setBirthDate(updatedUserDto.birthDate());
+            if(updatedUserDto.pesel() != null) user.setPesel(updatedUserDto.pesel());
+            if(updatedUserDto.employmentDate() != null) user.setEmploymentDate(updatedUserDto.employmentDate());
+            if(updatedUserDto.shoppingCartDto() != null) user.setShoppingCart(ShoppingCart.fromDto(updatedUserDto.shoppingCartDto()));
+            if(updatedUserDto.addressDto() != null) user.setAddress(Address.fromDto(updatedUserDto.addressDto()));
             this.userRepository.save(user);
             return UserDto.fromUser(user);
         }
