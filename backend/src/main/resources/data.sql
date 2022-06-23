@@ -1,0 +1,15 @@
+INSERT INTO users(id, user_name, password, legal_name, surname, phone_number, type, birth_date, pesel, employment_date) VALUES (1, 'jankow123', 'qwerty', 'Jan', 'Kowalski', '+48 527 987 321', 'CUSTOMER', null, null, null);
+INSERT INTO users(id, user_name, password, legal_name, surname, phone_number, type, birth_date, pesel, employment_date) VALUES (2, 'alma78', '1234', 'Aldona', 'Makota', '+48 722 733 745', 'EMPLOYEE', '1979-12-12', '79121201123', '2000-06-13');
+INSERT INTO users(id, user_name, password, legal_name, surname, phone_number, type, birth_date, pesel, employment_date) VALUES (3, 'bestWorkerEver', '1a2b3cdef', 'Maciej', 'Nowak', '+32 111 11 21', 'EMPLOYEE', '1962-02-22', '62022201825', '2000-06-13');
+INSERT INTO users(id, user_name, password, legal_name, surname, phone_number, type, birth_date, pesel, employment_date) VALUES (4, 'admin', 'admin', 'Kinga', 'Maliniak', '534 721 897', 'ADMIN', '1992-01-03', '92010343876', '2021-02-22');
+INSERT INTO users(id, user_name, password, legal_name, surname, phone_number, type, birth_date, pesel, employment_date) VALUES (5, 'admin1', 'admin1', 'Konrad', 'Lasek', '112 321 143', 'FIRED', '19690-10-30', '69103045768', '2000-06-13');
+INSERT INTO users(id, user_name, password, legal_name, surname, phone_number, type, birth_date, pesel, employment_date) VALUES (6, 'bestAdmin', 'ajdhdvhgs432dw!', 'Helena', 'Maczek', '+32 419 75 68', 'ADMIN', '1980-02-14', '80021483751', '2021-01-15');
+INSERT INTO users(id, user_name, password, legal_name, surname, phone_number, type, birth_date, pesel, employment_date) VALUES (7, 'super-misiaczek', '143mis', 'Natalia', 'Bury', '345876453', 'CUSTOMER', null, null, null);
+
+INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (1, 'Mrągowska', '2C/8', '47-450', 'Owsiszcze', 'Polska', 1);
+INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (2, 'Warszawska', '11', '45-200', 'Dalekowice', 'Polska', 2);
+INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (3, '3 Maja', '3c', '47-229', 'Nieistniejewo', 'Polska', 3);
+INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (4, 'Profesora Drabiniaka', '66', '66-666', 'Piekło', 'Polska', 4);
+INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (5, 'Rzemieślnicza', '12/4', '77-777', 'Niebo', 'Polska', 5);
+INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (6, 'Mrągowska', '2C/9', '47-450', 'Owsiszcze', 'Polska', 6);
+INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (7, 'Uczelniana', '7/404', '47-100', 'Gliwice', 'Polska', 7);
