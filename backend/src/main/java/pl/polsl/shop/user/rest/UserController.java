@@ -42,7 +42,7 @@ public class UserController {
         return this.userService.clearUserData(id);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public boolean logUser(@RequestBody String userName, String password) {
         return this.userService.logIn(userName, password);
     }
