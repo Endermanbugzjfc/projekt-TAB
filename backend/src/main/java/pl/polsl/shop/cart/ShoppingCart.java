@@ -79,7 +79,16 @@ public class ShoppingCart {
     }
 
     public void addProduct(Product product, Integer quantity) {
-        this.selectedProducts.add(new SelectedProduct(product, quantity));
+        boolean exists = false;
+        for (SelectedProduct selectedProduct : selectedProducts) {
+            if(selectedProduct.getProduct().equals(product)){
+                selectedProduct.setQuantity(selectedProduct.getQuantity() + quantity);
+                exists = true;
+            }
+        }
+        if(!exists){
+            this.selectedProducts.add(new SelectedProduct(product, quantity));
+        }
         this.itemsAmount+=quantity;
     }
 
