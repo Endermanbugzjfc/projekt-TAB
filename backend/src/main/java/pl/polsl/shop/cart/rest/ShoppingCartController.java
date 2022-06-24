@@ -10,6 +10,7 @@ import pl.polsl.shop.product.ProductService;
 import pl.polsl.shop.user.UserException;
 import pl.polsl.shop.user.UserService;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "/cart")
 public class ShoppingCartController {

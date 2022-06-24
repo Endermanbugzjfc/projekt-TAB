@@ -10,6 +10,7 @@ import pl.polsl.shop.user.UserService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "/order")
 public class OrderController {

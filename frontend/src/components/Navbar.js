@@ -25,7 +25,7 @@ class Navbar extends React.Component
 
         api.Product().getCategories()
         .then(response => this.setState({categories: response.data}))
-        .catch(err => console.log(err))
+        .catch(err => console.log(err.request))
 
         var logged =  store.getState().persistedReducer.loggedIn
         if(this.state.loggedIn !== logged)
