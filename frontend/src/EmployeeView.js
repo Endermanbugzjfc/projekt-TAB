@@ -117,6 +117,7 @@ class EmployeeView extends React.Component{
         var dateFrom = document.getElementById("raportDateFrom").value
         var dateTo = document.getElementById("raportDateTo").value
         var RaportInfo = {productName: "Błąd", totalExpense: "Błąd", totalIncome: "Błąd"};
+        console.log({start: dateFrom, end: dateTo})
         if(index === "0")
         {
             api.Product().getFullReport({start: dateFrom, end: dateTo})

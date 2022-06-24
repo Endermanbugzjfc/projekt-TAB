@@ -21,7 +21,7 @@ class Basket extends React.Component
             selectedProducts: [
                 {
                     id: '',
-                    productDTO: {}
+                    product: {}
                 }
             ]
             }
@@ -35,13 +35,14 @@ class Basket extends React.Component
         if(loginStatus === false)
         {
             api.Cart().getNotLogCart()
-            .then( response => this.setState({Cart: response}))
+            .then( response => this.setState({Cart: response.data.shoppingCart}))
             .catch(err => console.log(err));
         }
         else
         {
             api.Cart().getUserCart(store.getState().persistedReducer.id)
-            .then( response => this.setState({Cart: response.data}))
+            .then( response => this.setState({Cart: response.data.shoppingCart}))
+            //.then( response => console.log(response.data.shoppingCart))
             .catch(err => console.log(err));
         }
     }
@@ -80,7 +81,7 @@ class Basket extends React.Component
                                 <div className="col-2"><strong>Cena<br/>całkowita</strong></div>
                             </div>
                         </div>
-                        <div class="accordion border border-dark border-start-0 border-end-0 border-bottom-0" id="accordionBasket">
+                        <div className="accordion border border-dark border-start-0 border-end-0 border-bottom-0" id="accordionBasket">
                             {
                                 this.state.Cart.selectedProducts?.map(prod =>{
                                 return this.displayProduct(prod)
@@ -101,7 +102,7 @@ class Basket extends React.Component
     payment()
     {
         var price = 0;
-        this.state.Cart.selectedProducts?.map(product => price += parseFloat(product.productDTO.retailPrice) * parseFloat(product.quantity) )
+        this.state.Cart.selectedProducts?.map(product => price += parseFloat(product.product.retailPrice) * parseFloat(product.quantity) )
         return <>
         <form>
             <div className="mt-5 row">
@@ -131,27 +132,27 @@ class Basket extends React.Component
         </>
     }
 
-    displayProduct(product)
+    displayProduct(entry)
     {
         return(
             <>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id={"heading" + product.productDTO.productId}>
-                    <button class="accordion-button collapsed text-break" type="button" data-bs-toggle="collapse" data-bs-target={"#collapse" + product.productDTO.productId} aria-expanded="true" aria-controls={"collapse" + product.productDTO.productId}>
+            <div className="accordion-item">
+                <h2 className="accordion-header" id={"heading" + entry.product.productId}>
+                    <button className="accordion-button collapsed text-break" type="button" data-bs-toggle="collapse" data-bs-target={"#collapse" + entry.product.productId} aria-expanded="true" aria-controls={"collapse" + entry.product.productId}>
                     
-                        <div className="col-2">{product.productDTO.name}</div>
-                        <div className="col-2 ms-2">{product.quantity}</div>
-                        <div className="col-2 ms-3" id={"inStock" + product.productDTO.productId}>{product.productDTO.inStock}</div>
-                        <div className="col-2">{product.productDTO.retailPrice} zł</div>
-                        <div className="col-2">{parseFloat(product.productDTO.retailPrice) * parseFloat(product.quantity) } zł</div>
-                        <div className="col"> <input type="button" className="btn btn-danger btn-sm" value="Usuń" onClick={() => {this.deleteFromBasket(product.productDTO.productId)}}/> </div>
+                        <div className="col-2">{entry.product.name}</div>
+                        <div className="col-2 ms-2">{entry.quantity}</div>
+                        <div className="col-2 ms-3" id={"inStock" + entry.product.productId}>{entry.product.inStock}</div>
+                        <div className="col-2">{entry.product.retailPrice} zł</div>
+                        <div className="col-2">{parseFloat(entry.product.retailPrice) * parseFloat(entry.quantity) } zł</div>
+                        <div className="col"> <input type="button" className="btn btn-danger btn-sm" value="Usuń" onClick={() => {this.deleteFromBasket(entry.product.productId)}}/> </div>
                         
                     </button>
                 </h2>
-                <div id={"collapse" + product.productDTO.productId} class="accordion-collapse collapse" aria-labelledby={"heading" + product.productDTO.productId} data-bs-parent="#accordionBasket">
-                    <div class="accordion-body text-break">
-                        <strong>Producent:</strong> {product.productDTO.producer} <br/>
-                        <strong>Opis:</strong> {product.productDTO.description}
+                <div id={"collapse" + entry.product.productId} className="accordion-collapse collapse" aria-labelledby={"heading" + entry.product.productId} data-bs-parent="#accordionBasket">
+                    <div className="accordion-body text-break">
+                        <strong>Producent:</strong> {entry.product.producer} <br/>
+                        <strong>Opis:</strong> {entry.product.description}
                     </div>
                 </div>
             </div>
@@ -182,7 +183,7 @@ class Basket extends React.Component
 
     deleteFromBasket(ProdId)
     {
-        api.Cart().deleteProduct(this.state.Cart.id, ProdId).catch(err => console.log(err))
+        api.Cart().deleteProduct(this.state.Cart.cartId, ProdId).catch(err => console.log(err))
     }
 
 }

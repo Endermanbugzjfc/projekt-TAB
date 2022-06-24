@@ -54,6 +54,7 @@ class UserInfo extends React.Component
     }
 
     componentDidMount(){
+        var initialNewInfo = {}
         api.User().getUserById(store.getState().persistedReducer.id)
         .then(response =>
         {
@@ -72,25 +73,21 @@ class UserInfo extends React.Component
             Country: response.data.address.country,
             Type: response.data.type,
             EmploymentDate: response.data.employmentDate,
-            })
+            });
+            initialNewInfo.UserName = response.data.userName;
+            initialNewInfo.Name = response.data.legalName;
+            initialNewInfo.Surname = response.data.surname;
+            initialNewInfo.Phone = response.data.phoneNumber;
+            initialNewInfo.PostCode = response.data.address.zipCode;
+            initialNewInfo.City = response.data.address.location;
+            initialNewInfo.HouseNumber = response.data.address.streetNumber;
+            initialNewInfo.Street = response.data.address.streetName;
+            initialNewInfo.Country = response.data.address.country;
+            
+            this.setState({newInfo: initialNewInfo})
         })
         .catch(err => console.log(err));
         //Setting the current informations for the change form modal
-        this.setState(() => ({
-            newInfo: {
-                UserName: this.state.UserName,
-                Name: this.state.Name,
-                Surname: this.state.Surname,
-                BirthDay: this.state.BirthDay,
-                Pesel: this.state.Pesel,
-                Phone: this.state.Phone,
-                PostCode: this.state.PostCode,
-                City: this.state.City,
-                HouseNumber: this.state.HouseNumber,
-                Street: this.state.Street,
-                Country: this.state.Country
-            }
-        }))
     }
     
 
@@ -153,7 +150,7 @@ class UserInfo extends React.Component
     {
         return(
             <>
-                <div className="modal fade" id="EditPersonalInfo" data-bs-backdrop="static" tabIndex="-1" aria-labelledby="EditPersonalInfoLabel" aria-hidden="true">
+                <div key="1" className="modal fade" id="EditPersonalInfo" data-bs-backdrop="static" tabIndex="-1" aria-labelledby="EditPersonalInfoLabel" aria-hidden="true">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -194,7 +191,7 @@ class UserInfo extends React.Component
     modalElement(NamePL, value, maxLength, valueName)
     {
         return(
-            <div className="col my-2">
+            <div className="col my-2" key={valueName}>
                 {NamePL}<br/>
                 <input type="text" value={value} maxLength={maxLength} id={valueName+'Modal'} className="form-control"
                     onChange={e => this.setState(prevState => ({
