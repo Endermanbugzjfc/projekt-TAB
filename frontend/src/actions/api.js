@@ -12,7 +12,7 @@ export default {
 
             //Login stuff -> It's wrong? TODO
             login: (userInfo) => axios.post(url + "login", userInfo),
-            logout: (userID) => axios.post(url + "logout/"+ userID),
+            logout: (userID) => axios.post(url + "logout, userID),
 
             //Order raports
             getOrders: (userId) => axios.get(url+userId + "/report"),
