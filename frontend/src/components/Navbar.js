@@ -126,7 +126,7 @@ class Navbar extends React.Component
 
     logOut()
     {
-        api.User().logout(store.getState().persistedReducer.id);
+        api.User().logout(store.getState().persistedReducer.userName);
         store.dispatch(logout())
         window.location.reload();
     }
