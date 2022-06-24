@@ -11,7 +11,9 @@ public record ShoppingCartDto(
     public static ShoppingCartDto fromShoppingCart(ShoppingCart shoppingCart) {
         return new ShoppingCartDto(
                 shoppingCart.getId(), shoppingCart.getCreationDate(),
-                shoppingCart.getSelectedProducts().stream().map(SelectedProductDto::fromSelectedProduct).toList()
+                shoppingCart.getSelectedProducts().stream()
+                        .map(SelectedProductDto::fromSelectedProduct)
+                        .toList()
         );
     }
 }

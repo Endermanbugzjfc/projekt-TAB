@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.polsl.shop.product.Product;
 import pl.polsl.shop.user.User;
 
-import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -29,7 +29,6 @@ public class ShoppingCartService {
         shoppingCart.setCreationDate(LocalDate.now());
         shoppingCart.setSelectedProducts(Collections.emptyList());
         shoppingCart.setUser(user);
-        user.setShoppingCart(shoppingCart);
         shoppingCart.setItemsAmount(0);
         return shoppingCartRepository.save(shoppingCart);
     }
@@ -40,11 +39,11 @@ public class ShoppingCartService {
         );
     }
 
-    public ShoppingCart getCart(Long cartId) {
+    public ShoppingCart getCart(Long cartId) throws CartException {
         Optional<ShoppingCart> cart = this.shoppingCartRepository.findById(cartId);
         if (cart.isPresent()) {
             ShoppingCart shoppingCart = cart.get();
-            long days = Duration.between(shoppingCart.getCreationDate(), LocalDate.now()).toDays();
+            long days = Period.between(shoppingCart.getCreationDate(), LocalDate.now()).getDays();
             if (days >= 7) {
                 throw new ExpiredCartException(
                         "Cart created on " + shoppingCart.getCreationDate() + " is already expired"
@@ -56,13 +55,13 @@ public class ShoppingCartService {
         }
     }
 
-    public ShoppingCart addToCart(Long cartId, Product product, Integer quantity) {
+    public ShoppingCart addToCart(Long cartId, Product product, Integer quantity) throws CartException {
         ShoppingCart shoppingCart = this.getCart(cartId);
         shoppingCart.addProduct(product, quantity);
         return this.shoppingCartRepository.save(shoppingCart);
     }
 
-    public ShoppingCart removeFromCart(Long cartId, Product product) {
+    public ShoppingCart removeFromCart(Long cartId, Product product) throws CartException {
         ShoppingCart shoppingCart = this.getCart(cartId);
         SelectedProduct selectedProduct = this.selectedProductRepository.findSelectedProductByProduct(product);
         boolean removed = shoppingCart.removeProduct(selectedProduct);

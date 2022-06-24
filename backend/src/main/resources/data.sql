@@ -90,10 +90,9 @@ INSERT INTO addresses(id, street_name, street_number, zip_code, location, countr
 INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (4, 'Profesora Drabiniaka', '66', '66-666', 'Piekło', 'Polska', 4);
 INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (5, 'Rzemieślnicza', '12/4', '77-777', 'Niebo', 'Polska', 5);
 INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (6, 'Mrągowska', '2C/9', '47-450', 'Owsiszcze', 'Polska', 6);
-
 INSERT INTO addresses(id, street_name, street_number, zip_code, location, country, user_id ) VALUES (7, 'Uczelniana', '7/404', '47-100', 'Gliwice', 'Polska', 7);
-INSERT INTO shopping_carts (id, creation_date, number_of_items, user_id) VALUES (1, '2022-06-12', 3, 7);
 
+INSERT INTO shopping_carts (id, creation_date, number_of_items, user_id) VALUES (1, '2022-06-12', 3, 7);
 INSERT INTO shopping_carts (id, creation_date, number_of_items, user_id) VALUES (2, '2022-06-24', 0, 1);
 
 INSERT INTO orders(id, order_date, payment_method, user_id) VALUES (1, '2013-09-21', 'CASH', 1);

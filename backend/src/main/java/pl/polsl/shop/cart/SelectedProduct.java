@@ -33,9 +33,10 @@ public class SelectedProduct {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    public SelectedProduct(Product product, Integer quantity) {
+    public SelectedProduct(Product product, Integer quantity, ShoppingCart shoppingCart) {
         this.product = product;
         this.quantity = quantity;
+        this.shoppingCart = shoppingCart;
     }
 
     public SelectedProduct() {
@@ -78,7 +79,7 @@ public class SelectedProduct {
     public static SelectedProduct fromDto(SelectedProductDto selectedProductDto) {
         SelectedProduct selectedProduct = new SelectedProduct();
         selectedProduct.setQuantity(selectedProductDto.quantity());
-        selectedProduct.setCart(ShoppingCart.fromDto(selectedProductDto.shoppingCartDto()));
+        selectedProduct.setProduct(Product.fromDTO(selectedProductDto.product()));
         return selectedProduct;
     }
 }

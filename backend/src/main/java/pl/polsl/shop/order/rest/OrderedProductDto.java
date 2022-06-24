@@ -5,7 +5,7 @@ import pl.polsl.shop.product.rest.ProductDTO;
 
 import java.io.Serializable;
 
-public record OrderedProductDto(Long id, Integer quantity, ProductDTO productDto, Double price) implements Serializable {
+public record OrderedProductDto(Long id, Integer quantity, ProductDTO product, Double price) implements Serializable {
     public static OrderedProductDto fromOrderedProduct(OrderedProduct orderedProduct) {
         return new OrderedProductDto(
                 orderedProduct.getId(), orderedProduct.getQuantity(),

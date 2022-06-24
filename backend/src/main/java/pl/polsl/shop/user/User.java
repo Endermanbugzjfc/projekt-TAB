@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Table(name="users")
+@Table(name = "users")
 @Entity(name = "User")
 public class User {
 
@@ -51,31 +51,10 @@ public class User {
 
     @Column(name = "employment_date")
     private LocalDate employmentDate;
-
-    @OneToOne(mappedBy = "user")
-    private Address address;
-
-    @OneToOne(mappedBy = "user")
-    private ShoppingCart shoppingCart;
-
     @Transient
     private boolean loggedIn;
 
     public User() {
-    }
-
-    public User(String userName, String password, String legalName, String surname, String phoneNumber, Type type, Date birthDate, String pesel, LocalDate employmentDate, Address address) {
-        this.userName = userName;
-        this.password = password;
-        this.legalName = legalName;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.type = type;
-        this.birthDate = birthDate;
-        this.pesel = pesel;
-        this.employmentDate = employmentDate;
-        this.address = address;
-        this.loggedIn = false;
     }
 
     public Long getId() {
@@ -118,14 +97,6 @@ public class User {
         this.surname = surname;
     }
 
-    public Address getAddress() {
-        return this.address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
     public String getPhoneNumber() {
         return this.phoneNumber;
     }
@@ -166,14 +137,6 @@ public class User {
         this.employmentDate = employmentDate;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return this.shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-    }
-
     public boolean isLoggedIn() {
         return loggedIn;
     }
@@ -188,7 +151,6 @@ public class User {
         setSurname("");
         setPhoneNumber("");
         setPesel("");
-        setAddress(null);
         if (getType().equals(Type.CUSTOMER)) {
             setType(Type.DELETED);
         } else {
@@ -200,17 +162,19 @@ public class User {
     @Transient
     public static User fromDto(UserDto userDto) {
         User user = new User();
-        user.setUserName(userDto.userName());
-        user.setPassword(userDto.password());
-        user.setLegalName(userDto.legalName());
-        user.setSurname(userDto.surname());
-        user.setPhoneNumber(userDto.phoneNumber());
-        user.setType(userDto.type());
-        user.setBirthDate(userDto.birthDate());
-        user.setPesel(userDto.pesel());
-        user.setEmploymentDate(userDto.employmentDate());
-        user.setAddress(Address.fromDto(userDto.addressDto()));
-        user.setShoppingCart(ShoppingCart.fromDto(userDto.shoppingCartDto()));
+        user.parseDto(userDto);
         return user;
+    }
+
+    public void parseDto(UserDto userDto) { //todo add null checks
+        this.setUserName(userDto.userName());
+        this.setPassword(userDto.password());
+        this.setLegalName(userDto.legalName());
+        this.setSurname(userDto.surname());
+        this.setPhoneNumber(userDto.phoneNumber());
+        this.setType(userDto.type());
+        this.setBirthDate(userDto.birthDate());
+        this.setPesel(userDto.pesel());
+        this.setEmploymentDate(userDto.employmentDate());
     }
 }
