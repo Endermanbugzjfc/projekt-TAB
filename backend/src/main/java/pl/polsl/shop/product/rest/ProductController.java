@@ -28,11 +28,6 @@ public class ProductController {
         return this.productService.getReportsFor(productId);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/report/all")
-    public List<ProductReportDTO> getAllReports() {
-        return this.productService.getAllReports();
-    }
-
     @RequestMapping(method = RequestMethod.POST)
     public ProductDTO addProduct(@RequestBody ProductDTO productDTO) {
         Product newProduct = this.productService.addProduct(productDTO);

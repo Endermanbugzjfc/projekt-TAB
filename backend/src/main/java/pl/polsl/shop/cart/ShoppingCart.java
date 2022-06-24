@@ -80,15 +80,25 @@ public class ShoppingCart {
     }
 
     public void addProduct(Product product, Integer quantity) {
-        this.selectedProducts.add(new SelectedProduct(product, quantity, this));
-        this.itemsAmount+=quantity;
+        boolean exists = false;
+        for (SelectedProduct selectedProduct : selectedProducts) {
+            if (selectedProduct.getProduct().equals(product)) {
+                selectedProduct.setQuantity(selectedProduct.getQuantity() + quantity);
+                exists = true;
+            }
+        }
+        if (!exists) {
+            this.selectedProducts.add(new SelectedProduct(product, quantity, this));
+        }
+        this.itemsAmount += quantity;
     }
 
     public boolean removeProduct(SelectedProduct selectedProduct) {
         boolean removed = this.selectedProducts.remove(selectedProduct);
         if (removed) {
             selectedProduct.setCart(null);
-            this.itemsAmount-= selectedProduct.getQuantity();
+            this.itemsAmount -= selectedProduct.getQuantity();
+            selectedProduct.setQuantity(0);
         }
         return removed;
     }

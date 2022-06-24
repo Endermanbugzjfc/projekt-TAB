@@ -73,10 +73,15 @@ public class UserService {
         return false;
     }
 
-    public boolean logOut(Long userId) throws UserException {
-        User user = this.getUser(userId);
-        user.setLoggedIn(false);
-        return true;
+    public boolean logOut(String userName) {
+        Optional<User> usr = userRepository.findUserByUserName(userName);
+        if (usr.isPresent()) {
+            User user = usr.get();
+            user.setLoggedIn(false);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean clearUserData(Long userId) throws UserException {

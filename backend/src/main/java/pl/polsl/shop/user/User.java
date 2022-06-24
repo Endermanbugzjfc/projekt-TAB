@@ -1,5 +1,6 @@
 package pl.polsl.shop.user;
 
+import pl.polsl.shop.EntityUtils;
 import pl.polsl.shop.cart.ShoppingCart;
 import pl.polsl.shop.user.rest.UserDto;
 
@@ -62,7 +63,7 @@ public class User {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id = EntityUtils.nonNullOrDefault(id, this.id);
     }
 
     public String getUserName() {
@@ -70,7 +71,7 @@ public class User {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName = EntityUtils.nonNullOrDefault(userName, this.userName);
     }
 
     public String getPassword() {
@@ -78,7 +79,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = EntityUtils.nonNullOrDefault(password, this.password);
     }
 
     public String getLegalName() {
@@ -86,7 +87,7 @@ public class User {
     }
 
     public void setLegalName(String legalName) {
-        this.legalName = legalName;
+        this.legalName = EntityUtils.nonNullOrDefault(legalName, this.legalName);
     }
 
     public String getSurname() {
@@ -94,7 +95,7 @@ public class User {
     }
 
     public void setSurname(String surname) {
-        this.surname = surname;
+        this.surname = EntityUtils.nonNullOrDefault(surname, this.surname);
     }
 
     public String getPhoneNumber() {
@@ -102,7 +103,7 @@ public class User {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = EntityUtils.nonNullOrDefault(phoneNumber, this.phoneNumber);
     }
 
     public Type getType() {
@@ -110,7 +111,7 @@ public class User {
     }
 
     public void setType(Type type) {
-        this.type = type;
+        this.type = EntityUtils.nonNullOrDefault(type, this.type);
     }
 
     public Date getBirthDate() {
@@ -118,7 +119,7 @@ public class User {
     }
 
     public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+        this.birthDate = EntityUtils.nonNullOrDefault(birthDate, this.birthDate);
     }
 
     public String getPesel() {
@@ -134,7 +135,7 @@ public class User {
     }
 
     public void setEmploymentDate(LocalDate employmentDate) {
-        this.employmentDate = employmentDate;
+        this.employmentDate = EntityUtils.nonNullOrDefault(employmentDate, this.employmentDate);
     }
 
     public boolean isLoggedIn() {

@@ -7,8 +7,8 @@ import pl.polsl.shop.order.OrderService;
 import pl.polsl.shop.order.OrderedProduct;
 import pl.polsl.shop.product.rest.*;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service("productService")
 public class ProductService { //todo implement
