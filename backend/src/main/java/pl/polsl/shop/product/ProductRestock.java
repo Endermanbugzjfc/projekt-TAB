@@ -22,7 +22,7 @@ public class ProductRestock {
     @Column(name = "purchase_price", nullable = false)
     private double purchasePrice;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "restock_date", nullable = false)
     private Date purchaseDate;
 
     @Column(name = "quantity", nullable = false)

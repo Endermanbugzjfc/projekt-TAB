@@ -36,7 +36,7 @@ CREATE TABLE orders (
 CREATE TABLE product_restock (
     id             INTEGER NOT NULL,
     purchase_price REAL NOT NULL,
-    "date"         DATE NOT NULL,
+    restock_date         DATE NOT NULL,
     quantity       INTEGER NOT NULL,
     PRIMARY KEY (id)
   );

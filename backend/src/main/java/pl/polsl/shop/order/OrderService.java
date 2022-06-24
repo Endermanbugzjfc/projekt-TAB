@@ -41,7 +41,7 @@ public class OrderService {
 
     public Order getOrder(Long orderId) {
         return this.orderRepository.findById(orderId).orElseThrow(
-                () -> new NoSuchOrderException("Order with id: " + orderId + " does not exist")
+                () -> new NoSuchOrderException("Order with cartId: " + orderId + " does not exist")
         );
     }
 

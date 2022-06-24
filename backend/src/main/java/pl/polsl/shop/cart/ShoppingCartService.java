@@ -52,7 +52,7 @@ public class ShoppingCartService {
             }
             return shoppingCart;
         } else {
-            throw new NotSuchCartException("Cannot find shopping cart with id: " + cartId);
+            throw new NotSuchCartException("Cannot find shopping cart with cartId: " + cartId);
         }
     }
 

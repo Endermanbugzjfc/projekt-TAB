@@ -52,6 +52,12 @@ public class ProductController {
                 .toList();
     }
 
+    @RequestMapping(method = RequestMethod.PUT, path = "/price")
+    public ProductDTO updatePrice(@RequestBody ProductPriceUpdateDTO priceUpdateDTO) {
+        Product product = this.productService.updateProductPrice(priceUpdateDTO);
+        return ProductDTO.fromProduct(product);
+    }
+
     @RequestMapping(method = RequestMethod.POST, path = "/price/{category}")
     public List<ProductDTO> listByPriceAndCategory(
             @RequestBody ProductPriceQueryDTO priceQueryDTO,

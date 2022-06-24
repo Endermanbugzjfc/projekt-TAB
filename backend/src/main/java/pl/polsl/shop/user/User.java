@@ -40,6 +40,7 @@ public class User {
     private String phoneNumber;
 
     @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Type type;
 
     @Column(name = "birth_date")
