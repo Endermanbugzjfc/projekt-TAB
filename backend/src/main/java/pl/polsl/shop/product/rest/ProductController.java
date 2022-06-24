@@ -28,6 +28,11 @@ public class ProductController {
         return this.productService.getReportsFor(productId);
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/report/all")
+    public List<ProductReportDTO> getAllReports(@RequestBody ProductReportQueryDTO productReportQueryDTO) {
+        return this.productService.getReportsBetweenDates(productReportQueryDTO.start(), productReportQueryDTO.end());
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ProductDTO addProduct(@RequestBody ProductDTO productDTO) {
         Product newProduct = this.productService.addProduct(productDTO);
@@ -36,7 +41,8 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/list/{category}")
     public List<ProductDTO> listByCategory(@PathVariable("category") String categoryName) {
-        return this.productService.getProductsByCategory(ProductCategory.valueOf(categoryName.toUpperCase())).stream()
+        ProductCategory productCategory = ProductCategory.valueOf(categoryName);
+        return this.productService.getProductsByCategory(productCategory).stream()
                 .map(ProductDTO::fromProduct)
                 .toList();
     }
@@ -59,8 +65,9 @@ public class ProductController {
             @RequestBody ProductPriceQueryDTO priceQueryDTO,
             @PathVariable("category") String productCategoryName
     ) {
+        ProductCategory productCategory = ProductCategory.valueOf(productCategoryName);
         return this.productService.getByRetailPriceAndCategory(
-                        priceQueryDTO, ProductCategory.valueOf(productCategoryName.toUpperCase())
+                        priceQueryDTO, productCategory
                 ).stream()
                 .map(ProductDTO::fromProduct)
                 .toList();

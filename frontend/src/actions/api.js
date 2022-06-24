@@ -12,7 +12,7 @@ export default {
 
             //Login stuff -> It's wrong? TODO
             login: (userInfo) => axios.post(url + "login", userInfo),
-            logout: (userID) => axios.post(url + "logout, userID),
+            logout: (userID) => axios.post(url + "logout", userID),
 
             //Order raports
             getOrders: (userId) => axios.get(url+userId + "/report"),
@@ -39,12 +39,12 @@ export default {
 
             //Management
             createProduct: (newProduct) => axios.post(url, newProduct),
-            orderNew: (productId, amount) => axios.post(url + "order", {id: productId, addedAmount: amount}),
-            changePrice: (productId, newPrice) => axios.put(url+"price", {id: productId, price: newPrice}),
+            orderNew: (productId, amount) => axios.post(url + "order", {productId: productId, addedAmount: amount}),
+            changePrice: (productId, newPrice) => axios.put(url+"price", {productId: productId, price: newPrice}),
 
             //Buissness reports
-            getProductReport: (priductId, dates) => axios.get(url + "report/" + priductId, dates),
-            getFullReport: (dates) => axios.get(url + "report/all", dates),
+            getProductReport: (priductId, dates) => axios.post(url + "report/" + priductId, dates),
+            getFullReport: (dates) => axios.post(url + "report/all", dates),
         }
     },
 

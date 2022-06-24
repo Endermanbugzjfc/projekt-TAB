@@ -31,6 +31,7 @@ public class Order {
     private LocalDate orderDate;
 
     @Column(name = "payment_method", nullable = false)
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
     public Order() {

@@ -32,6 +32,7 @@ public class Product {
     private String description;
 
     @Column(name = "category", nullable = false)
+    @Enumerated(EnumType.STRING)
     private ProductCategory category;
 
     @Column(name = "number_of_items_in_stock", nullable = false)
@@ -42,10 +43,6 @@ public class Product {
 
     @Column(name = "retail_price", nullable = false)
     private double retailPrice;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name ="product_id")
-    private List<ProductRestock> restock;
 
     public Long getId() {
         return this.id;
@@ -109,14 +106,6 @@ public class Product {
 
     public void setRetailPrice(double retailPrice) {
         this.retailPrice = retailPrice;
-    }
-
-    public List<ProductRestock> getRestock() {
-        return this.restock;
-    }
-
-    public void setRestock(List<ProductRestock> restock) {
-        this.restock = restock;
     }
 
     @Transient

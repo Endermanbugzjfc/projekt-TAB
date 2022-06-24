@@ -9,11 +9,11 @@ public class ProductRestock {
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "order_sequence"
+            generator = "restock_sequence"
     )
     @SequenceGenerator(
-            name = "order_sequence",
-            sequenceName = "order_sequence",
+            name = "restock_sequence",
+            sequenceName = "restock_sequence",
             allocationSize = 1
     )
     @Column(name = "id", nullable = false)
@@ -27,6 +27,10 @@ public class ProductRestock {
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     public ProductRestock() {
     }
@@ -61,5 +65,13 @@ public class ProductRestock {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

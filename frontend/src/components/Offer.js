@@ -158,7 +158,7 @@ class Offer extends React.Component{
         if(this.checkPriceInput() === true)
         {
             e.currentTarget.setAttribute("data-bs-dismiss", "modal");
-
+			console.log(this.state.productId);
             api.Product().changePrice(this.state.productId, this.newPrice)
             .catch(err => console.log(err))
             alert("Zapisno!");
@@ -170,10 +170,12 @@ class Offer extends React.Component{
 
     Restock(e)
     {
+    	console.log("Dupa")
         if(this.state.restockValue.match(/^\d+$/) !== null)
         {
             document.getElementById("restockModal" + this.state.productId)?.classList.remove("is-invalid");
             e.currentTarget.setAttribute("data-bs-dismiss", "modal");
+            console.log(this.state.productId)
             api.Product().orderNew(this.state.productId, parseInt(this.state.restockValue))
             .catch(err => console.log(err))
             alert("Zamówiono!");

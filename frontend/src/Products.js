@@ -31,7 +31,7 @@ class Products extends React.Component{
 
 
         api.Product().getByCategory(category)
-        .then(res => this.setState({products: res}))
+        .then(res =>  {console.log(res.data); this.setState({products: res.data})})
         .catch(err => console.log(err));
     }
 

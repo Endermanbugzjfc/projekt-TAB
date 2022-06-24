@@ -10,7 +10,7 @@ class Basket extends React.Component
     {
         super(props)
         this.state = {
-            Cart: null
+            Cart: {}
         }
 
         /**
@@ -41,7 +41,7 @@ class Basket extends React.Component
         else
         {
             api.Cart().getUserCart(store.getState().persistedReducer.id)
-            .then( response => this.setState({Cart: response}))
+            .then( response => this.setState({Cart: response.data}))
             .catch(err => console.log(err));
         }
     }
@@ -82,7 +82,7 @@ class Basket extends React.Component
                         </div>
                         <div class="accordion border border-dark border-start-0 border-end-0 border-bottom-0" id="accordionBasket">
                             {
-                                this.state.Cart.selectedProducts.map(prod =>{
+                                this.state.Cart.selectedProducts?.map(prod =>{
                                 return this.displayProduct(prod)
                                 })
                             }
@@ -101,7 +101,7 @@ class Basket extends React.Component
     payment()
     {
         var price = 0;
-        this.state.Cart?.selectedProducts.map(product => price += parseFloat(product.productDTO.retailPrice) * parseFloat(product.quantity) )
+        this.state.Cart.selectedProducts?.map(product => price += parseFloat(product.productDTO.retailPrice) * parseFloat(product.quantity) )
         return <>
         <form>
             <div className="mt-5 row">

@@ -1,19 +1,19 @@
 package pl.polsl.shop.product;
 
 public enum ProductCategory {
-    ARRANGEMENT ("Aranżacja"), BUILDING ("Budowa"), GARDEN ("Ogród"),
-    INSTALLATION ("Instalacja"), TOOLS_AND_ARTICLES ("Narzędzia i artykuły");
+    ARRANGEMENT ("Aranzacja"), BUILDING ("Budowa"), GARDEN ("Ogrod"),
+    INSTALLATION ("Instalacja"), TOOLS_AND_ARTICLES ("Narzedzia");
 
-    private final String name;
+    private final String otherName;
 
-    private ProductCategory(String name) {
-        this.name = name;
+    private ProductCategory(String otherName) {
+        this.otherName = otherName;
     }
 
     public boolean equalsName(String otherName) {
-        return name.equals(otherName);
+        return this.otherName.equals(otherName);
     }
     public String toString() {
-        return this.name;
+        return this.name() ;
     }
 }

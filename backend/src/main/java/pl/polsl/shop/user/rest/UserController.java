@@ -3,6 +3,8 @@ package pl.polsl.shop.user.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import pl.polsl.shop.cart.ShoppingCart;
+import pl.polsl.shop.cart.ShoppingCartService;
 import pl.polsl.shop.user.*;
 
 import java.util.List;
@@ -13,10 +15,12 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private ShoppingCartService shoppingCartService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ShoppingCartService shoppingCartService) {
         this.userService = userService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     @GetMapping("/{id}")
@@ -47,25 +51,30 @@ public class UserController {
         } catch (UserException e) {
             message = e.getMessage();
         }
-        return new AccountActionResult(success, message);
+        return new AccountActionResult(success, message, null);
     }
 
     @PostMapping("/login")
     public AccountActionResult logUser(@RequestBody UserLogAction userLogAction) {
         boolean result = false;
         String message = null;
+        UserDto userDto = null;
         try {
             ;
             result = this.userService.logIn(userLogAction.userName(), userLogAction.password());
+            User user = this.userService.getUser(userLogAction.userName());
+            Address address = this.userService.getAddressOf(user);
+            ShoppingCart shoppingCart = this.shoppingCartService.getCartFor(user);
+            userDto = UserDto.newDto(user, address, shoppingCart);
         } catch (UserException e) {
             message = e.getMessage();
         }
-        return new AccountActionResult(result, message);
+        return new AccountActionResult(result, message, userDto);
     }
 
     @PostMapping("/logout")
     public AccountActionResult logOut(@RequestBody UserLogAction userLogAction) {
-        return new AccountActionResult(this.userService.logOut(userLogAction.userName()), null);
+        return new AccountActionResult(this.userService.logOut(userLogAction.userName()), null, null);
     }
 
     @PutMapping("/{id}")

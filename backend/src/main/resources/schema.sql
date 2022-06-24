@@ -1,3 +1,6 @@
+
+create sequence address_sequence;
+
 CREATE TABLE addresses (
     id            INTEGER NOT NULL,
     street_name   VARCHAR2 (255) NOT NULL,
@@ -9,12 +12,16 @@ CREATE TABLE addresses (
     PRIMARY KEY (id)
   );
 
+create sequence image_sequence;
+
 CREATE TABLE images (
     id          INTEGER NOT NULL,
     image_uri   VARCHAR2 (255) NOT NULL,
     product_id  INTEGER,
     PRIMARY KEY (id)
   );
+
+create sequence ordered_product_sequence;
 
 CREATE TABLE order_product (
     id              INTEGER NOT NULL,
@@ -25,6 +32,8 @@ CREATE TABLE order_product (
     PRIMARY KEY (id)
   );
 
+create sequence order_sequence;
+
 CREATE TABLE orders (
     id             INTEGER NOT NULL,
     order_date     DATE NOT NULL,
@@ -33,13 +42,18 @@ CREATE TABLE orders (
     PRIMARY KEY (id)
   ) ;
 
+create sequence restock_sequence;
+
 CREATE TABLE product_restock (
     id             INTEGER NOT NULL,
     purchase_price REAL NOT NULL,
     restock_date         DATE NOT NULL,
     quantity       INTEGER NOT NULL,
+    product_id     INTEGER NOT NULL,
     PRIMARY KEY (id)
   );
+
+create sequence product_sequence;
 
 CREATE TABLE products (
     id                       INTEGER NOT NULL,
@@ -50,9 +64,10 @@ CREATE TABLE products (
     number_of_items_in_stock INTEGER NOT NULL,
     purchase_price           REAL NOT NULL,
     retail_price             REAL NOT NULL,
-    product_id               INTEGER,
     PRIMARY KEY (id)
   );
+
+create sequence cart_products_sequence;
 
 CREATE TABLE shopping_cart_products (
     id                INTEGER NOT NULL,
@@ -62,6 +77,8 @@ CREATE TABLE shopping_cart_products (
     PRIMARY KEY (id)
   );
 
+create sequence cart_sequence;
+
 CREATE TABLE shopping_carts (
     id              INTEGER NOT NULL,
     creation_date   DATE NOT NULL,
@@ -69,6 +86,8 @@ CREATE TABLE shopping_carts (
     user_id         INTEGER,
     PRIMARY KEY (id)
   );
+
+create sequence user_sequence;
 
 CREATE TABLE users (
     id              INTEGER NOT NULL,
@@ -94,10 +113,24 @@ ALTER TABLE order_product ADD FOREIGN KEY (product_id) REFERENCES products (id);
 
 ALTER TABLE orders ADD FOREIGN KEY (user_id) REFERENCES users (id);
 
-ALTER TABLE products ADD FOREIGN KEY (product_id) REFERENCES product_restock (id);
+ALTER TABLE product_restock ADD FOREIGN KEY (product_id) REFERENCES products (id);
 
 ALTER TABLE shopping_cart_products ADD FOREIGN KEY (product_id) REFERENCES products (id);
 
 ALTER TABLE shopping_cart_products ADD FOREIGN KEY (shopping_cart_id) REFERENCES shopping_carts (id);
 
 ALTER TABLE shopping_carts ADD FOREIGN KEY (user_id) REFERENCES users (id);
+
+alter sequence ordered_product_sequence restart with 20;
+
+alter sequence order_sequence restart with 8;
+
+alter sequence image_sequence restart with 26;
+
+alter sequence address_sequence restart with 8;
+
+alter sequence product_sequence restart with 26;
+
+alter sequence restock_sequence restart with 26;
+
+alter sequence user_sequence restart with 8;

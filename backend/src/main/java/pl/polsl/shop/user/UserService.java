@@ -27,7 +27,15 @@ public class UserService {
 
     public Address getAddressOf(User user) {
         return this.addressRepository.findAddressByUser(user);
+
     }
+
+    public User getUser(String userName) throws NoSuchUserException {
+        return this.userRepository.findUserByUserName(userName).orElseThrow(
+                () -> new NoSuchUserException("User with name: " + userName + " does not exist")
+        );
+    }
+
 
     public User getUser(Long userId) throws UserException {
         return this.userRepository.findById(userId).orElseThrow(
