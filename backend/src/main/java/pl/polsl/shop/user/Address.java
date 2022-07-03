@@ -1,5 +1,6 @@
 package pl.polsl.shop.user;
 
+import pl.polsl.shop.EntityUtils;
 import pl.polsl.shop.user.rest.AddressDto;
 
 import javax.persistence.*;
@@ -56,7 +57,7 @@ public class Address {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id = EntityUtils.nonNullOrDefault(id, this.id);
     }
 
     public String getStreetName() {
@@ -64,7 +65,7 @@ public class Address {
     }
 
     public void setStreetName(String streetName) {
-        this.streetName = streetName;
+        this.streetName = EntityUtils.nonNullOrDefault(streetName, this.streetName);
     }
 
     public String getStreetNumber() {
@@ -72,7 +73,7 @@ public class Address {
     }
 
     public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
+        this.streetNumber = EntityUtils.nonNullOrDefault(streetNumber, this.streetNumber);
     }
 
     public String getZipCode() {
@@ -80,7 +81,7 @@ public class Address {
     }
 
     public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+        this.zipCode = EntityUtils.nonNullOrDefault(zipCode, this.zipCode);
     }
 
     public String getLocation() {
@@ -88,7 +89,7 @@ public class Address {
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.location = EntityUtils.nonNullOrDefault(location, this.location);
     }
 
     public String getCountry() {
@@ -96,7 +97,7 @@ public class Address {
     }
 
     public void setCountry(String country) {
-        this.country = country;
+        this.country = EntityUtils.nonNullOrDefault(country, this.country);
     }
 
     public User getUser() {
@@ -104,7 +105,7 @@ public class Address {
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.user = EntityUtils.nonNullOrDefault(user, this.user);
     }
 
     @Transient

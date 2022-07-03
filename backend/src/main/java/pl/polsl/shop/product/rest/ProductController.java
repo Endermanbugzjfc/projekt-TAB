@@ -10,6 +10,7 @@ import pl.polsl.shop.product.image.ImageService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "/product")
 public class ProductController {
@@ -27,20 +28,15 @@ public class ProductController {
         return this.productService.getReportsFor(productId);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/report/all")
-    public List<ProductReportDTO> getAllReports() {
-        return this.productService.getAllReports();
-    }
-
     @RequestMapping(method = RequestMethod.POST)
     public ProductDTO addProduct(@RequestBody ProductDTO productDTO) {
         Product newProduct = this.productService.addProduct(productDTO);
         return ProductDTO.fromProduct(newProduct);
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/{category}")
-    public List<ProductDTO> listByCategory(@PathVariable("category") ProductCategory category) {
-        return this.productService.getProductsByCategory(category).stream()
+    @RequestMapping(method = RequestMethod.GET, path = "/list/{category}")
+    public List<ProductDTO> listByCategory(@PathVariable("category") String categoryName) {
+        return this.productService.getProductsByCategory(ProductCategory.valueOf(categoryName.toUpperCase())).stream()
                 .map(ProductDTO::fromProduct)
                 .toList();
     }
@@ -52,12 +48,20 @@ public class ProductController {
                 .toList();
     }
 
+    @RequestMapping(method = RequestMethod.PUT, path = "/price")
+    public ProductDTO updatePrice(@RequestBody ProductPriceUpdateDTO priceUpdateDTO) {
+        Product product = this.productService.updateProductPrice(priceUpdateDTO);
+        return ProductDTO.fromProduct(product);
+    }
+
     @RequestMapping(method = RequestMethod.POST, path = "/price/{category}")
     public List<ProductDTO> listByPriceAndCategory(
             @RequestBody ProductPriceQueryDTO priceQueryDTO,
-            @PathVariable("category") ProductCategory productCategory
+            @PathVariable("category") String productCategoryName
     ) {
-        return this.productService.getByRetailPriceAndCategory(priceQueryDTO, productCategory).stream()
+        return this.productService.getByRetailPriceAndCategory(
+                        priceQueryDTO, ProductCategory.valueOf(productCategoryName.toUpperCase())
+                ).stream()
                 .map(ProductDTO::fromProduct)
                 .toList();
     }

@@ -78,7 +78,7 @@ public class Order {
     @Transient
     public static Order fromDTO(OrderDto orderDto) {
         Order order = new Order();
-        order.setUser(User.fromDto(orderDto.userDto()));
+        order.setUser(User.fromDto(orderDto.user()));
         order.setOrderDate(orderDto.orderDate());
         order.setPaymentMethod(orderDto.paymentMethod());
         return order;

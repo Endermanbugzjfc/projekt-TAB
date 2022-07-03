@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.polsl.shop.cart.SelectedProduct;
 import pl.polsl.shop.cart.ShoppingCart;
+import pl.polsl.shop.cart.ShoppingCartService;
 import pl.polsl.shop.order.rest.OrderDto;
 import pl.polsl.shop.order.rest.OrderLongReportDto;
 import pl.polsl.shop.order.rest.OrderReportDto;
 import pl.polsl.shop.order.rest.OrderedProductDto;
 import pl.polsl.shop.product.Product;
 import pl.polsl.shop.user.User;
+import pl.polsl.shop.user.UserException;
 import pl.polsl.shop.user.UserService;
 import pl.polsl.shop.user.rest.UserDto;
 
@@ -22,45 +24,62 @@ public class OrderService {
     private OrderRepository orderRepository;
     private OrderedProductRepository orderedProductRepository;
     private UserService userService;
+    private ShoppingCartService shoppingCartService;
 
     @Autowired
     public OrderService(
             OrderRepository orderRepository,
             OrderedProductRepository orderedProductRepository,
-            UserService userService
+            UserService userService, ShoppingCartService shoppingCartService
     ) {
         this.orderRepository = orderRepository;
         this.orderedProductRepository = orderedProductRepository;
         this.userService = userService;
+        this.shoppingCartService = shoppingCartService;
     }
 
     public Order newOrder(Long userId, PaymentMethod paymentMethod) {
-        User user = this.userService.getUser(userId);
-        return new Order(user, paymentMethod);
+        User user;
+        try {
+            user = this.userService.getUser(userId);
+        } catch (UserException e) {
+            throw new RuntimeException(e);
+        }
+        return this.orderRepository.save(new Order(user, paymentMethod));
     }
 
     public Order getOrder(Long orderId) {
         return this.orderRepository.findById(orderId).orElseThrow(
-                () -> new NoSuchOrderException("Order with id: " + orderId + " does not exist")
+                () -> new NoSuchOrderException("Order with cartId: " + orderId + " does not exist")
         );
     }
 
     public List<OrderDto> generateShortReport(Long userId) {
-        User user = userService.getUser(userId);
-        return this.orderRepository.findAllByUser(user).stream().map(OrderDto::fromOrder).collect(Collectors.toList());
+        User user;
+        try {
+            user = userService.getUser(userId);
+        } catch (UserException e) {
+            throw new RuntimeException(e);
+        }
+        return this.orderRepository.findAllByUser(user).stream().map(order -> OrderDto.fromOrder(order, this.userService.getAddressOf(user), this.shoppingCartService.getCartFor(user))).collect(Collectors.toList());
     }
 
     public OrderLongReportDto generateLongReport(Long userId, Long orderId) {
         Order order = getOrder(orderId);
-        User user = this.userService.getUser(userId);
+        User user;
+        try {
+            user = this.userService.getUser(userId);
+        } catch (UserException e) {
+            throw new RuntimeException(e);
+        }
         List<OrderedProduct> orderedProducts = this.orderedProductRepository.findAllByOrder(order);
-        Double totalCost = 0.0;
+        double totalCost = 0.0;
         for (OrderedProduct orderedProduct : orderedProducts) {
             totalCost += orderedProduct.getQuantity() * orderedProduct.getPrice();
         }
         return new OrderLongReportDto(
                 order.getId(),
-                UserDto.fromUser(user),
+                UserDto.newDto(user, userService.getAddressOf(user), shoppingCartService.getCartFor(user)),
                 order.getOrderDate(),
                 order.getPaymentMethod(),
                 orderedProducts.stream().map(OrderedProductDto::fromOrderedProduct).collect(Collectors.toList()),

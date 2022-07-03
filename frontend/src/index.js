@@ -30,7 +30,7 @@ ReactDOM.render(
 
                     <Route path="user/*" element={<ProtectedRouteLogin><UserView/></ProtectedRouteLogin>}/>
 
-                    <Route path='basket/*' element={<ProtectedRouteLogin><Basket/></ProtectedRouteLogin>}/>
+                    <Route path='basket/*' element={<Basket/>}/>
 
                     <Route path="products/*" element={<Products/>}/>
 

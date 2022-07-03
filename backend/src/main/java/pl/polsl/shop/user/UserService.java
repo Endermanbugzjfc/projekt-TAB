@@ -15,33 +15,46 @@ import java.util.Optional;
 public class UserService {
 
     private UserRepository userRepository;
+    private AddressRepository addressRepository;
     private ShoppingCartService shoppingCartService;
 
     @Autowired
-    public UserService(UserRepository userRepository, ShoppingCartService shoppingCartService) {
+    public UserService(UserRepository userRepository, ShoppingCartService shoppingCartService, AddressRepository addressRepository) {
         this.userRepository = userRepository;
         this.shoppingCartService = shoppingCartService;
+        this.addressRepository = addressRepository;
     }
 
-    public User getUser(Long userId) {
+    public Address getAddressOf(User user) {
+        return this.addressRepository.findAddressByUser(user);
+    }
+
+    public User getUser(Long userId) throws UserException {
         return this.userRepository.findById(userId).orElseThrow(
                 () -> new NoSuchUserException("User with ID: " + userId + " does not exist")
         );
     }
 
-    @Transactional
-    public User newUser(UserDto userDto) throws SuchUsernameExistsException {
-        Optional<User> usr = this.userRepository.findUserByUserName(userDto.userName());
-
-        if(usr.isPresent()) {
-            throw new SuchUsernameExistsException("Username: " + userDto.userName() + " already exists! Choose different one!");
-        }
-        User user = User.fromDto(userDto);
-        user.setShoppingCart(shoppingCartService.getCartFor(user));
-        return this.userRepository.save(user);
+    public UserDto getUserData(Long userId) throws UserException {
+        User user = this.getUser(userId);
+        Address address = this.addressRepository.findAddressByUser(user);
+        return UserDto.newDto(user, address, this.shoppingCartService.getCartFor(user));
     }
 
-    public boolean logIn(String username, String password) {
+    @Transactional
+    public UserDto newUser(UserDto userDto) throws SuchUsernameExistsException {
+        Optional<User> usr = this.userRepository.findUserByUserName(userDto.userName());
+
+        if (usr.isPresent()) {
+            throw new SuchUsernameExistsException("Username: " + userDto.userName() + " already exists! Choose different one!");
+        }
+        User user = this.userRepository.save(User.fromDto(userDto));
+        Address address = this.addressRepository.save(Address.fromDto(userDto.address()));
+        ShoppingCart cart = this.shoppingCartService.getCartFor(user);
+        return UserDto.newDto(user, address, cart);
+    }
+
+    public boolean logIn(String username, String password) throws UserException {
         Optional<User> usr = this.userRepository.findUserByUserName(username);
         if (usr.isPresent()) {
             User user = usr.get();
@@ -60,71 +73,67 @@ public class UserService {
         return false;
     }
 
-    public boolean logOut(Long userId) {
-        User user = this.getUser(userId);
-        user.setLoggedIn(false);
-        return true;
+    public boolean logOut(String userName) {
+        Optional<User> usr = userRepository.findUserByUserName(userName);
+        if (usr.isPresent()) {
+            User user = usr.get();
+            user.setLoggedIn(false);
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public boolean clearUserData(Long userId) {
+    public boolean clearUserData(Long userId) throws UserException {
         User user = this.getUser(userId);
         return user.clearUserData();
     }
 
     @Transactional
-    public UserDto updateUser(UserDto updatedUserDto, Long id){
+    public UserDto updateUser(UserDto updatedUserDto, Long id) throws UserException {
         User user = getUser(id);
         if (user != null) {
-            user.setUserName(updatedUserDto.userName());
-            user.setPassword(updatedUserDto.password());
-            user.setLegalName(updatedUserDto.legalName());
-            user.setSurname(updatedUserDto.surname());
-            user.setPhoneNumber(updatedUserDto.phoneNumber());
-            user.setType(updatedUserDto.type());
-            user.setBirthDate(updatedUserDto.birthDate());
-            user.setPesel(updatedUserDto.pesel());
-            user.setEmploymentDate(updatedUserDto.employmentDate());
-            user.setShoppingCart(ShoppingCart.fromDto(updatedUserDto.shoppingCartDto()));
-            user.setAddress(Address.fromDto(updatedUserDto.addressDto()));
-            this.userRepository.save(user);
-            return UserDto.fromUser(user);
+            user.parseDto(updatedUserDto);
+            return UserDto.newDto(this.userRepository.save(user), this.getAddressOf(user), this.shoppingCartService.getCartFor(user));
         }
         return null;
     }
 
-    public User findUserByShoppingCart_Id(ShoppingCart shoppingCart) {
-        return this.userRepository.findUserByShoppingCart(shoppingCart).orElseThrow(
-                () -> new NoSuchUserException("User with shopping cart ID: " + shoppingCart.getId() + " does not exist")
-        );
-    }
-
-    public List<User> findUsers(String name, String surname, String pesel, Type type){
-        if(name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()){
+    public List<User> findUsersImpl(String name, String surname, String pesel, Type type) {
+        if (name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()) {
             return this.userRepository.findAllByType(type);
         }
-        if(!name.trim().isEmpty() && !surname.trim().isEmpty() && !pesel.trim().isEmpty()){
+        if (!name.trim().isEmpty() && !surname.trim().isEmpty() && !pesel.trim().isEmpty()) {
             return this.userRepository.findAllByLegalNameAndSurnameAndPeselAndType(name, surname, pesel, type);
-        }
-        else{
-            if(!name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()){
+        } else {
+            if (!name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()) {
                 return this.userRepository.findAllByLegalNameAndType(name, type);
             }
-            if(name.trim().isEmpty() && !surname.trim().isEmpty() && pesel.trim().isEmpty()){
+            if (name.trim().isEmpty() && !surname.trim().isEmpty() && pesel.trim().isEmpty()) {
                 return this.userRepository.findAllBySurnameAndType(surname, type);
             }
-            if(name.trim().isEmpty() && surname.trim().isEmpty() && !pesel.trim().isEmpty()){
+            if (name.trim().isEmpty() && surname.trim().isEmpty() && !pesel.trim().isEmpty()) {
                 return this.userRepository.findAllByPeselAndType(pesel, type);
             }
-            if(!name.trim().isEmpty() && !surname.trim().isEmpty() && pesel.trim().isEmpty()){
+            if (!name.trim().isEmpty() && !surname.trim().isEmpty() && pesel.trim().isEmpty()) {
                 return this.userRepository.findAllByLegalNameAndSurnameAndType(name, surname, type);
             }
-            if(!name.trim().isEmpty() && surname.trim().isEmpty() && !pesel.trim().isEmpty()){
+            if (!name.trim().isEmpty() && surname.trim().isEmpty() && !pesel.trim().isEmpty()) {
                 return this.userRepository.findAllByLegalNameAndPeselAndType(name, pesel, type);
             }
-            if(name.trim().isEmpty() && !surname.trim().isEmpty() && !pesel.trim().isEmpty()){
+            if (name.trim().isEmpty() && !surname.trim().isEmpty() && !pesel.trim().isEmpty()) {
                 return this.userRepository.findAllBySurnameAndPeselAndType(surname, pesel, type);
             }
         }
         return Collections.emptyList();
+    }
+
+    public List<UserDto> findUsers(String name, String surname, String pesel, Type type) {
+        return this.findUsersImpl(name, surname, pesel, type).stream()
+                .map(user -> {
+                    Address address = this.getAddressOf(user);
+                    ShoppingCart shoppingCart = this.shoppingCartService.getCartFor(user);
+                    return UserDto.newDto(user, address, shoppingCart);
+                }).toList();
     }
 }

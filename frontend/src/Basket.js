@@ -162,11 +162,22 @@ class Basket extends React.Component
 
     Buy()
     {
+        if(store.getState().persistedReducer.loggedIn === false)
+        {
+            alert("Aby coś zapupić, musisz być zalogowany!");
+            window.location.href = '/login'
+            return
+        }
+
         if(this.state.payment !== undefined)
             api.Cart().BuyAll(this.state.Cart.id, this.state.payment)
             .catch(err => console.log(err))
         else
+        {
             alert("Wybierz formę płatności!")
+            return
+        }
+
     }
 
     deleteFromBasket(ProdId)

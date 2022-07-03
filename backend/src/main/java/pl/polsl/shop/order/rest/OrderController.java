@@ -3,12 +3,14 @@ package pl.polsl.shop.order.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.polsl.shop.cart.ShoppingCartService;
+import pl.polsl.shop.order.Order;
 import pl.polsl.shop.order.OrderService;
 import pl.polsl.shop.order.PaymentMethod;
 import pl.polsl.shop.user.UserService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = "/order")
 public class OrderController {
@@ -25,7 +27,9 @@ public class OrderController {
 
     @PostMapping("/cart/{cartId}")
     public OrderDto buy(@PathVariable Long cartId, @RequestBody PaymentMethod paymentMethod) {
-        return OrderDto.fromOrder(this.orderService.newOrder(cartId, paymentMethod));
+        Order order = this.orderService.newOrder(cartId, paymentMethod);
+        return OrderDto.fromOrder(
+                this.orderService.newOrder(cartId, paymentMethod), this.userService.getAddressOf(order.getUser()), this.shoppingCartService.getCartFor(order.getUser()));
     }
 
     @PostMapping("/user/{id}/report")

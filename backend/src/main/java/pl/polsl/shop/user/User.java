@@ -1,5 +1,6 @@
 package pl.polsl.shop.user;
 
+import pl.polsl.shop.EntityUtils;
 import pl.polsl.shop.cart.ShoppingCart;
 import pl.polsl.shop.user.rest.UserDto;
 
@@ -7,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Table(name="users")
+@Table(name = "users")
 @Entity(name = "User")
 public class User {
 
@@ -40,6 +41,7 @@ public class User {
     private String phoneNumber;
 
     @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Type type;
 
     @Column(name = "birth_date")
@@ -50,31 +52,10 @@ public class User {
 
     @Column(name = "employment_date")
     private LocalDate employmentDate;
-
-    @OneToOne(mappedBy = "user")
-    private Address address;
-
-    @OneToOne(mappedBy = "user")
-    private ShoppingCart shoppingCart;
-
     @Transient
     private boolean loggedIn;
 
     public User() {
-    }
-
-    public User(String userName, String password, String legalName, String surname, String phoneNumber, Type type, Date birthDate, String pesel, LocalDate employmentDate, Address address) {
-        this.userName = userName;
-        this.password = password;
-        this.legalName = legalName;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.type = type;
-        this.birthDate = birthDate;
-        this.pesel = pesel;
-        this.employmentDate = employmentDate;
-        this.address = address;
-        this.loggedIn = false;
     }
 
     public Long getId() {
@@ -82,7 +63,7 @@ public class User {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.id = EntityUtils.nonNullOrDefault(id, this.id);
     }
 
     public String getUserName() {
@@ -90,7 +71,7 @@ public class User {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName = EntityUtils.nonNullOrDefault(userName, this.userName);
     }
 
     public String getPassword() {
@@ -98,7 +79,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = EntityUtils.nonNullOrDefault(password, this.password);
     }
 
     public String getLegalName() {
@@ -106,7 +87,7 @@ public class User {
     }
 
     public void setLegalName(String legalName) {
-        this.legalName = legalName;
+        this.legalName = EntityUtils.nonNullOrDefault(legalName, this.legalName);
     }
 
     public String getSurname() {
@@ -114,15 +95,7 @@ public class User {
     }
 
     public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Address getAddress() {
-        return this.address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
+        this.surname = EntityUtils.nonNullOrDefault(surname, this.surname);
     }
 
     public String getPhoneNumber() {
@@ -130,7 +103,7 @@ public class User {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = EntityUtils.nonNullOrDefault(phoneNumber, this.phoneNumber);
     }
 
     public Type getType() {
@@ -138,7 +111,7 @@ public class User {
     }
 
     public void setType(Type type) {
-        this.type = type;
+        this.type = EntityUtils.nonNullOrDefault(type, this.type);
     }
 
     public Date getBirthDate() {
@@ -146,7 +119,7 @@ public class User {
     }
 
     public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+        this.birthDate = EntityUtils.nonNullOrDefault(birthDate, this.birthDate);
     }
 
     public String getPesel() {
@@ -162,15 +135,7 @@ public class User {
     }
 
     public void setEmploymentDate(LocalDate employmentDate) {
-        this.employmentDate = employmentDate;
-    }
-
-    public ShoppingCart getShoppingCart() {
-        return this.shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
+        this.employmentDate = EntityUtils.nonNullOrDefault(employmentDate, this.employmentDate);
     }
 
     public boolean isLoggedIn() {
@@ -187,7 +152,6 @@ public class User {
         setSurname("");
         setPhoneNumber("");
         setPesel("");
-        setAddress(null);
         if (getType().equals(Type.CUSTOMER)) {
             setType(Type.DELETED);
         } else {
@@ -199,17 +163,19 @@ public class User {
     @Transient
     public static User fromDto(UserDto userDto) {
         User user = new User();
-        user.setUserName(userDto.userName());
-        user.setPassword(userDto.password());
-        user.setLegalName(userDto.legalName());
-        user.setSurname(userDto.surname());
-        user.setPhoneNumber(userDto.phoneNumber());
-        user.setType(userDto.type());
-        user.setBirthDate(userDto.birthDate());
-        user.setPesel(userDto.pesel());
-        user.setEmploymentDate(userDto.employmentDate());
-        user.setAddress(Address.fromDto(userDto.addressDto()));
-        user.setShoppingCart(ShoppingCart.fromDto(userDto.shoppingCartDto()));
+        user.parseDto(userDto);
         return user;
+    }
+
+    public void parseDto(UserDto userDto) { //todo add null checks
+        this.setUserName(userDto.userName());
+        this.setPassword(userDto.password());
+        this.setLegalName(userDto.legalName());
+        this.setSurname(userDto.surname());
+        this.setPhoneNumber(userDto.phoneNumber());
+        this.setType(userDto.type());
+        this.setBirthDate(userDto.birthDate());
+        this.setPesel(userDto.pesel());
+        this.setEmploymentDate(userDto.employmentDate());
     }
 }

@@ -1,7 +1,7 @@
 package pl.polsl.shop.product;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Table(name="product_restock")
 @Entity(name = "ProductRestock")
@@ -22,8 +22,8 @@ public class ProductRestock {
     @Column(name = "purchase_price", nullable = false)
     private double purchasePrice;
 
-    @Column(name = "date", nullable = false)
-    private Date purchaseDate;
+    @Column(name = "restock_date", nullable = false)
+    private LocalDate purchaseDate;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
@@ -47,11 +47,11 @@ public class ProductRestock {
         this.purchasePrice = purchasePrice;
     }
 
-    public Date getPurchaseDate() {
+    public LocalDate getPurchaseDate() {
         return purchaseDate;
     }
 
-    public void setPurchaseDate(Date purchaseDate) {
+    public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 

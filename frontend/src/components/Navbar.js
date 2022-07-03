@@ -25,7 +25,7 @@ class Navbar extends React.Component
 
         api.Product().getCategories()
         .then(response => this.setState({categories: response.data}))
-        .catch(err => console.log(err))
+        .catch(err => console.log(err.request))
 
         var logged =  store.getState().persistedReducer.loggedIn
         if(this.state.loggedIn !== logged)
@@ -126,7 +126,7 @@ class Navbar extends React.Component
 
     logOut()
     {
-        api.User().logout(store.getState().persistedReducer.id);
+        api.User().logout(store.getState().persistedReducer.userName);
         store.dispatch(logout())
         window.location.reload();
     }

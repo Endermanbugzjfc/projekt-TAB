@@ -5,11 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.polsl.shop.order.OrderService;
 import pl.polsl.shop.order.OrderedProduct;
-import pl.polsl.shop.product.rest.ProductDTO;
-import pl.polsl.shop.product.rest.ProductPriceQueryDTO;
-import pl.polsl.shop.product.rest.ProductReportDTO;
-import pl.polsl.shop.product.rest.ProductRestockDTO;
+import pl.polsl.shop.product.rest.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service("productService")
@@ -29,6 +27,12 @@ public class ProductService { //todo implement
 
     public List<Product> getProductsByCategory(ProductCategory productCategory) { //GET /product/{category}
         return this.productRepository.findAllByCategoryEquals(productCategory);
+    }
+
+    public Product updateProductPrice(ProductPriceUpdateDTO priceUpdateDTO) {
+        Product product = this.productRepository.getById(priceUpdateDTO.productId());
+        product.setRetailPrice(priceUpdateDTO.newPrice());
+        return this.productRepository.save(product);
     }
 
     public List<Product> getByRetailPrice(ProductPriceQueryDTO productPriceQueryDTO) {//PUT /product/price
