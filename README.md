@@ -1,7 +1,7 @@
 # projekt-TAB
 ### What is this
 This is a repository for a construction shop website.
-This was created for our databese classes on the university
+This was created for our database classes on the university
 
 ### Technologies
 - On the backend there is Java with the Spring framework
