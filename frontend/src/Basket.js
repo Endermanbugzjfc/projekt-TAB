@@ -102,7 +102,7 @@ class Basket extends React.Component
     payment()
     {
         var price = 0;
-        this.state.Cart.selectedProducts?.map(product => price += parseFloat(product.product.retailPrice) * parseFloat(product.quantity) )
+        this.state.Cart.selectedProducts?.map(product => price += parseFloat(product.product.retailPrice).toFixed(2) * parseInt(product.quantity) )
         return <>
         <form>
             <div className="mt-5 row">
@@ -143,8 +143,8 @@ class Basket extends React.Component
                         <div className="col-2">{entry.product.name}</div>
                         <div className="col-2 ms-2">{entry.quantity}</div>
                         <div className="col-2 ms-3" id={"inStock" + entry.product.productId}>{entry.product.inStock}</div>
-                        <div className="col-2">{entry.product.retailPrice} zł</div>
-                        <div className="col-2">{parseFloat(entry.product.retailPrice) * parseFloat(entry.quantity) } zł</div>
+                        <div className="col-2">{parseFloat(entry.product.retailPrice).toFixed(2)} zł</div>
+                        <div className="col-2">{parseFloat(entry.product.retailPrice).toFixed(2) * parseFloat(entry.quantity).toFixed(2) } zł</div>
                         <div className="col"> <input type="button" className="btn btn-danger btn-sm" value="Usuń" onClick={() => {this.deleteFromBasket(entry.product.productId)}}/> </div>
                         
                     </button>
