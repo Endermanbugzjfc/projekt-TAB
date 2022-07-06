@@ -53,7 +53,7 @@ export default {
             getUserCart: (userId) => axios.get(url + "user/" + userId),
             getNotLogCart: () => axios.get(url), //<-----change? TODO
             insert: (cartId, productId, quantity) => axios.put(url+cartId, {productId: productId, quantity: quantity}),
-            deleteProduct: (cartId, productId) => axios.delete(url+cartId, productId),
+            deleteProduct: (cartId, productId) => axios.delete(url+cartId +'/'+ productId),
 
             BuyAll: (cartId, paymentMethod) => axios.post(url+cartId, paymentMethod)
         }

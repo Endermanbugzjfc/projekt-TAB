@@ -16,9 +16,9 @@ class Navbar extends React.Component
         var status = store.getState().persistedReducer.loggedIn
         this.setState({loggedIn: status})
 
-        if(this.state.loggedIn)
+        if(status)
         {
-            var newName = store.getState().user.name;
+            var newName = store.getState().persistedReducer.login;
             //console.log("New name:", newName)
             this.setState({username: newName})
         }
@@ -69,15 +69,13 @@ class Navbar extends React.Component
                                 </form>
                             </div>
                             <div className="col col"></div>
-                            <div className="col-2 col">
+                            <div className="col-3 col">
                                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li className="nav-item dropdown">
                                         {this.userIconAndLogin()}
                                     </li>
                                     <li className="nav-item"> 
-                                        
-                                        <Link to="/basket" className="nav-link active bi bi-basket position-relative">&nbsp;Koszyk
-                                        </Link>
+                                        <Link to="/basket" className="nav-link active bi bi-basket position-relative">&nbsp;Koszyk</Link>
                                     </li>
                                 </ul>
                             </div>
@@ -93,11 +91,11 @@ class Navbar extends React.Component
     userIconAndLogin(){
         if(this.state.loggedIn){
             var link = '/user';
-            if(store.getState().persistedReducer.role === 'CUSTOMER')
+            if(store.getState().persistedReducer.role.toUpperCase() === 'CUSTOMER')
                 link = '/user'
-            else if (store.getState().persistedReducer.role === 'EMPLOYEE')
+            else if (store.getState().persistedReducer.role.toUpperCase() === 'EMPLOYEE')
                 link = '/employee'
-            else if (store.getState().persistedReducer.role === 'ADMIN')
+            else if (store.getState().persistedReducer.role.toUpperCase() === 'ADMIN')
                 link = '/admin'
             return(
                 <>
@@ -110,7 +108,7 @@ class Navbar extends React.Component
                     <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         
                         <li><Link to={link} className="dropdown-item">Zarządzaj</Link></li>
-                        <li><input value={"Wyloguj"} className="dropdown-item" type="button" onClick={() => this.logOut()}/></li>
+                        <li><input value="Wyloguj" className="dropdown-item" type="button" onClick={() => this.logOut()}/></li>
                     </ul>
                 </>
             )
@@ -145,7 +143,7 @@ class Navbar extends React.Component
                         this.state.categories.map((cat) => {
                             return <>
                             <div className="row">
-                                <input type="buttom" className="col btn category" value={cat} onClick={() => {window.location.href = '/products/' + cat}} />
+                                <input type="button" className="col btn category" value={cat} onClick={() => {window.location.href = '/products/' + cat}} />
                             </div>
                             </>
                             

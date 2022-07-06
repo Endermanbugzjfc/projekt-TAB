@@ -220,7 +220,7 @@ class Offer extends React.Component{
                         <div className="row text-break">Opis: {this.state.description != null ? this.state.description : "Brak" } </div>
                     </div>
                     <div className="col">
-                        <div className="row">{this.state.retailPrice} zł / szt </div>
+                        <div className="row">{ parseFloat(this.state.retailPrice).toFixed(2)} zł / szt </div>
                         <div className="row">
                             W magazynie zostało {this.state.inStock > 0 ? this.state.inStock : 0 } sztuk
                         </div>
@@ -261,17 +261,26 @@ class Offer extends React.Component{
                 if(store.getState().persistedReducer.loggedIn)
                 {
                     api.Cart().getUserCart(store.getState().persistedReducer.id)
-                    .then(res => cartId = res.data)
+                    .then(res => {
+                        var cartId = res.data.shoppingCart.cartId
+                        //if(cartId === undefined) return;
+                        api.Cart().insert(cartId, this.state.productId, this.state.selectedAmount)
+                        .then(() => alert("Dodano!"))
+                        .catch(err => console.log(err))
+
+                    })
                     .catch(err=> console.log(err))
                 }
                 else{
                     api.Cart().getNotLogCart()
-                    .then(res => cartId = res.data)
+                    .then(res => cartId = res.data.shoppingCart.cartId)
                     .catch(err=> console.log(err))
                 }
-                if(cartId === undefined) return;
-                api.Cart().insert(cartId, this.state.productId, this.state.selectedAmount)
-                .catch(err => console.log(err))
+                //console.log(cartId)
+                // if(cartId === undefined) return;
+                // api.Cart().insert(cartId, this.state.productId, this.state.selectedAmount)
+                // .then(() => alert("Dodano!"))
+                // .catch(err => console.log(err))
             }
             else
             {
