@@ -145,9 +145,9 @@ class Basket extends React.Component
                         <div className="col-2 ms-3" id={"inStock" + entry.product.productId}>{entry.product.inStock}</div>
                         <div className="col-2">{parseFloat(entry.product.retailPrice).toFixed(2)} zł</div>
                         <div className="col-2">{parseFloat(entry.product.retailPrice).toFixed(2) * parseFloat(entry.quantity).toFixed(2) } zł</div>
-                        <div className="col"> <input type="button" className="btn btn-danger btn-sm" value="Usuń" onClick={() => {this.deleteFromBasket(entry.product.productId)}}/> </div>
-                        
-                    </button>
+                        </button>
+                        <div className="col text-end mb-1"> <input type="button" className="btn btn-danger btn-sm" value="Usuń" onClick={() => {this.deleteFromBasket(entry.product.productId)}}/> </div>
+
                 </h2>
                 <div id={"collapse" + entry.product.productId} className="accordion-collapse collapse" aria-labelledby={"heading" + entry.product.productId} data-bs-parent="#accordionBasket">
                     <div className="accordion-body text-break">
