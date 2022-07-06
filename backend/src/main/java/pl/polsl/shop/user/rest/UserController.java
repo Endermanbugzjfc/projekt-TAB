@@ -86,8 +86,8 @@ public class UserController {
         }
     }
 
-    @PostMapping("/find/{type}")
-    public List<UserDto> findUsers(@RequestBody UserDto userDto, @PathVariable Type type) {
-        return userService.findUsers(userDto.legalName(), userDto.surname(), userDto.pesel(), userDto.type());
+    @PostMapping("/find")
+    public List<UserDto> findUsers(@RequestBody UserDto userDto) {
+        return userService.findUsers(userDto);
     }
 }

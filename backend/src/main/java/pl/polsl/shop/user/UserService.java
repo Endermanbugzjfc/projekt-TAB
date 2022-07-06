@@ -107,37 +107,12 @@ public class UserService {
         return null;
     }
 
-    private List<User> findUsersImpl(String name, String surname, String pesel, Type type) {
-        if (name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()) {
-            return this.userRepository.findAllByType(type);
-        }
-        if (!name.trim().isEmpty() && !surname.trim().isEmpty() && !pesel.trim().isEmpty()) {
-            return this.userRepository.findAllByLegalNameAndSurnameAndPeselAndType(name, surname, pesel, type);
-        } else {
-            if (!name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()) {
-                return this.userRepository.findAllByLegalNameAndType(name, type);
-            }
-            if (name.trim().isEmpty() && !surname.trim().isEmpty() && pesel.trim().isEmpty()) {
-                return this.userRepository.findAllBySurnameAndType(surname, type);
-            }
-            if (name.trim().isEmpty() && surname.trim().isEmpty() && !pesel.trim().isEmpty()) {
-                return this.userRepository.findAllByPeselAndType(pesel, type);
-            }
-            if (!name.trim().isEmpty() && !surname.trim().isEmpty() && pesel.trim().isEmpty()) {
-                return this.userRepository.findAllByLegalNameAndSurnameAndType(name, surname, type);
-            }
-            if (!name.trim().isEmpty() && surname.trim().isEmpty() && !pesel.trim().isEmpty()) {
-                return this.userRepository.findAllByLegalNameAndPeselAndType(name, pesel, type);
-            }
-            if (name.trim().isEmpty() && !surname.trim().isEmpty() && !pesel.trim().isEmpty()) {
-                return this.userRepository.findAllBySurnameAndPeselAndType(surname, pesel, type);
-            }
-        }
-        return Collections.emptyList();
+    private List<User> findUsersImpl(UserDto userDto) {
+        return UserSearchStrategy.getStrategyFor(userDto).findUsers(userDto, this.userRepository);
     }
 
-    public List<UserDto> findUsers(String name, String surname, String pesel, Type type) {
-        return this.findUsersImpl(name, surname, pesel, type).stream()
+    public List<UserDto> findUsers(UserDto userDto) {
+        return this.findUsersImpl(userDto).stream()
                 .map(user -> {
                     Address address = this.getAddressOf(user);
                     ShoppingCart shoppingCart = this.shoppingCartService.getCartFor(user);
