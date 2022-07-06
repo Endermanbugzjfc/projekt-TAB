@@ -1,4 +1,4 @@
 package pl.polsl.shop.product.rest;
 
-public record ProductReportDTO(Long productId, String productName, double totalIncome, double totalExpense) {
+public record ProductReportDTO(Long productId, ProductDTO product, double totalIncome, double totalExpense) {
 }

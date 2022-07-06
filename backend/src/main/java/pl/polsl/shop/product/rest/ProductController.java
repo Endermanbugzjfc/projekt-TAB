@@ -24,13 +24,15 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/report/{productId}")
-    public List<ProductReportDTO> getReportsFor(@PathVariable("productId") Long productId) {
-        return this.productService.getReportsFor(productId);
+    public ProductIncomeExpenseReportDTO getReportsFor(@PathVariable("productId") Long productId, @RequestBody ProductReportQueryDTO productReportQueryDTO) {
+        return this.productService.getReportFor(productId, productReportQueryDTO);
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/report/all")
-    public List<ProductReportDTO> getAllReports(@RequestBody ProductReportQueryDTO productReportQueryDTO) {
-        return this.productService.getReportsBetweenDates(productReportQueryDTO.start(), productReportQueryDTO.end());
+    public IncomeExpenseReportDTO getAllReports(@RequestBody ProductReportQueryDTO productReportQueryDTO) {
+        return this.productService.getReportFor(
+                productReportQueryDTO.productId(), productReportQueryDTO.start(), productReportQueryDTO.end()
+        );
     }
 
     @RequestMapping(method = RequestMethod.POST)

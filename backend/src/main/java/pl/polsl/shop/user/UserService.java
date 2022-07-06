@@ -107,7 +107,7 @@ public class UserService {
         return null;
     }
 
-    public List<User> findUsersImpl(String name, String surname, String pesel, Type type) {
+    private List<User> findUsersImpl(String name, String surname, String pesel, Type type) {
         if (name.trim().isEmpty() && surname.trim().isEmpty() && pesel.trim().isEmpty()) {
             return this.userRepository.findAllByType(type);
         }

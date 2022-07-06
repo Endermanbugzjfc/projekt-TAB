@@ -8,6 +8,7 @@ import pl.polsl.shop.order.OrderedProduct;
 import pl.polsl.shop.product.rest.*;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Service("productService")
@@ -66,9 +67,15 @@ public class ProductService { //todo implement
         return List.of(ProductCategory.values());
     }
 
-    public List<ProductReportDTO> getReportsFor(Long productId) {
+    public ProductIncomeExpenseReportDTO getReportFor(Long productId, ProductReportQueryDTO productReportQueryDTO) {
         Product product = this.productRepository.getById(productId);
-        return this.getReportsFor(List.of(product), LocalDate.of(1900, 1, 1), LocalDate.now());
+        ProductReportDTO productReportDTO = this.getReportsFor(
+                List.of(product), productReportQueryDTO.start(), productReportQueryDTO.end()
+        ).get(0);
+        return new ProductIncomeExpenseReportDTO(
+                new IncomeExpenseReportDTO(productReportQueryDTO.start(), productReportQueryDTO.end(), productReportDTO.totalIncome(), productReportDTO.totalExpense()),
+                ProductDTO.fromProduct(product)
+        );
     }
 
     public List<ProductReportDTO> getAllReports() {
@@ -77,6 +84,12 @@ public class ProductService { //todo implement
 
     public List<ProductReportDTO> getReportsBetweenDates(LocalDate start, LocalDate end) {
         return this.getReportsFor(this.productRepository.findAll(), start, end);
+    }
+
+    public IncomeExpenseReportDTO getReportFor(Long productId, LocalDate start, LocalDate end) {
+        Product product = this.productRepository.getById(productId);
+        ProductReportDTO reportDTO = this.getReportsFor(List.of(product), start, end).get(0);
+        return new IncomeExpenseReportDTO(start, end, reportDTO.totalIncome(), reportDTO.totalExpense());
     }
 
     private List<ProductReportDTO> getReportsFor(List<Product> products, LocalDate start, LocalDate end) {
@@ -92,7 +105,7 @@ public class ProductService { //todo implement
                     double totalExpense = this.restockRepository.findProductRestocksByProduct(product).stream()
                             .mapToDouble(restock -> restock.getPurchasePrice() * restock.getQuantity())
                             .sum();
-                    return new ProductReportDTO(product.getId(), product.getName(), totalIncome, totalExpense);
+                    return new ProductReportDTO(product.getId(), ProductDTO.fromProduct(product), totalIncome, totalExpense);
                 }).toList();
     }
 }

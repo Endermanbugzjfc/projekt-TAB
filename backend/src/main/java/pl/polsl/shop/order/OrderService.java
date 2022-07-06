@@ -61,7 +61,11 @@ public class OrderService {
         } catch (UserException e) {
             throw new RuntimeException(e);
         }
-        return this.orderRepository.findAllByUser(user).stream().map(order -> OrderDto.fromOrder(order, this.userService.getAddressOf(user), this.shoppingCartService.getCartFor(user))).collect(Collectors.toList());
+        return this.orderRepository.findAllByUser(user).stream()
+                .map(order -> OrderDto.fromOrder(
+                        order, this.userService.getAddressOf(user),
+                        this.shoppingCartService.getCartFor(user)
+                )).collect(Collectors.toList());
     }
 
     public OrderLongReportDto generateLongReport(Long userId, Long orderId) {
