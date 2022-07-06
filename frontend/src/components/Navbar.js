@@ -69,15 +69,13 @@ class Navbar extends React.Component
                                 </form>
                             </div>
                             <div className="col col"></div>
-                            <div className="col-2 col">
+                            <div className="col-3 col">
                                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li className="nav-item dropdown">
                                         {this.userIconAndLogin()}
                                     </li>
                                     <li className="nav-item"> 
-                                        
-                                        <Link to="/basket" className="nav-link active bi bi-basket position-relative">&nbsp;Koszyk
-                                        </Link>
+                                        <Link to="/basket" className="nav-link active bi bi-basket position-relative">&nbsp;Koszyk</Link>
                                     </li>
                                 </ul>
                             </div>
