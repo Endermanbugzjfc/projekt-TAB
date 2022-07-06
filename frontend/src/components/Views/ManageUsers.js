@@ -59,6 +59,7 @@ class ManageUsers extends React.Component
 
         var selectedIndex = document.getElementById("selectionOptions")?.selectedIndex
         var searched = {}
+        searched.type = type
         if(selectedIndex === 0)
             searched.id = this.state.searchBar
         else if(selectedIndex === 1)
@@ -72,7 +73,7 @@ class ManageUsers extends React.Component
         else
             alert("Something went wrong!")
 
-        api.User().searchUser(searched, type)
+        api.User().searchUser(searched)
         .then(response => this.setState({gottenWorkers: response.data}))
         .catch(err => console.log(err))
 

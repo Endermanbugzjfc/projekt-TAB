@@ -19,7 +19,7 @@ export default {
             getOrderById: (userId, orderId) => axios.get(url+userId+"/report/full/" + orderId),
 
             //Worker management
-            searchUser: (userDTO, type) => axios.post(url + 'find/' + type, userDTO)
+            searchUser: (userDTO) => axios.post(url + 'find', userDTO)
             
         }
     },
