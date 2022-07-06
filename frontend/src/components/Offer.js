@@ -220,7 +220,7 @@ class Offer extends React.Component{
                         <div className="row text-break">Opis: {this.state.description != null ? this.state.description : "Brak" } </div>
                     </div>
                     <div className="col">
-                        <div className="row">{this.state.retailPrice} zł / szt </div>
+                        <div className="row">{ parseFloat(this.state.retailPrice).toFixed(2)} zł / szt </div>
                         <div className="row">
                             W magazynie zostało {this.state.inStock > 0 ? this.state.inStock : 0 } sztuk
                         </div>

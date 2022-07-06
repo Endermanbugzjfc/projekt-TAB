@@ -31,7 +31,7 @@ class Products extends React.Component{
 
 
         api.Product().getByCategory(category)
-        .then(res =>  {console.log(res.data); this.setState({products: res.data})})
+        .then(res =>  {this.setState({products: res.data})})
         .catch(err => console.log(err));
     }
 
@@ -78,12 +78,23 @@ class Products extends React.Component{
 
     SearchPrice()
     {
+        console.log(this.state)
         var priceQueryDTO = {}
-        if(this.state.minPrice.length > 0) priceQueryDTO.min =this.state.minPrice
-        if(this.state.maxPrice.length > 0) priceQueryDTO.max =this.state.maxPrice
-
-        api.Product().getProductsByPriceAndCategory(priceQueryDTO, this.state.category)
-
+        if(this.state.minPrice.length > 0) priceQueryDTO.min = this.state.minPrice
+        if(this.state.maxPrice.length > 0) priceQueryDTO.max = this.state.maxPrice
+        console.log(priceQueryDTO)
+        if(this.state.minPrice.length === 0 && this.state.maxPrice.length === 0)
+            api.Product().getByCategory(this.state.category)
+            .then(respnse => {
+                this.setState({products: respnse.data})
+            })
+            .catch(err => console.log(err))
+        else
+            api.Product().getProductsByPriceAndCategory(priceQueryDTO, this.state.category)
+            .then(respnse => {
+                this.setState({products: respnse.data})
+            })
+            .catch(err => console.log(err))
     }
 
 }
