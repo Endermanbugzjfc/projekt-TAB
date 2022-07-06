@@ -107,7 +107,6 @@ class Login extends React.Component
             api.User().login(User)
             .then(response => {
                 store.dispatch(login(response.data.user))
-                //window.location.href = '/'
             })
             .catch(err => alert("Nie udało się zalogować", err));
         }

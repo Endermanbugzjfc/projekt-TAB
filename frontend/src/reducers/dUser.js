@@ -20,6 +20,7 @@ const UserSlice = createSlice(
                 state.role = user.payload.type;
                 state.loggedIn = true;
                 state.cartId = user.payload.shoppingCartDto?.id;
+                setTimeout(()=>{window.location.href = '/'}, 1000);
             },
             isLoggedIn : (state) =>{ return state.loggedIn },
             logout: (state) =>{
